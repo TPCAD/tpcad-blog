@@ -10,13 +10,13 @@ description = "TPCAD's blog"
 author = "TPCAD"
 
 showBreadCrumbs = true
-ShowCodeCopyButtons = false
+ShowCodeCopyButtons = true
 UseHugoToc = true
 disableScrollToTop = false
-showtoc = false
+showtoc = true
 
 [params.homeInfoParams]
-Title = "Eulamber"
+Title = "愿热情在风中永不熄灭"
 Content = "Hi there 👋. Welcome to my blog"
 
 [[params.socialIcons]]
