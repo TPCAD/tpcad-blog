@@ -1,0 +1,52 @@
+baseURL = 'https://tpcad.github.io/'
+languageCode = 'zh-CN'
+title = 'Eulamber'
+theme = "hugo-PaperMod"
+
+[params]
+env = "production"
+title = "Eulamber"
+description = "TPCAD's blog"
+author = "TPCAD"
+
+showBreadCrumbs = true
+ShowCodeCopyButtons = false
+UseHugoToc = true
+disableScrollToTop = false
+showtoc = false
+
+[params.homeInfoParams]
+Title = "Eulamber"
+Content = "Hi there 👋. Welcome to my blog"
+
+[[params.socialIcons]]
+name = "github"
+title = "Github Profile"
+url = "https://github.com/tpcad"
+
+[params.fuseOpts]
+isCaseSensitive = false
+shouldSort = true
+location = 0
+distance = 1_000
+threshold = 0.4
+minMatchCharLength = 0
+keys = [ "title", "permalink", "summary", "content" ]
+
+[[menu.main]]
+name = "Archive"
+url = "archives"
+weigaht = 5
+
+[[menu.main]]
+name = "Search"
+url = "search/"
+weigaht = 10
+
+[[menu.main]]
+name = "Tags"
+url = "tags/"
+weigaht = 10
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
