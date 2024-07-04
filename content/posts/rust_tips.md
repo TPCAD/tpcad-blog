@@ -1,5 +1,5 @@
 +++
-title = 'Rust_tips'
+title = 'Rust Tips'
 date = 2024-06-30T08:38:38+08:00
 draft = true
 +++
