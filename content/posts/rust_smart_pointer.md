@@ -1,5 +1,5 @@
 +++
-title = 'Rust_smart_pointer'
+title = 'Rust Smart Pointer'
 date = 2024-07-02T15:57:07+08:00
 tags = ['Rust']
 +++
