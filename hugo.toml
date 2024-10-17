@@ -19,10 +19,10 @@ showtoc = true
 Title = "愿热情在风中永不熄灭"
 Content = "Hi there 👋. Welcome to my blog"
 
-[[params.socialIcons]]
-name = "github"
-title = "Github Profile"
-url = "https://github.com/tpcad"
+# [[params.socialIcons]]
+# name = "github"
+# title = "Github Profile"
+# url = "https://github.com/tpcad"
 
 [params.fuseOpts]
 isCaseSensitive = false
