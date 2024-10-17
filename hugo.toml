@@ -14,6 +14,7 @@ ShowCodeCopyButtons = true
 UseHugoToc = true
 disableScrollToTop = false
 showtoc = true
+social = true
 
 [params.homeInfoParams]
 Title = "愿热情在风中永不熄灭"
