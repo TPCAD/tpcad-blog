@@ -3,8 +3,6 @@ title = 'Hugo + Github Action，搭建个人博客'
 date = 2024-06-29T10:59:27+08:00
 +++
 
-# Hugo + Github Action，搭建个人博客
-
 ## 创建 Github 仓库
 
 ### 创建博客源仓库
@@ -151,7 +149,7 @@ jobs:
 
 ### Github Pages 仓库没有启用 Github Action
 
-在仓库的 `Settings -> Pages -> Build and deployment -> Branch` 中选择需要分支并保存，即可启用 Github Pages。 
+在仓库的 `Settings -> Pages -> Build and deployment -> Branch` 中选择需要分支并保存，即可启用 Github Pages。
 
 ## 参考资料
 

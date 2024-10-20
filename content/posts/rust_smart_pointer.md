@@ -4,9 +4,7 @@ date = 2024-07-02T15:57:07+08:00
 tags = ['Rust']
 +++
 
-# Smart Pointer in Rust
-
-## Box<T>
+## `Box<T>`
 
 Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。
 
@@ -76,7 +74,7 @@ impl<T> Deref for MyBox<T> {
 }
 ```
 
-在执行 `*y` 时，Rust 会将其替换为 `*(y.deref())`。 
+在执行 `*y` 时，Rust 会将其替换为 `*(y.deref())`。
 
 ### Deref 强制转换
 
@@ -140,7 +138,7 @@ let b = MyBox::new(24);
 drop(b);
 ```
 
-## Rc<T>
+## `Rc<T>`
 
 有时候一个值会有多个所有者。比如图的节点会被多条边连接。
 
@@ -185,7 +183,7 @@ fn main() {
 }
 ```
 
-## RefCell<T>
+## `RefCell<T>`
 
 **内部可变性（Interior mutability）**是 Rust 中的一个设计模式，它允许你即使在有不可变引用时也可以改变数据，这通常是借用规则所不允许的。
 
@@ -230,7 +228,7 @@ fn main() {
 }
 ```
 
-## Weak<T>
+## `Weak<T>`
 
 ```rust
 use std::cell::RefCell;

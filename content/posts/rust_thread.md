@@ -4,13 +4,11 @@ date = 2024-07-03T11:47:33+08:00
 tags = ['Rust']
 +++
 
-# 在 Rust 中使用线程
-
 ## 线程基础
 
 - 创建线程
 
-使用 `thread::spawn` 创建线程，它接受一个 `FnOnce` 闭包。 
+使用 `thread::spawn` 创建线程，它接受一个 `FnOnce` 闭包。
 
 ```rust
 use std::{thread, time::Duration};
@@ -82,6 +80,7 @@ Rust 的信道实现在 `std::sync::mpsc` 中。
 接受者调用 `recv` 方法接收消息。该方法会阻塞线程执行直到从信道中获取一个值。若信道已经被关闭，则会返回一个错误。
 
 另外还有 `try_recv` 方法可以接收信息。这个方法不会阻塞线程，而是立刻返回一个 Result。
+
 ```rust
 use std::{sync::mpsc, thread};
 fn main() {
