@@ -1,6 +1,7 @@
 +++
 title = 'How Nullptr Works'
 date = 2024-08-06T17:46:57+08:00
+tags = ['cpp']
 +++
 
 ## 为什么需要 nullptr
@@ -76,7 +77,7 @@ p = static_cast<int*>(nullptr);
 
 `nullptr` 不能使用 `static_cast` 显示转换到 `int` 等类型，除了 `bool`。
 
-```
+```cpp
 std::cout << static_cast<int>(nullptr)  << std::endl; // not allowed
 std::cout << static_cast<bool>(nullptr)  << std::endl;
 ```
