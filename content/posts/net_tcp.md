@@ -156,7 +156,7 @@ sequenceDiagram
 
 `SACK` 选项包含两个选项。
 
-1. `SACK-Permitted` 选项
+- `SACK-Permitted` 选项
 该选项只能出现在 `SYN` 报文中，在连接建立时告知对方自己支持 `SACK`。选项格式如下：
 
 ```mermaid
@@ -168,7 +168,7 @@ packet-beta
 9-15: "Length=2"
 ```
 
-2. `SACK` 选项
+- `SACK` 选项
 该选项通过范围表示已经接收到的数据，不连续的部分就是丢失的数据。
 
 ```mermaid
@@ -306,7 +306,7 @@ $$
 ```c
 if 有数据要发送 {
     if 可用窗口大小 >= MSS && 可发送的数据 >= MSS {
-    	立刻发送MSS大小的数据
+        立刻发送MSS大小的数据
     } else {
         if 有未确认的数据 {
             将数据放入缓存等待接收 ACK
