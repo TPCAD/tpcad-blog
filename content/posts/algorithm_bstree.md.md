@@ -2,7 +2,6 @@
 title = '二叉搜索树'
 date = 2024-11-13T16:22:15+08:00
 tags = ['Algorithm', 'Tree', 'Data Structure']
-draft = true
 +++
 
 二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。
