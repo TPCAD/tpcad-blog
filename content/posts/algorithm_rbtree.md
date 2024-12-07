@@ -277,26 +277,26 @@ N: new node, P: parent node, G: grandparent node, U: uncle node
         // case 4,5: 父节点是红色，叔父节点是黑色或空
         if (is_red(root->parent) && !is_red(uncle_node)) {
             if (is_left_child(root) && is_left_child(root->parent)) {
-                // case 5:
+                // case 4:
                 // 父节点是红色，叔父节点是黑色或空，
                 // 当前节点是左子节点，父节点是左子节点
                 root->parent->color = rb_color::black;
                 grandparent(root)->color = rb_color::red;
                 left_left_rotation(grandparent(root));
             } else if (!is_left_child(root) && !is_left_child(root->parent)) {
-                // case 5: 对称
+                // case 4: 对称
                 root->parent->color = rb_color::black;
                 grandparent(root)->color = rb_color::red;
                 right_right_rotation(grandparent(root));
             } else if (!is_left_child(root) && is_left_child(root->parent)) {
-                // case 4:
+                // case 5:
                 // 父节点是红色，叔父节点是黑色或空，
                 // 当前节点是右子节点，父节点是左子节点
                 right_right_rotation(root->parent);
                 root = root->left;
                 fix_after_insertion(root);
             } else {
-                // case 4: 对称
+                // case 5: 对称
                 left_left_rotation(root->parent);
                 root = root->right;
                 fix_after_insertion(root);
@@ -308,39 +308,108 @@ N: new node, P: parent node, G: grandparent node, U: uncle node
 
 ## 删除
 
-对于红黑树，只有删除黑色节点才会破坏红黑树的性质。
+与二叉树的删除操作类似，可以根据待删除的节点有无子节点分为以下几种情况：
 
-红黑树的删除操作可以分成以下几种：
+### case 1
 
-### 删除操作
+待删除节点的左右子节点都存在。使用直接后继节点替换待删除节点（不包括颜色），然后删除直接后继节点。
 
-#### case 1
+### case 2
 
-待删除节点的左右子节点都存在。使用直接后继节点替换待删除节点但保留待删除节点的颜色，然后删除直接后继节点。
+待删除节点仅有一个子节点，那么子节点一定是红色，否则违反性质 5。直接使用子节点替换待删除节点（不包括颜色）即可。
 
-#### case 2
+### case 3
 
 待删除节点不存在子节点且该节点为红色。直接删除即可。
 
-#### case 3
+### case 4
 
 待删除节点不存在子节点且该节点为黑色。删除后会破坏性质 5，需要进行调整。若此节点为根节点，直接删除即可。
 
-#### case 4
+### 示例代码
 
-待删除节点仅存在一个子节点，那么子节点一定是红色，否则会破坏性质 5。直接使用子节点替换待删除节点（包括颜色）即可。
+```cpp
+    void remove_aux(rb_node *root, const T &value) {
+        if (root == nullptr) {
+            return;
+        }
 
-### 删除后的维护
+        if (root->key == value) {
+            if (root->count > 1) {
+                root->count--;
+            } else {
+                if (root->left && root->right) { // case 1: 左右子树存在
+                    rb_node *successor = min_node(root->right);
 
-假设待删除节点是左子节点，对于右子节点的情况，处理方法与左子节点对称。
+                    root->key = successor->key;
+                    root->count = successor->count;
+                    successor->count = 1;
+                    successor->size = 0;
 
-删除后的情况可以分为以下几种：
+                    remove_aux(root->right, successor->key);
+                } else { // 至多存在一棵子树
+                    rb_node *child =
+                        root->left != nullptr ? root->left : root->right;
+                    rb_node *parent = root->parent;
+
+                    // case 2: 仅存在一个子节点
+                    if (child) {
+                        child->parent = parent;
+
+                        // 调整待删除节点的父节点
+                        if (parent == nullptr) { // 待删除节点是根节点
+                            this->root = child;
+                        } else if (is_left_child(root)) {
+                            parent->left = child;
+                        } else {
+                            parent->right = child;
+                        }
+
+                        child->color = rb_color::black;
+
+                    } else if (parent == nullptr) { // case 3: 没有子树的根节点
+                        this->root = nullptr;
+                    } else { // case 3: 没有子树的黑色节点（非根节点）
+                        if (root->color == rb_color::black) {
+                            root->size = 0;
+                            fix_after_remove(root);
+                        }
+
+                        // 调整待删除节点的父节点
+                        if (parent) {
+                            if (is_left_child(root)) {
+                                parent->left = nullptr;
+                            } else {
+                                parent->right = nullptr;
+                            }
+                        }
+                    }
+                    // case 4: 不存在子节点且为红色，直接删除
+                    delete root;
+                    return;
+                }
+            }
+        } else {
+            rb_node *child = root->key > value ? root->left : root->right;
+            remove_aux(child, value);
+        }
+
+        root->size = root->count + (root->left ? root->left->size : 0) +
+                     (root->right ? root->right->size : 0);
+    }
+```
+
+### 维护
+
+根据上面的各种情况可以发现，只有删除 **没有子节点的黑色节点（非根节点）** 才会破坏红黑树的性质。
+
+以下情况均假设待删除节点是左子节点，对于右子节点的情况，处理方法与左子节点的情况对称。
 
 #### case 1
 
 待删除节点的兄弟节点是红色，那么父节点和侄子节点（兄弟节点的子节点）一定是黑色（或为空）（性质 4），删除节点可能会破坏性质 5。
 
-此时需要将父节点染红，将兄弟节点染黑，并对父节点进行 **左旋**，此时满足 case 2。
+此时需要将父节点染红，将兄弟节点染黑，并对父节点进行 **左旋**，随后继续维护红黑树。
 
 ```language
         [P]                         <P>                         [S]
@@ -374,7 +443,7 @@ N: delete node, P: parent node, S: sibling node, C: close nephew, D: distant nep
 
 待删除节点的兄弟节点和侄子节点（兄弟节点的子节点）都是黑色（或为空），父节点是黑色。
 
-将叔父节点染红然后视父节点为待删除节点继续调整红黑树。
+将兄弟节点染红然后视父节点为待删除节点继续调整红黑树。若父节点是根节点，则不需要再调整。
 
 ```language
         [P]                        [P]      
@@ -389,7 +458,7 @@ N: delete node, P: parent node, S: sibling node, C: close nephew, D: distant nep
 
 #### case 4
 
-待删除节点的兄弟节点是黑色，左侄子节点是红色，右侄子节点是黑色，父节点是黑色或红色。
+待删除节点的兄弟节点是黑色，左侄子节点是红色，右侄子节点是黑色（或为空），父节点是黑色或红色。
 
 将兄弟节点染红，左侄子节点染黑，然后 **右旋** 兄弟节点，此时满足 case 5。
 
@@ -406,7 +475,7 @@ N: delete node, P: parent node, S: sibling node, C: close nephew, D: distant nep
 
 #### case 5
 
-待删除节点的兄弟节点是黑色，左侄子节点是黑色，右侄子节点是红色，父节点是黑色或红色。
+待删除节点的兄弟节点是黑色，左侄子节点是黑色（或为空），右侄子节点是红色，父节点是黑色或红色。
 
 父节点与兄弟节点交换颜色，右侄子节点染黑，**左旋** 父节点。
 
@@ -425,14 +494,14 @@ N: delete node, P: parent node, S: sibling node, C: close nephew, D: distant nep
 
 ```cpp
     /**
-     *  @brief  调整删除后的红黑树
+     *  @brief  调整红黑树
      *  @param  root  待删除的节点
      *
      *  因为还需要待删除节点来定位其父节点和兄弟节点等节点，所以此时调整的红黑
      *  树其实是未删除节点的红黑树。
      *
      *  case a + case b = case 1 + case 2
-     *  !case a + case b = case 3
+     *  !case a + case b = case 2 / case 3
      *  !case a + !case b + case c + case d = case 4 + case 5
      *  !case a + !case b + !case c + case d = case 5
      */
