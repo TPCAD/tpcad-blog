@@ -51,3 +51,6 @@ weigaht = 10
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]
+
+[markup.highlight]
+style = 'catppuccin-frappe'
