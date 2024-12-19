@@ -490,7 +490,7 @@ N: delete node, P: parent node, S: sibling node, C: close nephew, D: distant nep
 <X>: RED node, [X]: BLACK node, {X}: either RED or BLACK node
 ```
 
-### 示例代码
+#### 示例代码
 
 ```cpp
     /**
