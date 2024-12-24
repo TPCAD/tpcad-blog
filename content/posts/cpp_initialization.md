@@ -139,7 +139,7 @@ int main() {
 }
 ```
 
-对于具有动态存储器的类类型变量，同样会出现第一次分配内存时，值被初始化为 0，但在销毁并再次分配后是不确定值的现象。
+对于具有动态存储期的类类型变量，同样会出现第一次分配内存时，值被初始化为 0，但在销毁并再次分配后是不确定值的现象。
 
 ## 值初始化
 
@@ -326,7 +326,7 @@ int main(int argc, char *argv[]) {
 #include <print>
 
 int main(int argc, char *argv[]) {
-    int i(3);
+    int i{3};
     std::println("{}", i);
 
     return 0;
@@ -754,10 +754,22 @@ int main(int argc, char *argv[]) {
 struct foo {
     foo() { std::println("foo ctor"); }
     foo(const foo &) { std::println("foo copy ctor"); }
+    explicit foo(int) {}
+};
+struct bar : foo {
+    bar() { std::println("bar ctor"); }
 };
 
-int main(int argc, char *argv[]) { 
-    foo f = foo();
+int main(int argc, char *argv[]) {
+    foo f1;
+
+    foo f2 = f1; // 其他对象的类型是 T，此处调用拷贝构造函数
+
+    foo f3 = bar(); // 其他对象的类型是 T 的派生类，bar 被隐式转换为
+                    // foo，然后调用拷贝构造函数
+
+    foo f4 = 42; // 错误。复制初始化不考虑显式构造函数
+
     return 0;
 }
 ```
@@ -768,21 +780,20 @@ int main(int argc, char *argv[]) {
 
 ```cpp
 #include <print>
+struct bar {
+    bar() { std::println("bar ctor"); }
+};
 struct foo {
     foo() { std::println("foo ctor"); }
     foo(const foo &) { std::println("foo copy ctor"); }
+    explicit foo(bar) { std::println("foo explicit conv from bar"); }
+    foo(int) { std::println("foo implicit conv from int"); }
 };
-struct bar : foo {
-    bar(foo) { std::println("bar ctor"); }
-};
 
-int main(int argc, char *argv[]) { 
-    foo f = bar(); // 派生类
-
-    const foo f1;
-    foo f2 = f1; // 非纯右值，调用非显示构造函数
-
-    foo f3 = 1; // 错误，复制初始化不考虑 explicit 构造函数
+int main(int argc, char *argv[]) {
+    foo f1{bar()};  // 直接初始化，考虑所有构造函数
+    foo f2 = bar(); // 错误。复制初始化不考虑显式构造函数
+    foo f3 = 42;    // 非显式构造函数
     return 0;
 }
 ```
