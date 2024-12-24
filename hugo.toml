@@ -18,12 +18,12 @@ social = true
 
 [params.homeInfoParams]
 Title = "愿热情在风中永不熄灭"
-Content = "Hi there 👋. Welcome to my blog"
+Content = "Hi 👋. 欢迎来到我的博客。发现文章有任何问题都可以在 Github 中提交 Issue（点击下面的图标即可跳转）。"
 
-# [[params.socialIcons]]
-# name = "github"
-# title = "Github Profile"
-# url = "https://github.com/tpcad"
+[[params.socialIcons]]
+name = "github"
+title = "Blog Repo"
+url = "https://github.com/TPCAD/tpcad-blog/issues"
 
 [params.fuseOpts]
 isCaseSensitive = false
