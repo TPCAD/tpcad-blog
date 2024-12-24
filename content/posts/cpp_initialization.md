@@ -604,6 +604,26 @@ int main(int argc, char *argv[]) {
 
 注意，explicit 构造函数不是转换构造函数，不会被复制初始化考虑。另外，如果 *其他对象* 是右值表达式，那么重载决议会选择 **移动构造函数** 并在复制初始化期间调用它。
 
+复制初始化中的隐式转换必须从初始化器直接生成 T，而直接初始化则允许从初始化器到 T 的某个构造函数实参的隐式转换。
+
+```cpp
+#include <print>
+
+struct foo {
+    foo(int) { std::println("foo int ctor"); }
+};
+struct bar {
+    bar(foo) { std::println("bar foo ctor"); }
+};
+
+int main(int argc, char *argv[]) {
+    bar b1(42);  // OK。42 先被转换成 foo，再转换成 bar
+    bar b2 = 42; // 错误。复制初始化的初始化器必须直接生成 T
+    bar b3(foo{42}); // OK。初始化器 foo{42} 直接生成 T
+    return 0;
+}
+```
+
 ### 触发示例
 
 #### case 1
