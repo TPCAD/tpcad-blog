@@ -1,9 +1,8 @@
 +++
 title = 'Rust Traits'
 date = 2024-07-04T15:00:42+08:00
+tags = ['Rust']
 +++
-
-# Traits in Rust
 
 trait 定义了某个特定类型拥有可能与其他类型共享的功能。
 
