@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>二叉搜索树 | Eulamber</title>
+<meta name="keywords" content="Algorithm, Tree, Data Structure">
+<meta name="description" content="二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。
+二叉搜索树定义
+
+空树是二叉搜索树
+若左子树不空，则左子树上所有节点的值都 小于 根节点的值
+若右子树不空，则右子树上所有节点的值都 大于 根节点的值
+二叉搜索树的左右子树也是二叉搜索树
+
+节点定义
+template &lt;typename T&gt; struct binary_search_tree {
+  private:
+    struct bs_node {
+      public:
+        T key;
+        unsigned int size;
+        unsigned int count;
+
+        bs_node *left;
+        bs_node *right;
+
+        bs_node(const T &amp;value)
+            : key(value), size(1), count(1), left(nullptr), right(nullptr) {}
+    };
+
+    bs_node *root;
+
+  public:
+    binary_search_tree() : root(nullptr) {}
+    binary_search_tree(const T &amp;value) : root(nullptr) {
+        root = new bs_node(value);
+    }
+
+    binary_search_tree(std::initializer_list&lt;T&gt; list) : root(nullptr) {
+        root = new bs_node(*list.begin());
+        std::for_each(list.begin() &#43; 1, list.end(),
+                      [this](auto &amp;&amp;x) { this-&gt;insert(x); });
+    }
+遍历二叉搜索树
+根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/posts/algorithm_bstree/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/posts/algorithm_bstree/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/posts/algorithm_bstree/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="二叉搜索树">
+  <meta property="og:description" content="二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。
+二叉搜索树定义 空树是二叉搜索树 若左子树不空，则左子树上所有节点的值都 小于 根节点的值 若右子树不空，则右子树上所有节点的值都 大于 根节点的值 二叉搜索树的左右子树也是二叉搜索树 节点定义 template &lt;typename T&gt; struct binary_search_tree { private: struct bs_node { public: T key; unsigned int size; unsigned int count; bs_node *left; bs_node *right; bs_node(const T &amp;value) : key(value), size(1), count(1), left(nullptr), right(nullptr) {} }; bs_node *root; public: binary_search_tree() : root(nullptr) {} binary_search_tree(const T &amp;value) : root(nullptr) { root = new bs_node(value); } binary_search_tree(std::initializer_list&lt;T&gt; list) : root(nullptr) { root = new bs_node(*list.begin()); std::for_each(list.begin() &#43; 1, list.end(), [this](auto &amp;&amp;x) { this-&gt;insert(x); }); } 遍历二叉搜索树 根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-13T16:22:15+08:00">
+    <meta property="article:modified_time" content="2024-11-13T16:22:15+08:00">
+    <meta property="article:tag" content="Algorithm">
+    <meta property="article:tag" content="Tree">
+    <meta property="article:tag" content="Data Structure">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二叉搜索树">
+<meta name="twitter:description" content="二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。
+二叉搜索树定义
+
+空树是二叉搜索树
+若左子树不空，则左子树上所有节点的值都 小于 根节点的值
+若右子树不空，则右子树上所有节点的值都 大于 根节点的值
+二叉搜索树的左右子树也是二叉搜索树
+
+节点定义
+template &lt;typename T&gt; struct binary_search_tree {
+  private:
+    struct bs_node {
+      public:
+        T key;
+        unsigned int size;
+        unsigned int count;
+
+        bs_node *left;
+        bs_node *right;
+
+        bs_node(const T &amp;value)
+            : key(value), size(1), count(1), left(nullptr), right(nullptr) {}
+    };
+
+    bs_node *root;
+
+  public:
+    binary_search_tree() : root(nullptr) {}
+    binary_search_tree(const T &amp;value) : root(nullptr) {
+        root = new bs_node(value);
+    }
+
+    binary_search_tree(std::initializer_list&lt;T&gt; list) : root(nullptr) {
+        root = new bs_node(*list.begin());
+        std::for_each(list.begin() &#43; 1, list.end(),
+                      [this](auto &amp;&amp;x) { this-&gt;insert(x); });
+    }
+遍历二叉搜索树
+根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "二叉搜索树",
+      "item": "https://tpcad.github.io/posts/algorithm_bstree/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "二叉搜索树",
+  "name": "二叉搜索树",
+  "description": "二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。\n二叉搜索树定义 空树是二叉搜索树 若左子树不空，则左子树上所有节点的值都 小于 根节点的值 若右子树不空，则右子树上所有节点的值都 大于 根节点的值 二叉搜索树的左右子树也是二叉搜索树 节点定义 template \u0026lt;typename T\u0026gt; struct binary_search_tree { private: struct bs_node { public: T key; unsigned int size; unsigned int count; bs_node *left; bs_node *right; bs_node(const T \u0026amp;value) : key(value), size(1), count(1), left(nullptr), right(nullptr) {} }; bs_node *root; public: binary_search_tree() : root(nullptr) {} binary_search_tree(const T \u0026amp;value) : root(nullptr) { root = new bs_node(value); } binary_search_tree(std::initializer_list\u0026lt;T\u0026gt; list) : root(nullptr) { root = new bs_node(*list.begin()); std::for_each(list.begin() + 1, list.end(), [this](auto \u0026amp;\u0026amp;x) { this-\u0026gt;insert(x); }); } 遍历二叉搜索树 根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。\n",
+  "keywords": [
+    "Algorithm", "Tree", "Data Structure"
+  ],
+  "articleBody": "二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。\n二叉搜索树定义 空树是二叉搜索树 若左子树不空，则左子树上所有节点的值都 小于 根节点的值 若右子树不空，则右子树上所有节点的值都 大于 根节点的值 二叉搜索树的左右子树也是二叉搜索树 节点定义 template \u003ctypename T\u003e struct binary_search_tree { private: struct bs_node { public: T key; unsigned int size; unsigned int count; bs_node *left; bs_node *right; bs_node(const T \u0026value) : key(value), size(1), count(1), left(nullptr), right(nullptr) {} }; bs_node *root; public: binary_search_tree() : root(nullptr) {} binary_search_tree(const T \u0026value) : root(nullptr) { root = new bs_node(value); } binary_search_tree(std::initializer_list\u003cT\u003e list) : root(nullptr) { root = new bs_node(*list.begin()); std::for_each(list.begin() + 1, list.end(), [this](auto \u0026\u0026x) { this-\u003einsert(x); }); } 遍历二叉搜索树 根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。\n递归实现的中序遍历：\nvoid inorder_traversal_aux(const bs_node *root, std::vector\u003cT\u003e \u0026result) { if (root == nullptr) { return; } inorder_traversal_aux(root-\u003eleft, result); for (auto i = root-\u003ecount; i \u003e 0; --i) { result.push_back(root-\u003ekey); } inorder_traversal_aux(root-\u003eright, result); } void inorder_traversal(std::vector\u003cT\u003e \u0026result) { inorder_traversal_aux(root, result); } 非递归实现的中序遍历：\nvoid inorder_traversal_non_recursion(std::vector\u003cT\u003e \u0026result) { std::stack\u003cconst bs_node *\u003e s; const bs_node *rt = root; while (rt || s.size()) { while (rt) { s.push(rt); // 保存根节点 rt = rt-\u003eleft; // 遍历左子树 } rt = s.top(); // 获取保存的根节点 s.pop(); // 弹出根节点 for (auto i = rt-\u003ecount; i \u003e 0; --i) { result.push_back(rt-\u003ekey); // 访问节点 } rt = rt-\u003eright; // 遍历右子树 } } 搜索元素 根据二叉搜索树的特性，搜索某一个节点只需要搜索一侧子树即可，因此搜索操作的时间复杂度为 $O(h)$，h 为树高。\n递归实现：\nbool exist_aux(const bs_node *root, const T \u0026value) const { if (root == nullptr) { return false; } if (root-\u003ekey == value) { return true; } return root-\u003ekey \u003e value ? exist_aux(root-\u003eleft, value) : exist_aux(root-\u003eright, value); } bool is_exist(const T \u0026value) const { return exist_aux(root, value); } 非递归实现：\nbool is_exist_non_recursion(const T \u0026value) const { const bs_node *rt = root; while (rt != nullptr) { if (rt-\u003ekey == value) { return true; } rt = rt-\u003ekey \u003e value ? rt-\u003eleft : rt-\u003eright; } return false; } 插入元素 与搜索元素类似，插入操作的时间复杂度为 $O(h)$。\n递归实现：\nvoid insert_aux(bs_node *root, const T \u0026value) { if (root == nullptr) { return; } if (root-\u003ekey == value) { root-\u003ecount++; root-\u003esize++; return; } auto \u0026child = root-\u003ekey \u003e value ? root-\u003eleft : root-\u003eright; if (child == nullptr) { child = new bs_node(value); } else { insert_aux(child, value); } root-\u003esize = root-\u003ecount + (root-\u003eleft ? root-\u003eleft-\u003esize : 0) + (root-\u003eright ? root-\u003eright-\u003esize : 0); } void insert(const T \u0026value) { insert_aux(root, value); } 非递归实现需要借助栈来保存父节点，以便在插入后回溯修改父节点的 size 字段：\nvoid insert_non_recursion(const T \u0026value) { bs_node *rt = root; std::stack\u003cbs_node *\u003e s; while (rt != nullptr) { if (rt-\u003ekey == value) { rt-\u003ecount++; break; } s.push(rt); // child 是引用 auto \u0026child = rt-\u003ekey \u003e value ? rt-\u003eleft : rt-\u003eright; if (child == nullptr) { child = new bs_node(value); break; } rt = child; } // 回溯修改 size 字段 while (s.size()) { rt = s.top(); s.pop(); rt-\u003esize = rt-\u003ecount + (rt-\u003eleft ? rt-\u003eleft-\u003esize : 0) + (rt-\u003eright ? rt-\u003eright-\u003esize : 0); } } 删除元素 对于删除操作，需要分以下情况讨论：\n待删除节点为叶子节点，直接删除即可 待删除节点有一个子节点，将当前节点替换为子节点再删除 待删除节点有两个子节点，将当前节点替换为其直接前驱或直接后继节点再删除 在递归实现中，往往将前两种情况合并，判断某一子树是否为空，若为空则返回另一子树，即使它为空。\nbinary_search_tree *remove(const T \u0026value) { if (this-\u003ekey == value) { if (this-\u003ecount \u003e 1) { this-\u003ecount--; } else { if (this-\u003eleft \u0026\u0026 this-\u003eright) { // 寻找右子树的最小节点 binary_search_tree *successor = this-\u003eright-\u003emin(); // 替换 this-\u003ekey = successor-\u003ekey; this-\u003ecount = successor-\u003ecount; // 删除直接后继节点 successor-\u003ecount = 1; this-\u003eright = this-\u003eright-\u003eremove(successor-\u003ekey); } else { // 只存在左子树，或右子树，或都不存在 binary_search_tree *temp = (this-\u003eleft != nullptr) ? this-\u003eleft : this-\u003eright; delete this; return temp; } } } else { auto \u0026child = (this-\u003ekey \u003e value) ? this-\u003eleft : this-\u003eright; if (child != nullptr) { child = child-\u003eremove(value); } } this-\u003esize = this-\u003ecount + (this-\u003eleft ? this-\u003eleft-\u003esize : 0) + (this-\u003eright ? this-\u003eright-\u003esize : 0); return this; } 非递归实现稍显繁琐，需要记录但删除节点的父节点，寻找直接后继节点时也需要记录其父节点。同时还需要借助栈回溯父节点以修改 size 字段。\n找到待删除节点及其父节点 待删除节点左右节点都存在 寻找直接后继节点及其父节点 替换待删除节点，判断直接后继节点 若直接后继节点 是 待删除节点的子结点，使后继节点的父节点的 右节点 等于后继节点的右节点 若直接后继节点 不是 待删除节点的子结点，使后继节点的父节点的 左节点 等于后继节点的右节点 删除直接后继节点 待删除节点存在至多一个子结点 若待删除节点是根节点，直接删除，并使根节点等于其子结点 若待删除节点不是根节点，用待删除节点的子结点替代待删除节点 删除待删除节点 void remove_non_recursion(const T \u0026value) { bs_node *parent = nullptr; bs_node *current = root; std::stack\u003cbs_node *\u003e s; while (current != nullptr \u0026\u0026 current-\u003ekey != value) { s.push(current); parent = current; current = current-\u003ekey \u003e value ? current-\u003eleft : current-\u003eright; } // 元素不存在 if (current == nullptr) { return; } if (current-\u003ecount \u003e 1) { current-\u003ecount--; } else { // 左右子树存在 if (current-\u003eleft \u0026\u0026 current-\u003eright) { bs_node *successor_parent = current; bs_node *successor = current-\u003eright; // 寻找直接后继节点 while (successor-\u003eleft != nullptr) { s.push(successor); successor_parent = successor; successor = successor-\u003eleft; } // 替换 current-\u003ekey = successor-\u003ekey; current-\u003ecount = successor-\u003ecount; successor-\u003ecount = 1; // 更新后继节点的父节点，后继节点不存在左子树，最多存在一个右子树 if (successor_parent == current) { successor_parent-\u003eright = successor-\u003eright; } else { successor_parent-\u003eleft = successor-\u003eright; } delete successor; } else { // 只存在左子树，或右子树，或都不存在 bs_node *child = (current-\u003eleft != nullptr) ? current-\u003eleft : current-\u003eright; // 当前节点为根节点 if (parent == nullptr) { delete current; root = child; } else { // 更新父节点 if (parent-\u003eleft == current) { parent-\u003eleft = child; } else { parent-\u003eright = child; } // 删除当前节点 delete current; } } } while (s.size()) { auto node = s.top(); s.pop(); node-\u003esize = node-\u003ecount + (node-\u003eleft ? node-\u003eleft-\u003esize : 0) + (node-\u003eright ? node-\u003eright-\u003esize : 0); } } 直接前驱节点和直接后继节点 一个节点的直接前驱节点是 小于该节点的最大的节点，直接后继节点是 大于该节点的最小的节点。\nstd::expected\u003cconst T *, tree_error\u003e predecessor(const T \u0026value) const { std::stack\u003cconst bs_node *\u003e s; const bs_node *current = root; const bs_node *prev = nullptr; while (current || s.size()) { while (current) { s.push(current); current = current-\u003eleft; } current = s.top(); s.pop(); // 当前节点符合条件，则父节点为直接前驱节点 if (current-\u003ekey == value) { return \u0026prev-\u003ekey; } prev = current; current = current-\u003eright; } return std::unexpected(tree_error::no_element); } std::expected\u003cconst T *, tree_error\u003e successor(const T \u0026value) const { std::stack\u003cconst bs_node *\u003e s; const bs_node *current = root; const bs_node *prev = nullptr; while (current || s.size()) { while (current) { s.push(current); current = current-\u003eleft; } current = s.top(); s.pop(); // 父节点符合条件，则当前节点为直接后继节点 if (prev != nullptr \u0026\u0026 prev-\u003ekey == value) { return \u0026current-\u003ekey; } prev = current; current = current-\u003eright; } return std::unexpected(tree_error::no_element); } 参考资料 OI Wiki pdai tech ",
+  "wordCount" : "901",
+  "inLanguage": "en",
+  "datePublished": "2024-11-13T16:22:15+08:00",
+  "dateModified": "2024-11-13T16:22:15+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/posts/algorithm_bstree/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      二叉搜索树
+    </h1>
+    <div class="post-meta"><span title='2024-11-13 16:22:15 +0800 +0800'>November 13, 2024</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e4%ba%8c%e5%8f%89%e6%90%9c%e7%b4%a2%e6%a0%91%e5%ae%9a%e4%b9%89" aria-label="二叉搜索树定义">二叉搜索树定义</a></li>
+                    <li>
+                        <a href="#%e8%8a%82%e7%82%b9%e5%ae%9a%e4%b9%89" aria-label="节点定义">节点定义</a></li>
+                    <li>
+                        <a href="#%e9%81%8d%e5%8e%86%e4%ba%8c%e5%8f%89%e6%90%9c%e7%b4%a2%e6%a0%91" aria-label="遍历二叉搜索树">遍历二叉搜索树</a></li>
+                    <li>
+                        <a href="#%e6%90%9c%e7%b4%a2%e5%85%83%e7%b4%a0" aria-label="搜索元素">搜索元素</a></li>
+                    <li>
+                        <a href="#%e6%8f%92%e5%85%a5%e5%85%83%e7%b4%a0" aria-label="插入元素">插入元素</a></li>
+                    <li>
+                        <a href="#%e5%88%a0%e9%99%a4%e5%85%83%e7%b4%a0" aria-label="删除元素">删除元素</a></li>
+                    <li>
+                        <a href="#%e7%9b%b4%e6%8e%a5%e5%89%8d%e9%a9%b1%e8%8a%82%e7%82%b9%e5%92%8c%e7%9b%b4%e6%8e%a5%e5%90%8e%e7%bb%a7%e8%8a%82%e7%82%b9" aria-label="直接前驱节点和直接后继节点">直接前驱节点和直接后继节点</a></li>
+                    <li>
+                        <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" aria-label="参考资料">参考资料</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。</p>
+<h2 id="二叉搜索树定义">二叉搜索树定义<a hidden class="anchor" aria-hidden="true" href="#二叉搜索树定义">#</a></h2>
+<ol>
+<li>空树是二叉搜索树</li>
+<li>若左子树不空，则左子树上所有节点的值都 <strong>小于</strong> 根节点的值</li>
+<li>若右子树不空，则右子树上所有节点的值都 <strong>大于</strong> 根节点的值</li>
+<li>二叉搜索树的左右子树也是二叉搜索树</li>
+</ol>
+<h2 id="节点定义">节点定义<a hidden class="anchor" aria-hidden="true" href="#节点定义">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#ca9ee6">template</span> <span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">typename</span> T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">binary_search_tree</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#ca9ee6">private</span><span style="color:#99d1db;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">bs_node</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#ca9ee6">public</span><span style="color:#99d1db;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        T key;
+</span></span><span style="display:flex;"><span>        <span style="color:#e78284">unsigned</span> <span style="color:#e78284">int</span> size;
+</span></span><span style="display:flex;"><span>        <span style="color:#e78284">unsigned</span> <span style="color:#e78284">int</span> count;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        bs_node <span style="color:#99d1db;font-weight:bold">*</span>left;
+</span></span><span style="display:flex;"><span>        bs_node <span style="color:#99d1db;font-weight:bold">*</span>right;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        bs_node(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value)
+</span></span><span style="display:flex;"><span>            <span style="color:#99d1db;font-weight:bold">:</span> key(value), size(<span style="color:#ef9f76">1</span>), count(<span style="color:#ef9f76">1</span>), left(<span style="color:#ca9ee6">nullptr</span>), right(<span style="color:#ca9ee6">nullptr</span>) {}
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    bs_node <span style="color:#99d1db;font-weight:bold">*</span>root;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ca9ee6">public</span><span style="color:#99d1db;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    binary_search_tree() <span style="color:#99d1db;font-weight:bold">:</span> root(<span style="color:#ca9ee6">nullptr</span>) {}
+</span></span><span style="display:flex;"><span>    binary_search_tree(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) <span style="color:#99d1db;font-weight:bold">:</span> root(<span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>        root <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">new</span> bs_node(value);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    binary_search_tree(std<span style="color:#99d1db;font-weight:bold">::</span>initializer_list<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> list) <span style="color:#99d1db;font-weight:bold">:</span> root(<span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>        root <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">new</span> bs_node(<span style="color:#99d1db;font-weight:bold">*</span>list.begin());
+</span></span><span style="display:flex;"><span>        std<span style="color:#99d1db;font-weight:bold">::</span>for_each(list.begin() <span style="color:#99d1db;font-weight:bold">+</span> <span style="color:#ef9f76">1</span>, list.end(),
+</span></span><span style="display:flex;"><span>                      [<span style="color:#ca9ee6">this</span>](<span style="color:#ca9ee6">auto</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span>x) { <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>insert(x); });
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="遍历二叉搜索树">遍历二叉搜索树<a hidden class="anchor" aria-hidden="true" href="#遍历二叉搜索树">#</a></h2>
+<p>根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。</p>
+<p>递归实现的中序遍历：</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">inorder_traversal_aux</span>(<span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>root, std<span style="color:#99d1db;font-weight:bold">::</span>vector<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>result) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (root <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        inorder_traversal_aux(root<span style="color:#99d1db;font-weight:bold">-&gt;</span>left, result);
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">for</span> (<span style="color:#ca9ee6">auto</span> i <span style="color:#99d1db;font-weight:bold">=</span> root<span style="color:#99d1db;font-weight:bold">-&gt;</span>count; i <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">0</span>; <span style="color:#99d1db;font-weight:bold">--</span>i) {
+</span></span><span style="display:flex;"><span>            result.push_back(root<span style="color:#99d1db;font-weight:bold">-&gt;</span>key);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        inorder_traversal_aux(root<span style="color:#99d1db;font-weight:bold">-&gt;</span>right, result);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">inorder_traversal</span>(std<span style="color:#99d1db;font-weight:bold">::</span>vector<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>result) {
+</span></span><span style="display:flex;"><span>        inorder_traversal_aux(root, result);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>非递归实现的中序遍历：</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">inorder_traversal_non_recursion</span>(std<span style="color:#99d1db;font-weight:bold">::</span>vector<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>result) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#99d1db;font-weight:bold">::</span>stack<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*&gt;</span> s;
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>rt <span style="color:#99d1db;font-weight:bold">=</span> root;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">while</span> (rt <span style="color:#99d1db;font-weight:bold">||</span> s.size()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">while</span> (rt) {
+</span></span><span style="display:flex;"><span>                s.push(rt);    <span style="color:#737994;font-style:italic">// 保存根节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                rt <span style="color:#99d1db;font-weight:bold">=</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>left; <span style="color:#737994;font-style:italic">// 遍历左子树
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            rt <span style="color:#99d1db;font-weight:bold">=</span> s.top(); <span style="color:#737994;font-style:italic">// 获取保存的根节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            s.pop();      <span style="color:#737994;font-style:italic">// 弹出根节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            <span style="color:#ca9ee6">for</span> (<span style="color:#ca9ee6">auto</span> i <span style="color:#99d1db;font-weight:bold">=</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>count; i <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">0</span>; <span style="color:#99d1db;font-weight:bold">--</span>i) {
+</span></span><span style="display:flex;"><span>                result.push_back(rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>key); <span style="color:#737994;font-style:italic">// 访问节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            }
+</span></span><span style="display:flex;"><span>            rt <span style="color:#99d1db;font-weight:bold">=</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>right; <span style="color:#737994;font-style:italic">// 遍历右子树
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="搜索元素">搜索元素<a hidden class="anchor" aria-hidden="true" href="#搜索元素">#</a></h2>
+<p>根据二叉搜索树的特性，搜索某一个节点只需要搜索一侧子树即可，因此搜索操作的时间复杂度为 $O(h)$，h 为树高。</p>
+<p>递归实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">bool</span> <span style="color:#8caaee">exist_aux</span>(<span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>root, <span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) <span style="color:#ca9ee6">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (root <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">return</span> <span style="color:#99d1db">false</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (root<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">==</span> value) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">return</span> <span style="color:#99d1db">true</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">return</span> root<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">&gt;</span> value <span style="color:#99d1db;font-weight:bold">?</span> exist_aux(root<span style="color:#99d1db;font-weight:bold">-&gt;</span>left, value)
+</span></span><span style="display:flex;"><span>                                 <span style="color:#99d1db;font-weight:bold">:</span> exist_aux(root<span style="color:#99d1db;font-weight:bold">-&gt;</span>right, value);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">bool</span> <span style="color:#8caaee">is_exist</span>(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) <span style="color:#ca9ee6">const</span> { <span style="color:#ca9ee6">return</span> exist_aux(root, value); }
+</span></span></code></pre></div><p>非递归实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">bool</span> <span style="color:#8caaee">is_exist_non_recursion</span>(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) <span style="color:#ca9ee6">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>rt <span style="color:#99d1db;font-weight:bold">=</span> root;
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">while</span> (rt <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">if</span> (rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">==</span> value) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">return</span> <span style="color:#99d1db">true</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            rt <span style="color:#99d1db;font-weight:bold">=</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">&gt;</span> value <span style="color:#99d1db;font-weight:bold">?</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">left</span> : rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">return</span> <span style="color:#99d1db">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="插入元素">插入元素<a hidden class="anchor" aria-hidden="true" href="#插入元素">#</a></h2>
+<p>与搜索元素类似，插入操作的时间复杂度为 $O(h)$。</p>
+<p>递归实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">insert_aux</span>(bs_node <span style="color:#99d1db;font-weight:bold">*</span>root, <span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (root <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (root<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">==</span> value) {
+</span></span><span style="display:flex;"><span>            root<span style="color:#99d1db;font-weight:bold">-&gt;</span>count<span style="color:#99d1db;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span>            root<span style="color:#99d1db;font-weight:bold">-&gt;</span>size<span style="color:#99d1db;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">auto</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>child <span style="color:#99d1db;font-weight:bold">=</span> root<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">&gt;</span> value <span style="color:#99d1db;font-weight:bold">?</span> root<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">left</span> : root<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (child <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>            child <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">new</span> bs_node(value);
+</span></span><span style="display:flex;"><span>        } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>            insert_aux(child, value);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        root<span style="color:#99d1db;font-weight:bold">-&gt;</span>size <span style="color:#99d1db;font-weight:bold">=</span> root<span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">+</span> (root<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">?</span> root<span style="color:#99d1db;font-weight:bold">-&gt;</span>left<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>) <span style="color:#99d1db;font-weight:bold">+</span>
+</span></span><span style="display:flex;"><span>                     (root<span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">?</span> root<span style="color:#99d1db;font-weight:bold">-&gt;</span>right<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">insert</span>(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) { insert_aux(root, value); }
+</span></span></code></pre></div><p>非递归实现需要借助栈来保存父节点，以便在插入后回溯修改父节点的 <code>size</code> 字段：</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">insert_non_recursion</span>(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) {
+</span></span><span style="display:flex;"><span>        bs_node <span style="color:#99d1db;font-weight:bold">*</span>rt <span style="color:#99d1db;font-weight:bold">=</span> root;
+</span></span><span style="display:flex;"><span>        std<span style="color:#99d1db;font-weight:bold">::</span>stack<span style="color:#99d1db;font-weight:bold">&lt;</span>bs_node <span style="color:#99d1db;font-weight:bold">*&gt;</span> s;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">while</span> (rt <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">if</span> (rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">==</span> value) {
+</span></span><span style="display:flex;"><span>                rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>count<span style="color:#99d1db;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">break</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            s.push(rt);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#737994;font-style:italic">// child 是引用
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            <span style="color:#ca9ee6">auto</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>child <span style="color:#99d1db;font-weight:bold">=</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">&gt;</span> value <span style="color:#99d1db;font-weight:bold">?</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">left</span> : rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">if</span> (child <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>                child <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">new</span> bs_node(value);
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">break</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            rt <span style="color:#99d1db;font-weight:bold">=</span> child;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#737994;font-style:italic">// 回溯修改 size 字段
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>        <span style="color:#ca9ee6">while</span> (s.size()) {
+</span></span><span style="display:flex;"><span>            rt <span style="color:#99d1db;font-weight:bold">=</span> s.top();
+</span></span><span style="display:flex;"><span>            s.pop();
+</span></span><span style="display:flex;"><span>            rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>size <span style="color:#99d1db;font-weight:bold">=</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">+</span> (rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">?</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>left<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>) <span style="color:#99d1db;font-weight:bold">+</span>
+</span></span><span style="display:flex;"><span>                       (rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">?</span> rt<span style="color:#99d1db;font-weight:bold">-&gt;</span>right<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="删除元素">删除元素<a hidden class="anchor" aria-hidden="true" href="#删除元素">#</a></h2>
+<p>对于删除操作，需要分以下情况讨论：</p>
+<ol>
+<li>待删除节点为叶子节点，直接删除即可</li>
+<li>待删除节点有一个子节点，将当前节点替换为子节点再删除</li>
+<li>待删除节点有两个子节点，将当前节点替换为其直接前驱或直接后继节点再删除</li>
+</ol>
+<p>在递归实现中，往往将前两种情况合并，判断某一子树是否为空，若为空则返回另一子树，即使它为空。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    binary_search_tree <span style="color:#99d1db;font-weight:bold">*</span><span style="color:#8caaee">remove</span>(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (<span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">==</span> value) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">if</span> (<span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">1</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>count<span style="color:#99d1db;font-weight:bold">--</span>;
+</span></span><span style="display:flex;"><span>            } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">if</span> (<span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#737994;font-style:italic">// 寻找右子树的最小节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                    binary_search_tree <span style="color:#99d1db;font-weight:bold">*</span>successor <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right<span style="color:#99d1db;font-weight:bold">-&gt;</span>min();
+</span></span><span style="display:flex;"><span>                    <span style="color:#737994;font-style:italic">// 替换
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                    <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">=</span> successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>key;
+</span></span><span style="display:flex;"><span>                    <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">=</span> successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>count;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#737994;font-style:italic">// 删除直接后继节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                    successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">1</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right<span style="color:#99d1db;font-weight:bold">-&gt;</span>remove(successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>key);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#737994;font-style:italic">// 只存在左子树，或右子树，或都不存在
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                    binary_search_tree <span style="color:#99d1db;font-weight:bold">*</span>temp <span style="color:#99d1db;font-weight:bold">=</span>
+</span></span><span style="display:flex;"><span>                        (<span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span>) <span style="color:#99d1db;font-weight:bold">?</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">left</span> : <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>                    <span style="color:#ca9ee6">delete</span> <span style="color:#ca9ee6">this</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#ca9ee6">return</span> temp;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">auto</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>child <span style="color:#99d1db;font-weight:bold">=</span> (<span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">&gt;</span> value) <span style="color:#99d1db;font-weight:bold">?</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">left</span> : <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">if</span> (child <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>                child <span style="color:#99d1db;font-weight:bold">=</span> child<span style="color:#99d1db;font-weight:bold">-&gt;</span>remove(value);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>size <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">+</span> (<span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">?</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>left<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>) <span style="color:#99d1db;font-weight:bold">+</span>
+</span></span><span style="display:flex;"><span>                     (<span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">?</span> <span style="color:#ca9ee6">this</span><span style="color:#99d1db;font-weight:bold">-&gt;</span>right<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">return</span> <span style="color:#ca9ee6">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>非递归实现稍显繁琐，需要记录但删除节点的父节点，寻找直接后继节点时也需要记录其父节点。同时还需要借助栈回溯父节点以修改 <code>size</code> 字段。</p>
+<ol>
+<li>找到待删除节点及其父节点</li>
+<li>待删除节点左右节点都存在
+<ol>
+<li>寻找直接后继节点及其父节点</li>
+<li>替换待删除节点，判断直接后继节点
+<ol>
+<li>若直接后继节点 <strong>是</strong> 待删除节点的子结点，使后继节点的父节点的 <strong>右节点</strong> 等于后继节点的右节点</li>
+<li>若直接后继节点 <strong>不是</strong> 待删除节点的子结点，使后继节点的父节点的 <strong>左节点</strong> 等于后继节点的右节点</li>
+</ol>
+</li>
+<li>删除直接后继节点</li>
+</ol>
+</li>
+<li>待删除节点存在至多一个子结点
+<ol>
+<li>若待删除节点是根节点，直接删除，并使根节点等于其子结点</li>
+<li>若待删除节点不是根节点，用待删除节点的子结点替代待删除节点</li>
+<li>删除待删除节点</li>
+</ol>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">remove_non_recursion</span>(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) {
+</span></span><span style="display:flex;"><span>        bs_node <span style="color:#99d1db;font-weight:bold">*</span>parent <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">nullptr</span>;
+</span></span><span style="display:flex;"><span>        bs_node <span style="color:#99d1db;font-weight:bold">*</span>current <span style="color:#99d1db;font-weight:bold">=</span> root;
+</span></span><span style="display:flex;"><span>        std<span style="color:#99d1db;font-weight:bold">::</span>stack<span style="color:#99d1db;font-weight:bold">&lt;</span>bs_node <span style="color:#99d1db;font-weight:bold">*&gt;</span> s;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">while</span> (current <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">!=</span> value) {
+</span></span><span style="display:flex;"><span>            s.push(current);
+</span></span><span style="display:flex;"><span>            parent <span style="color:#99d1db;font-weight:bold">=</span> current;
+</span></span><span style="display:flex;"><span>            current <span style="color:#99d1db;font-weight:bold">=</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">&gt;</span> value <span style="color:#99d1db;font-weight:bold">?</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">left</span> : current<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#737994;font-style:italic">// 元素不存在
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>        <span style="color:#ca9ee6">if</span> (current <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (current<span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">1</span>) {
+</span></span><span style="display:flex;"><span>            current<span style="color:#99d1db;font-weight:bold">-&gt;</span>count<span style="color:#99d1db;font-weight:bold">--</span>;
+</span></span><span style="display:flex;"><span>        } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#737994;font-style:italic">// 左右子树存在
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            <span style="color:#ca9ee6">if</span> (current<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>right) {
+</span></span><span style="display:flex;"><span>                bs_node <span style="color:#99d1db;font-weight:bold">*</span>successor_parent <span style="color:#99d1db;font-weight:bold">=</span> current;
+</span></span><span style="display:flex;"><span>                bs_node <span style="color:#99d1db;font-weight:bold">*</span>successor <span style="color:#99d1db;font-weight:bold">=</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#737994;font-style:italic">// 寻找直接后继节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                <span style="color:#ca9ee6">while</span> (successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>                    s.push(successor);
+</span></span><span style="display:flex;"><span>                    successor_parent <span style="color:#99d1db;font-weight:bold">=</span> successor;
+</span></span><span style="display:flex;"><span>                    successor <span style="color:#99d1db;font-weight:bold">=</span> successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>left;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#737994;font-style:italic">// 替换
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                current<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">=</span> successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>key;
+</span></span><span style="display:flex;"><span>                current<span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">=</span> successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>count;
+</span></span><span style="display:flex;"><span>                successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#737994;font-style:italic">// 更新后继节点的父节点，后继节点不存在左子树，最多存在一个右子树
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                <span style="color:#ca9ee6">if</span> (successor_parent <span style="color:#99d1db;font-weight:bold">==</span> current) {
+</span></span><span style="display:flex;"><span>                    successor_parent<span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">=</span> successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>                } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>                    successor_parent<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">=</span> successor<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">delete</span> successor;
+</span></span><span style="display:flex;"><span>            } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#737994;font-style:italic">// 只存在左子树，或右子树，或都不存在
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                bs_node <span style="color:#99d1db;font-weight:bold">*</span>child <span style="color:#99d1db;font-weight:bold">=</span>
+</span></span><span style="display:flex;"><span>                    (current<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span>) <span style="color:#99d1db;font-weight:bold">?</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">left</span> : current<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#737994;font-style:italic">// 当前节点为根节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                <span style="color:#ca9ee6">if</span> (parent <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#ca9ee6">delete</span> current;
+</span></span><span style="display:flex;"><span>                    root <span style="color:#99d1db;font-weight:bold">=</span> child;
+</span></span><span style="display:flex;"><span>                } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#737994;font-style:italic">// 更新父节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                    <span style="color:#ca9ee6">if</span> (parent<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">==</span> current) {
+</span></span><span style="display:flex;"><span>                        parent<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">=</span> child;
+</span></span><span style="display:flex;"><span>                    } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>                        parent<span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">=</span> child;
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                    <span style="color:#737994;font-style:italic">// 删除当前节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>                    <span style="color:#ca9ee6">delete</span> current;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">while</span> (s.size()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">auto</span> node <span style="color:#99d1db;font-weight:bold">=</span> s.top();
+</span></span><span style="display:flex;"><span>            s.pop();
+</span></span><span style="display:flex;"><span>            node<span style="color:#99d1db;font-weight:bold">-&gt;</span>size <span style="color:#99d1db;font-weight:bold">=</span> node<span style="color:#99d1db;font-weight:bold">-&gt;</span>count <span style="color:#99d1db;font-weight:bold">+</span> (node<span style="color:#99d1db;font-weight:bold">-&gt;</span>left <span style="color:#99d1db;font-weight:bold">?</span> node<span style="color:#99d1db;font-weight:bold">-&gt;</span>left<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>) <span style="color:#99d1db;font-weight:bold">+</span>
+</span></span><span style="display:flex;"><span>                         (node<span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">?</span> node<span style="color:#99d1db;font-weight:bold">-&gt;</span>right<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="直接前驱节点和直接后继节点">直接前驱节点和直接后继节点<a hidden class="anchor" aria-hidden="true" href="#直接前驱节点和直接后继节点">#</a></h2>
+<p>一个节点的直接前驱节点是 <strong>小于该节点的最大的节点</strong>，直接后继节点是 <strong>大于该节点的最小的节点</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    std<span style="color:#99d1db;font-weight:bold">::</span>expected<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">*</span>, tree_error<span style="color:#99d1db;font-weight:bold">&gt;</span> predecessor(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) <span style="color:#ca9ee6">const</span> {
+</span></span><span style="display:flex;"><span>        std<span style="color:#99d1db;font-weight:bold">::</span>stack<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*&gt;</span> s;
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>current <span style="color:#99d1db;font-weight:bold">=</span> root;
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>prev <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">nullptr</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">while</span> (current <span style="color:#99d1db;font-weight:bold">||</span> s.size()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">while</span> (current) {
+</span></span><span style="display:flex;"><span>                s.push(current);
+</span></span><span style="display:flex;"><span>                current <span style="color:#99d1db;font-weight:bold">=</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>left;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            current <span style="color:#99d1db;font-weight:bold">=</span> s.top();
+</span></span><span style="display:flex;"><span>            s.pop();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#737994;font-style:italic">// 当前节点符合条件，则父节点为直接前驱节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            <span style="color:#ca9ee6">if</span> (current<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">==</span> value) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">return</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>prev<span style="color:#99d1db;font-weight:bold">-&gt;</span>key;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            prev <span style="color:#99d1db;font-weight:bold">=</span> current;
+</span></span><span style="display:flex;"><span>            current <span style="color:#99d1db;font-weight:bold">=</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">return</span> std<span style="color:#99d1db;font-weight:bold">::</span>unexpected(tree_error<span style="color:#99d1db;font-weight:bold">::</span>no_element);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    std<span style="color:#99d1db;font-weight:bold">::</span>expected<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">*</span>, tree_error<span style="color:#99d1db;font-weight:bold">&gt;</span> successor(<span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) <span style="color:#ca9ee6">const</span> {
+</span></span><span style="display:flex;"><span>        std<span style="color:#99d1db;font-weight:bold">::</span>stack<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*&gt;</span> s;
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>current <span style="color:#99d1db;font-weight:bold">=</span> root;
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">const</span> bs_node <span style="color:#99d1db;font-weight:bold">*</span>prev <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">nullptr</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">while</span> (current <span style="color:#99d1db;font-weight:bold">||</span> s.size()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">while</span> (current) {
+</span></span><span style="display:flex;"><span>                s.push(current);
+</span></span><span style="display:flex;"><span>                current <span style="color:#99d1db;font-weight:bold">=</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>left;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            current <span style="color:#99d1db;font-weight:bold">=</span> s.top();
+</span></span><span style="display:flex;"><span>            s.pop();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#737994;font-style:italic">// 父节点符合条件，则当前节点为直接后继节点
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>            <span style="color:#ca9ee6">if</span> (prev <span style="color:#99d1db;font-weight:bold">!=</span> <span style="color:#ca9ee6">nullptr</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> prev<span style="color:#99d1db;font-weight:bold">-&gt;</span>key <span style="color:#99d1db;font-weight:bold">==</span> value) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ca9ee6">return</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>current<span style="color:#99d1db;font-weight:bold">-&gt;</span>key;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            prev <span style="color:#99d1db;font-weight:bold">=</span> current;
+</span></span><span style="display:flex;"><span>            current <span style="color:#99d1db;font-weight:bold">=</span> current<span style="color:#99d1db;font-weight:bold">-&gt;</span>right;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">return</span> std<span style="color:#99d1db;font-weight:bold">::</span>unexpected(tree_error<span style="color:#99d1db;font-weight:bold">::</span>no_element);
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><h2 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h2>
+<ol>
+<li><a href="https://oi-wiki.org/ds/bst/">OI Wiki</a></li>
+<li><a href="https://pdai.tech/md/algorithm/alg-basic-tree-search.html">pdai tech</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://tpcad.github.io/tags/algorithm/">Algorithm</a></li>
+      <li><a href="https://tpcad.github.io/tags/tree/">Tree</a></li>
+      <li><a href="https://tpcad.github.io/tags/data-structure/">Data Structure</a></li>
+    </ul>
+  </footer>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

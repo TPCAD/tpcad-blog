@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Rust Smart Pointer | Eulamber</title>
+<meta name="keywords" content="Rust">
+<meta name="description" content="Box&lt;T&gt;
+Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。
+fn main() {
+    let f1 = foo { bar: 32 };
+    let f2 = Box::new(foo { bar: 11 });
+    println!(&#34;address on stack: {:p}&#34;, &amp;f1);
+    println!(&#34;address on heap: {:p}&#34;, f2);
+    println!(&#34;address of box(on stack): {:p}&#34;, &amp;f2);
+}
+
+struct foo {
+    bar: i32,
+}
+
+// address on stack: 0x7ffd34540f0c
+// address on heap: 0x57d39e669ba0
+// address of box(on stack): 0x7ffd34540f10
+Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。
+// 利用 Box 实现递归类型
+enum List {
+    Cons(i32, Box&lt;List&gt;),
+    Nil,
+}
+
+use crate::List::{Cons, Nil};
+
+fn main() {
+    let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
+}
+Deref Trait
+实现 Deref trait 可以重载解引用运算符 *。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/posts/rust_smart_pointer/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/posts/rust_smart_pointer/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/posts/rust_smart_pointer/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="Rust Smart Pointer">
+  <meta property="og:description" content="Box&lt;T&gt; Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。
+fn main() { let f1 = foo { bar: 32 }; let f2 = Box::new(foo { bar: 11 }); println!(&#34;address on stack: {:p}&#34;, &amp;f1); println!(&#34;address on heap: {:p}&#34;, f2); println!(&#34;address of box(on stack): {:p}&#34;, &amp;f2); } struct foo { bar: i32, } // address on stack: 0x7ffd34540f0c // address on heap: 0x57d39e669ba0 // address of box(on stack): 0x7ffd34540f10 Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。
+// 利用 Box 实现递归类型 enum List { Cons(i32, Box&lt;List&gt;), Nil, } use crate::List::{Cons, Nil}; fn main() { let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil)))))); } Deref Trait 实现 Deref trait 可以重载解引用运算符 *。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-02T15:57:07+08:00">
+    <meta property="article:modified_time" content="2024-07-02T15:57:07+08:00">
+    <meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rust Smart Pointer">
+<meta name="twitter:description" content="Box&lt;T&gt;
+Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。
+fn main() {
+    let f1 = foo { bar: 32 };
+    let f2 = Box::new(foo { bar: 11 });
+    println!(&#34;address on stack: {:p}&#34;, &amp;f1);
+    println!(&#34;address on heap: {:p}&#34;, f2);
+    println!(&#34;address of box(on stack): {:p}&#34;, &amp;f2);
+}
+
+struct foo {
+    bar: i32,
+}
+
+// address on stack: 0x7ffd34540f0c
+// address on heap: 0x57d39e669ba0
+// address of box(on stack): 0x7ffd34540f10
+Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。
+// 利用 Box 实现递归类型
+enum List {
+    Cons(i32, Box&lt;List&gt;),
+    Nil,
+}
+
+use crate::List::{Cons, Nil};
+
+fn main() {
+    let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
+}
+Deref Trait
+实现 Deref trait 可以重载解引用运算符 *。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Rust Smart Pointer",
+      "item": "https://tpcad.github.io/posts/rust_smart_pointer/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Rust Smart Pointer",
+  "name": "Rust Smart Pointer",
+  "description": "Box\u0026lt;T\u0026gt; Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。\nfn main() { let f1 = foo { bar: 32 }; let f2 = Box::new(foo { bar: 11 }); println!(\u0026#34;address on stack: {:p}\u0026#34;, \u0026amp;f1); println!(\u0026#34;address on heap: {:p}\u0026#34;, f2); println!(\u0026#34;address of box(on stack): {:p}\u0026#34;, \u0026amp;f2); } struct foo { bar: i32, } // address on stack: 0x7ffd34540f0c // address on heap: 0x57d39e669ba0 // address of box(on stack): 0x7ffd34540f10 Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。\n// 利用 Box 实现递归类型 enum List { Cons(i32, Box\u0026lt;List\u0026gt;), Nil, } use crate::List::{Cons, Nil}; fn main() { let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil)))))); } Deref Trait 实现 Deref trait 可以重载解引用运算符 *。\n",
+  "keywords": [
+    "Rust"
+  ],
+  "articleBody": "Box Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。\nfn main() { let f1 = foo { bar: 32 }; let f2 = Box::new(foo { bar: 11 }); println!(\"address on stack: {:p}\", \u0026f1); println!(\"address on heap: {:p}\", f2); println!(\"address of box(on stack): {:p}\", \u0026f2); } struct foo { bar: i32, } // address on stack: 0x7ffd34540f0c // address on heap: 0x57d39e669ba0 // address of box(on stack): 0x7ffd34540f10 Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。\n// 利用 Box 实现递归类型 enum List { Cons(i32, Box\u003cList\u003e), Nil, } use crate::List::{Cons, Nil}; fn main() { let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil)))))); } Deref Trait 实现 Deref trait 可以重载解引用运算符 *。\nuse std::ops::Deref; fn main() { let a = 4; let b = MyBox::new(a); println!(\"{:?}\", *b); assert_eq!(4, *b); } #[derive(Debug)] struct MyBox\u003cT\u003e(T); impl\u003cT\u003e MyBox\u003cT\u003e { fn new(x: T) -\u003e MyBox\u003cT\u003e { MyBox(x) } } // 为结构体实现 Deref Trait impl\u003cT\u003e Deref for MyBox\u003cT\u003e { type Target = T; fn deref(\u0026self) -\u003e \u0026Self::Target { \u0026self.0 } } 在执行 *y 时，Rust 会将其替换为 *(y.deref())。\nDeref 强制转换 Deref 强制转换（Deref coercions） 将实现了 Deref trait 的类型的引用转换为另一种类型的引用。比如将 \u0026String 转换为 \u0026str。\nDeref 强制转换发生在编译时，因此并没有运行时损耗。\nDeref trait 用于重载不可变引用的解引用运算符，而 DerefMut trait 用于重载可变引用的解引用运算符。\nRust 在发现类型和 trait 满足三种情况时会进行 Deref 强制转换：\n当 T: Deref",
+  "wordCount" : "602",
+  "inLanguage": "en",
+  "datePublished": "2024-07-02T15:57:07+08:00",
+  "dateModified": "2024-07-02T15:57:07+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/posts/rust_smart_pointer/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Rust Smart Pointer
+    </h1>
+    <div class="post-meta"><span title='2024-07-02 15:57:07 +0800 +0800'>July 2, 2024</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#boxt" aria-label="Box&lt;T&gt;"><code>Box&lt;T&gt;</code></a></li>
+                    <li>
+                        <a href="#deref-trait" aria-label="Deref Trait">Deref Trait</a><ul>
+                            
+                    <li>
+                        <a href="#deref-%e5%bc%ba%e5%88%b6%e8%bd%ac%e6%8d%a2" aria-label="Deref 强制转换">Deref 强制转换</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#drop-trait" aria-label="Drop Trait">Drop Trait</a></li>
+                    <li>
+                        <a href="#rct" aria-label="Rc&lt;T&gt;"><code>Rc&lt;T&gt;</code></a></li>
+                    <li>
+                        <a href="#refcellt" aria-label="RefCell&lt;T&gt;"><code>RefCell&lt;T&gt;</code></a></li>
+                    <li>
+                        <a href="#weakt" aria-label="Weak&lt;T&gt;"><code>Weak&lt;T&gt;</code></a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><h2 id="boxt"><code>Box&lt;T&gt;</code><a hidden class="anchor" aria-hidden="true" href="#boxt">#</a></h2>
+<p>Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> f1 <span style="color:#99d1db;font-weight:bold">=</span> foo { bar: <span style="color:#ef9f76">32</span> };
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> f2 <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">Box</span>::new(foo { bar: <span style="color:#ef9f76">11</span> });
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;address on stack: </span><span style="color:#a6d189">{:p}</span><span style="color:#a6d189">&#34;</span>, <span style="color:#99d1db;font-weight:bold">&amp;</span>f1);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;address on heap: </span><span style="color:#a6d189">{:p}</span><span style="color:#a6d189">&#34;</span>, f2);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;address of box(on stack): </span><span style="color:#a6d189">{:p}</span><span style="color:#a6d189">&#34;</span>, <span style="color:#99d1db;font-weight:bold">&amp;</span>f2);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
+</span></span><span style="display:flex;"><span>    bar: <span style="color:#e78284">i32</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// address on stack: 0x7ffd34540f0c
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// address on heap: 0x57d39e669ba0
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// address of box(on stack): 0x7ffd34540f10
+</span></span></span></code></pre></div><p>Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 利用 Box 实现递归类型
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">enum</span> <span style="color:#e5c890">List</span> {
+</span></span><span style="display:flex;"><span>    Cons(<span style="color:#e78284">i32</span>, <span style="color:#99d1db">Box</span><span style="color:#99d1db;font-weight:bold">&lt;</span>List<span style="color:#99d1db;font-weight:bold">&gt;</span>),
+</span></span><span style="display:flex;"><span>    Nil,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> <span style="color:#ca9ee6">crate</span>::List::{Cons, Nil};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> list <span style="color:#99d1db;font-weight:bold">=</span> Cons(<span style="color:#ef9f76">1</span>, <span style="color:#99d1db">Box</span>::new(Cons(<span style="color:#ef9f76">2</span>, <span style="color:#99d1db">Box</span>::new(Cons(<span style="color:#ef9f76">3</span>, <span style="color:#99d1db">Box</span>::new(Nil))))));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="deref-trait">Deref Trait<a hidden class="anchor" aria-hidden="true" href="#deref-trait">#</a></h2>
+<p>实现 <code>Deref</code> trait 可以重载解引用运算符 <code>*</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::ops::Deref;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> a <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">4</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> b <span style="color:#99d1db;font-weight:bold">=</span> MyBox::new(a);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:?}</span><span style="color:#a6d189">&#34;</span>, <span style="color:#99d1db;font-weight:bold">*</span>b);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">assert_eq!</span>(<span style="color:#ef9f76">4</span>, <span style="color:#99d1db;font-weight:bold">*</span>b);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">MyBox</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span>(T);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> MyBox<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">new</span>(x: <span style="color:#e5c890">T</span>) -&gt; <span style="color:#e5c890">MyBox</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>        MyBox(x)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 为结构体实现 Deref Trait
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> Deref <span style="color:#ca9ee6">for</span> MyBox<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">type</span> <span style="color:#e5c890">Target</span> <span style="color:#99d1db;font-weight:bold">=</span> T;
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">deref</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) -&gt; <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">Self</span>::Target {
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>.<span style="color:#ef9f76">0</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在执行 <code>*y</code> 时，Rust 会将其替换为 <code>*(y.deref())</code>。</p>
+<h3 id="deref-强制转换">Deref 强制转换<a hidden class="anchor" aria-hidden="true" href="#deref-强制转换">#</a></h3>
+<p><strong>Deref 强制转换（Deref coercions）</strong> 将实现了 <code>Deref</code> trait 的类型的引用<strong>转换为另一种类型的引用</strong>。比如将 <code>&amp;String</code> 转换为 <code>&amp;str</code>。</p>
+<p>Deref 强制转换发生在编译时，因此并没有运行时损耗。</p>
+<p><code>Deref</code> trait 用于重载不可变引用的解引用运算符，而 <code>DerefMut</code> trait 用于重载可变引用的解引用运算符。</p>
+<p>Rust 在发现类型和 trait 满足三种情况时会进行 Deref 强制转换：</p>
+<ul>
+<li>当 <code>T: Deref&lt;Target=U&gt;</code> 时从 <code>&amp;T</code> 到 <code>&amp;U</code>。</li>
+<li>当 <code>T: DerefMut&lt;Target=U&gt;</code> 时从 <code>&amp;mut T</code> 到 <code>&amp;mut U</code>。</li>
+<li>当 <code>T: Deref&lt;Target=U&gt;</code> 时从 <code>&amp;mut T</code> 到 <code>&amp;U</code>。</li>
+</ul>
+<h2 id="drop-trait">Drop Trait<a hidden class="anchor" aria-hidden="true" href="#drop-trait">#</a></h2>
+<p><code>Drop</code> trait 允许我们在值要离开作用域时执行一些代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::ops::Deref;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> a <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">4</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> b <span style="color:#99d1db;font-weight:bold">=</span> MyBox::new(a);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">assert_eq!</span>(<span style="color:#ef9f76">4</span>, <span style="color:#99d1db;font-weight:bold">*</span>b);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">MyBox</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span>(T);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> MyBox<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">new</span>(x: <span style="color:#e5c890">T</span>) -&gt; <span style="color:#e5c890">MyBox</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>        MyBox(x)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 为结构体实现 Deref Trait
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> Deref <span style="color:#ca9ee6">for</span> MyBox<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">type</span> <span style="color:#e5c890">Target</span> <span style="color:#99d1db;font-weight:bold">=</span> T;
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">deref</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) -&gt; <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">Self</span>::Target {
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>.<span style="color:#ef9f76">0</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 为结构体实现 Drop trait
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#99d1db">Drop</span> <span style="color:#ca9ee6">for</span> MyBox<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">drop</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#ca9ee6">mut</span> <span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Drop MyBox&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Rust 不允许直接调用 <code>Drop</code> trait 的 <code>drop</code> 方法。因为 Rust 仍然会在值离开作用域时自动调用，这会导致二次释放的错误。</p>
+<p>若要强制提前清理值，可以使用 <code>std::mem::drop</code> 函数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#e78284">let</span> b <span style="color:#99d1db;font-weight:bold">=</span> MyBox::new(<span style="color:#ef9f76">24</span>);
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// std::mem::drop 位于 prelude 中
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#99d1db">drop</span>(b);
+</span></span></code></pre></div><h2 id="rct"><code>Rc&lt;T&gt;</code><a hidden class="anchor" aria-hidden="true" href="#rct">#</a></h2>
+<p>有时候一个值会有多个所有者。比如图的节点会被多条边连接。</p>
+<p><code>Rc&lt;T&gt;</code> 允许我们在堆上分配一些可以被程序的多个部分<strong>读取</strong>的内存。<code>Rc&lt;T&gt;</code> 只用于<strong>不可变引用</strong>且只能用于<strong>单线程</strong>场景。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::rc::Rc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">enum</span> <span style="color:#e5c890">List</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// 使用 Rc&lt;T&gt; 存储 List
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    Cons(<span style="color:#e78284">i32</span>, Rc<span style="color:#99d1db;font-weight:bold">&lt;</span>List<span style="color:#99d1db;font-weight:bold">&gt;</span>),
+</span></span><span style="display:flex;"><span>    Nil,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> <span style="color:#ca9ee6">crate</span>::List::{Cons, Nil};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> a <span style="color:#99d1db;font-weight:bold">=</span> Rc::new(Cons(<span style="color:#ef9f76">24</span>, Rc::new(Cons(<span style="color:#ef9f76">25</span>, Rc::new(Nil)))));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:p}</span><span style="color:#a6d189">&#34;</span>, a);
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// Rc 重载了 Deref trait，返回 T
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#ca9ee6">if</span> <span style="color:#e78284">let</span> Cons(_, i) <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db;font-weight:bold">&amp;*</span>a {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:p}</span><span style="color:#a6d189">&#34;</span>, i);
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> <span style="color:#e78284">let</span> Cons(_, k) <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db;font-weight:bold">&amp;**</span>i {
+</span></span><span style="display:flex;"><span>            <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:p}</span><span style="color:#a6d189">&#34;</span>, k)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// 通过 Rc::strong_count(&amp;a) 查看引用计数
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, Rc::strong_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>a));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// Rc::clone() 增加引用计数，Rc 的 clone 方法的效果与 Rc::clone 相同
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#e78284">let</span> b <span style="color:#99d1db;font-weight:bold">=</span> Rc::clone(<span style="color:#99d1db;font-weight:bold">&amp;</span>a);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, Rc::strong_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>b));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> c <span style="color:#99d1db;font-weight:bold">=</span> Rc::clone(<span style="color:#99d1db;font-weight:bold">&amp;</span>a);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, Rc::strong_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>c));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// 普通的不可变引用，在栈上配分内存
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#e78284">let</span> d <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>a;
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:p}</span><span style="color:#a6d189">&#34;</span>, d);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="refcellt"><code>RefCell&lt;T&gt;</code><a hidden class="anchor" aria-hidden="true" href="#refcellt">#</a></h2>
+<p>**内部可变性（Interior mutability）**是 Rust 中的一个设计模式，它允许你即使在有不可变引用时也可以改变数据，这通常是借用规则所不允许的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">enum</span> <span style="color:#e5c890">List</span> {
+</span></span><span style="display:flex;"><span>    Cons(Rc<span style="color:#99d1db;font-weight:bold">&lt;</span>RefCell<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#e78284">i32</span><span style="color:#99d1db;font-weight:bold">&gt;&gt;</span>, Rc<span style="color:#99d1db;font-weight:bold">&lt;</span>List<span style="color:#99d1db;font-weight:bold">&gt;</span>),
+</span></span><span style="display:flex;"><span>    Nil,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> <span style="color:#ca9ee6">crate</span>::List::{Cons, Nil};
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::cell::RefCell;
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::rc::Rc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> value <span style="color:#99d1db;font-weight:bold">=</span> Rc::new(RefCell::new(<span style="color:#ef9f76">5</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> a <span style="color:#99d1db;font-weight:bold">=</span> Rc::new(Cons(Rc::clone(<span style="color:#99d1db;font-weight:bold">&amp;</span>value), Rc::new(Nil)));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> b <span style="color:#99d1db;font-weight:bold">=</span> Cons(Rc::new(RefCell::new(<span style="color:#ef9f76">3</span>)), Rc::clone(<span style="color:#99d1db;font-weight:bold">&amp;</span>a));
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> c <span style="color:#99d1db;font-weight:bold">=</span> Cons(Rc::new(RefCell::new(<span style="color:#ef9f76">4</span>)), Rc::clone(<span style="color:#99d1db;font-weight:bold">&amp;</span>a));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// value 本身不可变，但可以通过 RefCell&lt;T&gt; 的 borrow_mut 方法修改其内部的值
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#737994;font-style:italic">// borrow_mut 返回 RefMut&lt;T&gt;，类似 &amp;mut
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#99d1db;font-weight:bold">*</span>value.borrow_mut() <span style="color:#99d1db;font-weight:bold">+=</span> <span style="color:#ef9f76">10</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;a after = </span><span style="color:#a6d189">{a:?}</span><span style="color:#a6d189">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;b after = </span><span style="color:#a6d189">{b:?}</span><span style="color:#a6d189">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;c after = </span><span style="color:#a6d189">{c:?}</span><span style="color:#a6d189">&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">if</span> <span style="color:#e78284">let</span> Cons(i, k) <span style="color:#99d1db;font-weight:bold">=</span> b {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:#?}</span><span style="color:#a6d189">&#34;</span>, i);
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db;font-weight:bold">*</span>i.borrow_mut() <span style="color:#99d1db;font-weight:bold">+=</span> <span style="color:#ef9f76">10</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:#?}</span><span style="color:#a6d189">&#34;</span>, i);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> <span style="color:#e78284">let</span> Cons(x, _) <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db;font-weight:bold">&amp;*</span>k {
+</span></span><span style="display:flex;"><span>            <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:#?}</span><span style="color:#a6d189">&#34;</span>, x);
+</span></span><span style="display:flex;"><span>            <span style="color:#99d1db;font-weight:bold">*</span>x.borrow_mut() <span style="color:#99d1db;font-weight:bold">+=</span> <span style="color:#ef9f76">10</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:#?}</span><span style="color:#a6d189">&#34;</span>, x);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="weakt"><code>Weak&lt;T&gt;</code><a hidden class="anchor" aria-hidden="true" href="#weakt">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::cell::RefCell;
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::rc::{Rc, Weak};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">Node</span> {
+</span></span><span style="display:flex;"><span>    value: <span style="color:#e78284">i32</span>,
+</span></span><span style="display:flex;"><span>    parent: <span style="color:#e5c890">RefCell</span><span style="color:#99d1db;font-weight:bold">&lt;</span>Weak<span style="color:#99d1db;font-weight:bold">&lt;</span>Node<span style="color:#99d1db;font-weight:bold">&gt;&gt;</span>,
+</span></span><span style="display:flex;"><span>    children: <span style="color:#e5c890">RefCell</span><span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#99d1db">Vec</span><span style="color:#99d1db;font-weight:bold">&lt;</span>Rc<span style="color:#99d1db;font-weight:bold">&lt;</span>Node<span style="color:#99d1db;font-weight:bold">&gt;&gt;&gt;</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> leaf <span style="color:#99d1db;font-weight:bold">=</span> Rc::new(Node {
+</span></span><span style="display:flex;"><span>        value: <span style="color:#ef9f76">3</span>,
+</span></span><span style="display:flex;"><span>        parent: <span style="color:#e5c890">RefCell</span>::new(Weak::new()),
+</span></span><span style="display:flex;"><span>        children: <span style="color:#e5c890">RefCell</span>::new(<span style="color:#8caaee">vec!</span>[]),
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6d189">&#34;leaf strong = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">, weak = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>,
+</span></span><span style="display:flex;"><span>        Rc::strong_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>leaf),
+</span></span><span style="display:flex;"><span>        <span style="color:#737994;font-style:italic">// 查看实例的弱引用计数
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>        Rc::weak_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>leaf),
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#e78284">let</span> branch <span style="color:#99d1db;font-weight:bold">=</span> Rc::new(Node {
+</span></span><span style="display:flex;"><span>            value: <span style="color:#ef9f76">5</span>,
+</span></span><span style="display:flex;"><span>            parent: <span style="color:#e5c890">RefCell</span>::new(Weak::new()),
+</span></span><span style="display:flex;"><span>            children: <span style="color:#e5c890">RefCell</span>::new(<span style="color:#8caaee">vec!</span>[Rc::clone(<span style="color:#99d1db;font-weight:bold">&amp;</span>leaf)]),
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#737994;font-style:italic">// 创建弱引用
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>        <span style="color:#99d1db;font-weight:bold">*</span>leaf.parent.borrow_mut() <span style="color:#99d1db;font-weight:bold">=</span> Rc::downgrade(<span style="color:#99d1db;font-weight:bold">&amp;</span>branch);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6d189">&#34;branch strong = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">, weak = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>,
+</span></span><span style="display:flex;"><span>            Rc::strong_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>branch),
+</span></span><span style="display:flex;"><span>            Rc::weak_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>branch),
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6d189">&#34;leaf strong = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">, weak = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>,
+</span></span><span style="display:flex;"><span>            Rc::strong_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>leaf),
+</span></span><span style="display:flex;"><span>            Rc::weak_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>leaf),
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// upgrade() 方法检查所引用的实例是否还存在，返回 Option
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;leaf parent = </span><span style="color:#a6d189">{:?}</span><span style="color:#a6d189">&#34;</span>, leaf.parent.borrow().upgrade());
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6d189">&#34;leaf strong = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">, weak = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>,
+</span></span><span style="display:flex;"><span>        Rc::strong_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>leaf),
+</span></span><span style="display:flex;"><span>        Rc::weak_count(<span style="color:#99d1db;font-weight:bold">&amp;</span>leaf),
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://tpcad.github.io/tags/rust/">Rust</a></li>
+    </ul>
+  </footer>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

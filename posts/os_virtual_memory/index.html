@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>虚拟内存 | Eulamber</title>
+<meta name="keywords" content="Operating System">
+<meta name="description" content="为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 虚拟地址。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 4 GB（2^32）。
+分页
+分页机制将虚拟内存分为一个个大小固定的单元，称为 页（Page）。同样的，也将物理内存分为一个个 页框（Page Frame）。页和页框的大小相等，通常为 4 KB。
+页表
+页表 的作用是把页 映射 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。
+每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。
+页表项
+在 32 位操作系统中，一个页表项的大小为 4 字节。
+typedef struct page_entry_t
+{
+    u8 present : 1;  // 在内存中
+    u8 write : 1;    // 0 只读，1 可读可写
+    u8 user : 1;     // 1 所有人，0 超级用户 DPL &lt; 3
+    u8 pwt : 1;      // page write through，1 直写模式，0 回写模式
+    u8 pcd : 1;      // page cache disable，禁止该页缓冲
+    u8 accessed : 1; // 被访问过，用于统计使用频率
+    u8 dirty : 1;    // 脏页，表示该页缓冲被写过
+    u8 pat : 1;      // page attribute table，页大小 4K / 4M
+    u8 global : 1;   // 全局，所有进程都会用到了，该页不刷新缓冲
+    u8 ignored : 3;  // 操作系统决定是否使用
+    u32 index : 20;  // 页索引
+} _packed page_entry_t;
+地址转换
+在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/posts/os_virtual_memory/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/posts/os_virtual_memory/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/posts/os_virtual_memory/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="虚拟内存">
+  <meta property="og:description" content="为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 虚拟地址。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 4 GB（2^32）。
+分页 分页机制将虚拟内存分为一个个大小固定的单元，称为 页（Page）。同样的，也将物理内存分为一个个 页框（Page Frame）。页和页框的大小相等，通常为 4 KB。
+页表 页表 的作用是把页 映射 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。
+每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。
+页表项 在 32 位操作系统中，一个页表项的大小为 4 字节。
+typedef struct page_entry_t { u8 present : 1; // 在内存中 u8 write : 1; // 0 只读，1 可读可写 u8 user : 1; // 1 所有人，0 超级用户 DPL &lt; 3 u8 pwt : 1; // page write through，1 直写模式，0 回写模式 u8 pcd : 1; // page cache disable，禁止该页缓冲 u8 accessed : 1; // 被访问过，用于统计使用频率 u8 dirty : 1; // 脏页，表示该页缓冲被写过 u8 pat : 1; // page attribute table，页大小 4K / 4M u8 global : 1; // 全局，所有进程都会用到了，该页不刷新缓冲 u8 ignored : 3; // 操作系统决定是否使用 u32 index : 20; // 页索引 } _packed page_entry_t; 地址转换 在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-10-20T09:59:27+08:00">
+    <meta property="article:modified_time" content="2024-10-20T09:59:27+08:00">
+    <meta property="article:tag" content="Operating System">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="虚拟内存">
+<meta name="twitter:description" content="为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 虚拟地址。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 4 GB（2^32）。
+分页
+分页机制将虚拟内存分为一个个大小固定的单元，称为 页（Page）。同样的，也将物理内存分为一个个 页框（Page Frame）。页和页框的大小相等，通常为 4 KB。
+页表
+页表 的作用是把页 映射 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。
+每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。
+页表项
+在 32 位操作系统中，一个页表项的大小为 4 字节。
+typedef struct page_entry_t
+{
+    u8 present : 1;  // 在内存中
+    u8 write : 1;    // 0 只读，1 可读可写
+    u8 user : 1;     // 1 所有人，0 超级用户 DPL &lt; 3
+    u8 pwt : 1;      // page write through，1 直写模式，0 回写模式
+    u8 pcd : 1;      // page cache disable，禁止该页缓冲
+    u8 accessed : 1; // 被访问过，用于统计使用频率
+    u8 dirty : 1;    // 脏页，表示该页缓冲被写过
+    u8 pat : 1;      // page attribute table，页大小 4K / 4M
+    u8 global : 1;   // 全局，所有进程都会用到了，该页不刷新缓冲
+    u8 ignored : 3;  // 操作系统决定是否使用
+    u32 index : 20;  // 页索引
+} _packed page_entry_t;
+地址转换
+在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "虚拟内存",
+      "item": "https://tpcad.github.io/posts/os_virtual_memory/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "虚拟内存",
+  "name": "虚拟内存",
+  "description": "为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 虚拟地址。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 4 GB（2^32）。\n分页 分页机制将虚拟内存分为一个个大小固定的单元，称为 页（Page）。同样的，也将物理内存分为一个个 页框（Page Frame）。页和页框的大小相等，通常为 4 KB。\n页表 页表 的作用是把页 映射 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。\n每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。\n页表项 在 32 位操作系统中，一个页表项的大小为 4 字节。\ntypedef struct page_entry_t { u8 present : 1; // 在内存中 u8 write : 1; // 0 只读，1 可读可写 u8 user : 1; // 1 所有人，0 超级用户 DPL \u0026lt; 3 u8 pwt : 1; // page write through，1 直写模式，0 回写模式 u8 pcd : 1; // page cache disable，禁止该页缓冲 u8 accessed : 1; // 被访问过，用于统计使用频率 u8 dirty : 1; // 脏页，表示该页缓冲被写过 u8 pat : 1; // page attribute table，页大小 4K / 4M u8 global : 1; // 全局，所有进程都会用到了，该页不刷新缓冲 u8 ignored : 3; // 操作系统决定是否使用 u32 index : 20; // 页索引 } _packed page_entry_t; 地址转换 在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。\n",
+  "keywords": [
+    "Operating System"
+  ],
+  "articleBody": "为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 虚拟地址。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 4 GB（2^32）。\n分页 分页机制将虚拟内存分为一个个大小固定的单元，称为 页（Page）。同样的，也将物理内存分为一个个 页框（Page Frame）。页和页框的大小相等，通常为 4 KB。\n页表 页表 的作用是把页 映射 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。\n每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。\n页表项 在 32 位操作系统中，一个页表项的大小为 4 字节。\ntypedef struct page_entry_t { u8 present : 1; // 在内存中 u8 write : 1; // 0 只读，1 可读可写 u8 user : 1; // 1 所有人，0 超级用户 DPL \u003c 3 u8 pwt : 1; // page write through，1 直写模式，0 回写模式 u8 pcd : 1; // page cache disable，禁止该页缓冲 u8 accessed : 1; // 被访问过，用于统计使用频率 u8 dirty : 1; // 脏页，表示该页缓冲被写过 u8 pat : 1; // page attribute table，页大小 4K / 4M u8 global : 1; // 全局，所有进程都会用到了，该页不刷新缓冲 u8 ignored : 3; // 操作系统决定是否使用 u32 index : 20; // 页索引 } _packed page_entry_t; 地址转换 在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。\n不难发现，页内偏移量的位数与页面大小有关，即当页面大小为 $2^k$ B 时，页内偏移量的位数为 k 位。\n因为页表必须覆盖整个虚拟内存，当一个页表项的大小为 4 B 时，那么页表大小则是 4 MB，若此时有 100 个进程，则需要 400 MB 的内存，这是非常大的浪费。\n多级页表 多级页表可以有效地节约内存。下面以二级页表为例。\n在 32 位操作系统中，32 位虚拟地址中，后 12 位是页内偏移地址，前 20 位中，前 10 位作为一级页号，中间 10 位作为二级页号（不一定是 10 位，在实际中也可能是其他的值）。\n在一级页表（或顶级页表）中，页表项存储的是二级页表的地址，而二级页表与单页表的页表项相同，主要存储页框号。\n因此，二级页表的寻址过程为：\n根据虚拟地址前 10 位在顶级页表中查找二级页表的地址 根据虚拟地址中间 10 位在二级页表中查找页框号 将页框号与页内偏移量相加得到物理地址 因为一级页号和二级页号的位数都是 10 位，所以一级页表和每个二级页表都有 $2^{10}$ 项，若每项大小为 4 B，则页表大小为 4 KB。\n若将所有页表都加载到内存中，二级页表所占用的总内存大小为 4 KB（一级页表）+ 4 MB（所有二级页表），反而比单页表还要大。然而，根据局部性原理，对于大部分程序来说，其使用的空间远远不到 4 GB，因此会存在许多空的页表项。对于二级页表，一级页表就已经可以完整地表示 4 GB 的虚拟地址空间，而二级页表可以在需要时才创建。如此一来，实际加载到内存的页表就只有 4 KB 的一级页表和需要用到的二级页表，最坏的情况也是加载所有的二级页表（几乎不可能），因此，二级页表可以有效地节约内存空间。\n无论是单页表还是多级页表，页表都要覆盖全部的虚拟地址空间。如果虚拟地址在页表中没有对应的页表项，计算机就不能工作了。与单页表每个页表项表示 4 KB 内存，需要 100 万个页表项相比，二级页表将页表项进行「压缩」，使一个页表项（一级页表项）可以表示 4 MB，因此只需 1024 个一级页表项就可以表示 4 GB 的虚拟内存空间。\n倒排页表 倒排页表（Inverted Page Table），也叫反置页表。在这种页表中，以页框号作为页表项的索引，页表项记录的主要内容是进程标识符和页表号。因为物理内存往往比虚拟内存要小得多，所以倒排页表的大小会比普通的单页表要小得多。\n倒排页表虽然节约了空间，但却大大增加了检索时间。寻址时，根据进程标识符和页表号检索整个倒排页表（即使页面不在内存中）。当内存容量很大时，页表项的数目还是会非常大。一种方法是采用 散列表 来进行存储。通过进程标识符和页表号计算散列值，当散列表的冲突链的平均长度为 1（即散列表的槽数与页框数相等），可以大大提高检索速度。\n因为倒排页表只记录了已经调入内存的页面的信息，因此还需要为每个进程建立一个外部页表，以记录那些未被调入内存的页面在外存中的位置。\n快表 多级页表和倒排页表解决了页表占用空间过大的问题，但地址转换所需要的时间也大大增加。根据局部性原理，可以将程序最常访问的页表项存储在一个高速缓冲中，当 CPU 寻址时优先检索该缓存。\n这种缓存称为 转换检测缓冲区（Translation Lookaside Buffer，TLB），也称 相联存储器（associate memory）或 快表。\n分段 分段机制将内存分成多个 大小不一，可以重叠 的 段（segment）。\n描述符表 描述符表是一个用于描述内存分布的 数组，数组的元素是 段描述符，一个段描述符描述一个段。x86 处理器中有两种描述符表，分别是全局描述符表（Global Descriptor Table，GDT）和局部描述符表（Local Descriptor Table，LDT）。GDT 描述系统段，包括操作系统本身，一台计算机上只有一个 GDT。LDT 描述程序的段，包括代码，数据，堆栈等，每个进程都有自己的 LDT。\n描述符表的第一项必须是全 0，且不应被使用。\ngdtr 全局描述符表寄存器（gdtr）用于存储 GDT。寄存器大小（32 位系统）是 6 字节。低 2 字节指明 GDT 的大小，也就是说 GDT 最大为 $2^{16}$ 字节。高 4 字节指明 GDT 的地址。\n相应地，LDT 被存储于 ldtr 中。\n段描述符 段描述符是描述符表的元素，用于描述一个内存中的一个段。段描述符主要存储了段的基址、限长以及一些属性位。\n段选择子 段选择子（segment selector）是一个 2 字节大小的数据结构，用于定位段描述符，通常保存在段寄存器中。段选择子的结构如下所示：\n0～1：RPL 2：0 表示全局描述符，1 表示本地描述符 3～15：GDT 索引 从其结构可以看出，索引只有 13 位，也就是说描述符表最多有 $2^{13}$ 个段描述符。\n地址转换 在寻址之前，需要先把段选择子保存到段寄存器中。根据段选择子在 GDT 或 LDT 中找到对应的段描述符，根据其中的段界限字段判断段内偏移量（即给出的虚拟地址）是否有效，若有效，则将段描述符中的段基地址与段内偏移量相加，得到物理地址。\n分段机制的问题 分段机制会带来 外部内存碎片 和 内存交换效率低 的问题。\n分段机制根据段的实际需求分配内存，因此不会出现 内部内存碎片。当内存中的一些段不再使用，被回收后，就会出现多个 不连续 的小物理内存，这就是 外部内存碎片。这会导致新的程序没有足够的空间去装载。\n为了解决外部内存碎片问题，可以把一些段先写入到硬盘，再将其读回内存，使其紧跟在其他段的后面，从而得到更大的连续内存空间。然而，读写硬盘的速度要远远慢于读写内存的速度，所以如果内存交换的是一个很大的程序，就会造成明显卡顿。\n段页式内存管理 分段和分页并不是互不兼容的，它们可以组合起来在同一系统上使用。事实上，x86 处理器上分段和分页机制同时存在。\n段页式内存管理先将程序划分成不同的段，每个段以页为基本单位进行分配。在寻址时，需要先通过描述符表找到段所对应的页表的地址，再通过页表将地址转换为物理地址。\nLinux 的内存管理 Linux 的内存管理以分页为主，最小限度地使用分段。\nLinux 将所有段的基地址设为 0，限长设为最大值。如此一来，逻辑地址就与线性地址相同了。\n其他 局部性原理 CPU 在访问内存时有明显的重复性。具体表现为 时间局部性 和 空间局部性。\n时间局部性：如果一个存储单元被访问，那么不久之后可能再次被访问 空间局部性：如果一个存储单元被访问，那么其附近的内存也将被访问 ",
+  "wordCount" : "327",
+  "inLanguage": "en",
+  "datePublished": "2024-10-20T09:59:27+08:00",
+  "dateModified": "2024-10-20T09:59:27+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/posts/os_virtual_memory/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      虚拟内存
+    </h1>
+    <div class="post-meta"><span title='2024-10-20 09:59:27 +0800 +0800'>October 20, 2024</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e5%88%86%e9%a1%b5" aria-label="分页">分页</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%a1%b5%e8%a1%a8" aria-label="页表">页表</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%a1%b5%e8%a1%a8%e9%a1%b9" aria-label="页表项">页表项</a></li>
+                    <li>
+                        <a href="#%e5%9c%b0%e5%9d%80%e8%bd%ac%e6%8d%a2" aria-label="地址转换">地址转换</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%a4%9a%e7%ba%a7%e9%a1%b5%e8%a1%a8" aria-label="多级页表">多级页表</a></li>
+                    <li>
+                        <a href="#%e5%80%92%e6%8e%92%e9%a1%b5%e8%a1%a8" aria-label="倒排页表">倒排页表</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%bf%ab%e8%a1%a8" aria-label="快表">快表</a></li>
+                    <li>
+                        <a href="#%e5%88%86%e6%ae%b5" aria-label="分段">分段</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%8f%8f%e8%bf%b0%e7%ac%a6%e8%a1%a8" aria-label="描述符表">描述符表</a></li>
+                    <li>
+                        <a href="#gdtr" aria-label="gdtr">gdtr</a></li>
+                    <li>
+                        <a href="#%e6%ae%b5%e6%8f%8f%e8%bf%b0%e7%ac%a6" aria-label="段描述符">段描述符</a></li>
+                    <li>
+                        <a href="#%e6%ae%b5%e9%80%89%e6%8b%a9%e5%ad%90" aria-label="段选择子">段选择子</a></li>
+                    <li>
+                        <a href="#%e5%9c%b0%e5%9d%80%e8%bd%ac%e6%8d%a2-1" aria-label="地址转换">地址转换</a></li>
+                    <li>
+                        <a href="#%e5%88%86%e6%ae%b5%e6%9c%ba%e5%88%b6%e7%9a%84%e9%97%ae%e9%a2%98" aria-label="分段机制的问题">分段机制的问题</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%ae%b5%e9%a1%b5%e5%bc%8f%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86" aria-label="段页式内存管理">段页式内存管理</a></li>
+                    <li>
+                        <a href="#linux-%e7%9a%84%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86" aria-label="Linux 的内存管理">Linux 的内存管理</a></li>
+                    <li>
+                        <a href="#%e5%85%b6%e4%bb%96" aria-label="其他">其他</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%b1%80%e9%83%a8%e6%80%a7%e5%8e%9f%e7%90%86" aria-label="局部性原理">局部性原理</a>
+                    </li>
+                </ul>
+                </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 <strong>虚拟地址</strong>。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 <code>4 GB（2^32）</code>。</p>
+<h2 id="分页">分页<a hidden class="anchor" aria-hidden="true" href="#分页">#</a></h2>
+<p>分页机制将虚拟内存分为一个个大小固定的单元，称为 <strong>页（Page）</strong>。同样的，也将物理内存分为一个个 <strong>页框（Page Frame）</strong>。页和页框的大小相等，通常为 <strong>4 KB</strong>。</p>
+<h3 id="页表">页表<a hidden class="anchor" aria-hidden="true" href="#页表">#</a></h3>
+<p><strong>页表</strong> 的作用是把页 <strong>映射</strong> 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。</p>
+<p>每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。</p>
+<h4 id="页表项">页表项<a hidden class="anchor" aria-hidden="true" href="#页表项">#</a></h4>
+<p>在 32 位操作系统中，一个页表项的大小为 4 字节。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#ca9ee6">typedef</span> <span style="color:#ca9ee6">struct</span> <span style="color:#e78284">page_entry_t</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    u8 <span style="color:#99d1db">present</span> : <span style="color:#ef9f76">1</span>;  <span style="color:#737994;font-style:italic">// 在内存中
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">write</span> : <span style="color:#ef9f76">1</span>;    <span style="color:#737994;font-style:italic">// 0 只读，1 可读可写
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">user</span> : <span style="color:#ef9f76">1</span>;     <span style="color:#737994;font-style:italic">// 1 所有人，0 超级用户 DPL &lt; 3
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">pwt</span> : <span style="color:#ef9f76">1</span>;      <span style="color:#737994;font-style:italic">// page write through，1 直写模式，0 回写模式
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">pcd</span> : <span style="color:#ef9f76">1</span>;      <span style="color:#737994;font-style:italic">// page cache disable，禁止该页缓冲
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">accessed</span> : <span style="color:#ef9f76">1</span>; <span style="color:#737994;font-style:italic">// 被访问过，用于统计使用频率
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">dirty</span> : <span style="color:#ef9f76">1</span>;    <span style="color:#737994;font-style:italic">// 脏页，表示该页缓冲被写过
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">pat</span> : <span style="color:#ef9f76">1</span>;      <span style="color:#737994;font-style:italic">// page attribute table，页大小 4K / 4M
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">global</span> : <span style="color:#ef9f76">1</span>;   <span style="color:#737994;font-style:italic">// 全局，所有进程都会用到了，该页不刷新缓冲
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u8 <span style="color:#99d1db">ignored</span> : <span style="color:#ef9f76">3</span>;  <span style="color:#737994;font-style:italic">// 操作系统决定是否使用
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    u32 <span style="color:#99d1db">index</span> : <span style="color:#ef9f76">20</span>;  <span style="color:#737994;font-style:italic">// 页索引
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>} _packed <span style="color:#e78284">page_entry_t</span>;
+</span></span></code></pre></div><h4 id="地址转换">地址转换<a hidden class="anchor" aria-hidden="true" href="#地址转换">#</a></h4>
+<p>在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。</p>
+<p>不难发现，页内偏移量的位数与页面大小有关，即当页面大小为 $2^k$ B 时，页内偏移量的位数为 k 位。</p>
+<p><img alt="page addressing" loading="lazy" src="https://cdn.xiaolincoding.com//mysql/other/7884f4d8db4949f7a5bb4bbd0f452609.png"></p>
+<p>因为页表必须覆盖整个虚拟内存，当一个页表项的大小为 4 B 时，那么页表大小则是 4 MB，若此时有 100 个进程，则需要 400 MB 的内存，这是非常大的浪费。</p>
+<h3 id="多级页表">多级页表<a hidden class="anchor" aria-hidden="true" href="#多级页表">#</a></h3>
+<p>多级页表可以有效地节约内存。下面以二级页表为例。</p>
+<p>在 32 位操作系统中，32 位虚拟地址中，后 12 位是页内偏移地址，前 20 位中，前 10 位作为一级页号，中间 10 位作为二级页号（不一定是 10 位，在实际中也可能是其他的值）。</p>
+<p>在一级页表（或顶级页表）中，页表项存储的是二级页表的地址，而二级页表与单页表的页表项相同，主要存储页框号。</p>
+<p>因此，二级页表的寻址过程为：</p>
+<ol>
+<li>根据虚拟地址前 10 位在顶级页表中查找二级页表的地址</li>
+<li>根据虚拟地址中间 10 位在二级页表中查找页框号</li>
+<li>将页框号与页内偏移量相加得到物理地址</li>
+</ol>
+<p><img alt="multilevel page" loading="lazy" src="https://cdn.xiaolincoding.com//mysql/other/19296e249b2240c29f9c52be70f611d5.png"></p>
+<p>因为一级页号和二级页号的位数都是 10 位，所以一级页表和每个二级页表都有 $2^{10}$ 项，若每项大小为 4 B，则页表大小为 4 KB。</p>
+<p>若将所有页表都加载到内存中，二级页表所占用的总内存大小为 4 KB（一级页表）+ 4 MB（所有二级页表），反而比单页表还要大。然而，根据局部性原理，对于大部分程序来说，其使用的空间远远不到 4 GB，因此会存在许多空的页表项。对于二级页表，一级页表就已经可以完整地表示 4 GB 的虚拟地址空间，而二级页表可以在需要时才创建。如此一来，实际加载到内存的页表就只有 4 KB 的一级页表和需要用到的二级页表，最坏的情况也是加载所有的二级页表（几乎不可能），因此，二级页表可以有效地节约内存空间。</p>
+<p>无论是单页表还是多级页表，页表都要覆盖全部的虚拟地址空间。如果虚拟地址在页表中没有对应的页表项，计算机就不能工作了。与单页表每个页表项表示 4 KB 内存，需要 100 万个页表项相比，二级页表将页表项进行「压缩」，使一个页表项（一级页表项）可以表示 4 MB，因此只需 1024 个一级页表项就可以表示 4 GB 的虚拟内存空间。</p>
+<h3 id="倒排页表">倒排页表<a hidden class="anchor" aria-hidden="true" href="#倒排页表">#</a></h3>
+<p>倒排页表（Inverted Page Table），也叫反置页表。在这种页表中，以页框号作为页表项的索引，页表项记录的主要内容是进程标识符和页表号。因为物理内存往往比虚拟内存要小得多，所以倒排页表的大小会比普通的单页表要小得多。</p>
+<p>倒排页表虽然节约了空间，但却大大增加了检索时间。寻址时，根据进程标识符和页表号检索整个倒排页表（即使页面不在内存中）。当内存容量很大时，页表项的数目还是会非常大。一种方法是采用 <strong>散列表</strong> 来进行存储。通过进程标识符和页表号计算散列值，当散列表的冲突链的平均长度为 1（即散列表的槽数与页框数相等），可以大大提高检索速度。</p>
+<p>因为倒排页表只记录了已经调入内存的页面的信息，因此还需要为每个进程建立一个外部页表，以记录那些未被调入内存的页面在外存中的位置。</p>
+<h2 id="快表">快表<a hidden class="anchor" aria-hidden="true" href="#快表">#</a></h2>
+<p>多级页表和倒排页表解决了页表占用空间过大的问题，但地址转换所需要的时间也大大增加。根据局部性原理，可以将程序最常访问的页表项存储在一个高速缓冲中，当 CPU 寻址时优先检索该缓存。</p>
+<p>这种缓存称为 <strong>转换检测缓冲区</strong>（Translation Lookaside Buffer，TLB），也称 <strong>相联存储器</strong>（associate memory）或 <strong>快表</strong>。</p>
+<h2 id="分段">分段<a hidden class="anchor" aria-hidden="true" href="#分段">#</a></h2>
+<p>分段机制将内存分成多个 <strong>大小不一</strong>，<strong>可以重叠</strong> 的 <strong>段</strong>（segment）。</p>
+<h3 id="描述符表">描述符表<a hidden class="anchor" aria-hidden="true" href="#描述符表">#</a></h3>
+<p>描述符表是一个用于描述内存分布的 <strong>数组</strong>，数组的元素是 <strong>段描述符</strong>，一个段描述符描述一个段。x86 处理器中有两种描述符表，分别是全局描述符表（Global Descriptor Table，GDT）和局部描述符表（Local Descriptor Table，LDT）。GDT 描述系统段，包括操作系统本身，一台计算机上只有一个 GDT。LDT 描述程序的段，包括代码，数据，堆栈等，每个进程都有自己的 LDT。</p>
+<p>描述符表的第一项必须是全 0，且不应被使用。</p>
+<h3 id="gdtr">gdtr<a hidden class="anchor" aria-hidden="true" href="#gdtr">#</a></h3>
+<p>全局描述符表寄存器（gdtr）用于存储 GDT。寄存器大小（32 位系统）是 6 字节。低 2 字节指明 GDT 的大小，也就是说 GDT 最大为 $2^{16}$ 字节。高 4 字节指明 GDT 的地址。</p>
+<p>相应地，LDT 被存储于 ldtr 中。</p>
+<h3 id="段描述符">段描述符<a hidden class="anchor" aria-hidden="true" href="#段描述符">#</a></h3>
+<p>段描述符是描述符表的元素，用于描述一个内存中的一个段。段描述符主要存储了段的基址、限长以及一些属性位。</p>
+<p><img alt="segment descriptor" loading="lazy" src="https://habrastorage.org/r/w1560/storage1/c46ddde2/3ff7d2f3/6af3408f/0d65fa31.jpg"></p>
+<h3 id="段选择子">段选择子<a hidden class="anchor" aria-hidden="true" href="#段选择子">#</a></h3>
+<p>段选择子（segment selector）是一个 2 字节大小的数据结构，用于定位段描述符，通常保存在段寄存器中。段选择子的结构如下所示：</p>
+<ul>
+<li>0～1：RPL</li>
+<li>2：0 表示全局描述符，1 表示本地描述符</li>
+<li>3～15：GDT 索引</li>
+</ul>
+<p>从其结构可以看出，索引只有 13 位，也就是说描述符表最多有 $2^{13}$ 个段描述符。</p>
+<h3 id="地址转换-1">地址转换<a hidden class="anchor" aria-hidden="true" href="#地址转换-1">#</a></h3>
+<p>在寻址之前，需要先把段选择子保存到段寄存器中。根据段选择子在 GDT 或 LDT 中找到对应的段描述符，根据其中的段界限字段判断段内偏移量（即给出的虚拟地址）是否有效，若有效，则将段描述符中的段基地址与段内偏移量相加，得到物理地址。</p>
+<h3 id="分段机制的问题">分段机制的问题<a hidden class="anchor" aria-hidden="true" href="#分段机制的问题">#</a></h3>
+<p>分段机制会带来 <strong>外部内存碎片</strong> 和 <strong>内存交换效率低</strong> 的问题。</p>
+<p>分段机制根据段的实际需求分配内存，因此不会出现 <strong>内部内存碎片</strong>。当内存中的一些段不再使用，被回收后，就会出现多个 <strong>不连续</strong> 的小物理内存，这就是 <strong>外部内存碎片</strong>。这会导致新的程序没有足够的空间去装载。</p>
+<p>为了解决外部内存碎片问题，可以把一些段先写入到硬盘，再将其读回内存，使其紧跟在其他段的后面，从而得到更大的连续内存空间。然而，读写硬盘的速度要远远慢于读写内存的速度，所以如果内存交换的是一个很大的程序，就会造成明显卡顿。</p>
+<h2 id="段页式内存管理">段页式内存管理<a hidden class="anchor" aria-hidden="true" href="#段页式内存管理">#</a></h2>
+<p>分段和分页并不是互不兼容的，它们可以组合起来在同一系统上使用。事实上，x86 处理器上分段和分页机制同时存在。</p>
+<p>段页式内存管理先将程序划分成不同的段，每个段以页为基本单位进行分配。在寻址时，需要先通过描述符表找到段所对应的页表的地址，再通过页表将地址转换为物理地址。</p>
+<h2 id="linux-的内存管理">Linux 的内存管理<a hidden class="anchor" aria-hidden="true" href="#linux-的内存管理">#</a></h2>
+<p>Linux 的内存管理以分页为主，最小限度地使用分段。</p>
+<p>Linux 将所有段的基地址设为 0，限长设为最大值。如此一来，逻辑地址就与线性地址相同了。</p>
+<h2 id="其他">其他<a hidden class="anchor" aria-hidden="true" href="#其他">#</a></h2>
+<h3 id="局部性原理">局部性原理<a hidden class="anchor" aria-hidden="true" href="#局部性原理">#</a></h3>
+<p>CPU 在访问内存时有明显的重复性。具体表现为 <strong>时间局部性</strong> 和 <strong>空间局部性</strong>。</p>
+<ol>
+<li>时间局部性：如果一个存储单元被访问，那么不久之后可能再次被访问</li>
+<li>空间局部性：如果一个存储单元被访问，那么其附近的内存也将被访问</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://tpcad.github.io/tags/operating-system/">Operating System</a></li>
+    </ul>
+  </footer>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

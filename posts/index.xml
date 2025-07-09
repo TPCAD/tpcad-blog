@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Eulamber</title>
+    <link>https://tpcad.github.io/posts/</link>
+    <description>Recent content in Posts on Eulamber</description>
+    <generator>Hugo -- 0.148.0</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 08 Jul 2025 17:20:30 +0800</lastBuildDate>
+    <atom:link href="https://tpcad.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sed 参考手册</title>
+      <link>https://tpcad.github.io/posts/sed/</link>
+      <pubDate>Tue, 08 Jul 2025 17:20:30 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/sed/</guid>
+      <description>&lt;p&gt;Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。&lt;/p&gt;
+&lt;h2 id=&#34;模式空间与保持空间&#34;&gt;模式空间与保持空间&lt;/h2&gt;
+&lt;p&gt;Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。&lt;/p&gt;
+&lt;p&gt;模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。&lt;/p&gt;
+&lt;p&gt;保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。&lt;/p&gt;
+&lt;p&gt;Sed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。&lt;/p&gt;
+&lt;h2 id=&#34;命令行参数&#34;&gt;命令行参数&lt;/h2&gt;
+&lt;h3 id=&#34;-n-silent-quiet&#34;&gt;-n, &amp;ndash;silent, &amp;ndash;quiet&lt;/h3&gt;
+&lt;p&gt;Sed 处理完一行后默认会打印模式空间内容到标准输出。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# test.md&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;line one
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;1p&amp;#39;&lt;/span&gt; test.md
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# output&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# line one&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# line one&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# line two&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用 &lt;code&gt;-n&lt;/code&gt;，&lt;code&gt;--silent&lt;/code&gt; 或 &lt;code&gt;--quiet&lt;/code&gt; 参数可以关闭自动打印。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;1p&amp;#39;&lt;/span&gt; test.md
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# output&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# line one&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;-e-expression&#34;&gt;-e, &amp;ndash;expression&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;-e&lt;/code&gt; 和 &lt;code&gt;--expression&lt;/code&gt; 用于直接指定 sed 脚本。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed -e &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;s/Tmux/Zellij/&amp;#39;&lt;/span&gt; todo.md
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sed --expression&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;s/Tmux/Zellij/&amp;#39;&lt;/span&gt; todo.md
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一般情况下不需要使用参数指定 sed 脚本，但 &lt;code&gt;-e&lt;/code&gt; 和 &lt;code&gt;--expression&lt;/code&gt; 可以同时指定多个 sed 脚本。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>C&#43;&#43; 初始化</title>
+      <link>https://tpcad.github.io/posts/cpp_initialization/</link>
+      <pubDate>Sun, 08 Dec 2024 09:54:47 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/cpp_initialization/</guid>
+      <description>&lt;p&gt;变量的初始化会在构造时提供变量的初始值。&lt;/p&gt;
+&lt;p&gt;初始值可以由声明符或 new 表达式的 &lt;strong&gt;初始化器&lt;/strong&gt; 部分提供。在函数调用时也会发生：函数形参及函数返回值也会被初始化。&lt;/p&gt;
+&lt;p&gt;初始化器（如果存在）必须是下列之一：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;1.&lt;/span&gt; = expression
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;2.&lt;/span&gt; = {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   = { initializer-list }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   = { designated-initializer-list }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;3.&lt;/span&gt; ( expression-list )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   ( initializer-list )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;4.&lt;/span&gt; {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   { initializer-list }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   { designated-initializer-list }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;默认初始化&#34;&gt;默认初始化&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;1.&lt;/span&gt; T object;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;2.&lt;/span&gt; new T;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当没有为对象指定初始化器时，该对象会默认初始化。具体有以下三种情况：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;不带初始化器声明具有自动、静态或线程局部存储器的变量；&lt;/li&gt;
+&lt;li&gt;不带初始化器使用 new 表达式创建一个对象；&lt;/li&gt;
+&lt;li&gt;构造函数的成员初始化器列表没有提及某个基类或非静态数据成员，且调用了该构造函数；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;默认初始化的效果是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;如果是类类型，调用默认构造函数；&lt;/li&gt;
+&lt;li&gt;如果是数组类型，数组的每个元素都被默认初始化；&lt;/li&gt;
+&lt;li&gt;否则不进行初始化；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;不确定值&#34;&gt;不确定值&lt;/h3&gt;
+&lt;p&gt;在获取到具有自动或动态存储期的对象的存储时，该对象具有不确定值。&lt;/p&gt;
+&lt;p&gt;如果不对对象进行任何初始化，那么该对象具有不确定值，直到该值被替换。&lt;/p&gt;
+&lt;h3 id=&#34;示例&#34;&gt;示例&lt;/h3&gt;
+&lt;h4 id=&#34;case-1&#34;&gt;case 1&lt;/h4&gt;
+&lt;p&gt;不带初始化器声明具有自动、静态或线程局部存储器的变量。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#737994;font-weight:bold;font-style:italic&#34;&gt;&amp;lt;print&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 静态全局非类，两次初始化
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 1) 零初始化将 si1 初始化为 0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 2) 默认初始化不做任何事
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; si1;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;println(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;si1 静态全局非类，零初始化：{}&amp;#34;&lt;/span&gt;, si1);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; si2;     &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 静态局部非类，同全局静态非类
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;println(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;si2 静态局部非类，零初始化：{}&amp;#34;&lt;/span&gt;, si2);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; i1;             &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 自动局部非类，默认初始化不做任何事，不确定值
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;println(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;i1 非类，不确定值：{}&amp;#34;&lt;/span&gt;, i1);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;case-2&#34;&gt;case 2&lt;/h4&gt;
+&lt;p&gt;不带初始化器使用 new 表达式创建一个对象。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>红黑树</title>
+      <link>https://tpcad.github.io/posts/algorithm_rbtree/</link>
+      <pubDate>Tue, 26 Nov 2024 10:43:39 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/algorithm_rbtree/</guid>
+      <description>&lt;p&gt;红黑树是一种平衡的二叉搜索树，满足如下性质：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;节点要么是 &lt;strong&gt;黑色&lt;/strong&gt;，要么是 &lt;strong&gt;红色&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;根节点必须是黑色&lt;/li&gt;
+&lt;li&gt;所有叶子节点都是黑色&lt;/li&gt;
+&lt;li&gt;红色节点的子节点必须是黑色&lt;/li&gt;
+&lt;li&gt;从任一节点到叶子节点的所有简单路径都包含相同数量的黑色节点&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中叶子节点指的是为空的节点。如下图所示，&lt;code&gt;null&lt;/code&gt; 是叶子节点，而节点 9 和节点 20 不是叶子节点（它们的子结点也是叶子节点，图中没有画出）。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-language&#34; data-lang=&#34;language&#34;&gt;        10
+      /    \
+     8      14
+    / \    /  \
+ null  9  null 20
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;节点定义&#34;&gt;节点定义&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;typename&lt;/span&gt; T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;requires&lt;/span&gt; std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;equality_comparable&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;totally_ordered&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;rb_tree&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;rb_color&lt;/span&gt; { red, black }; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 节点颜色
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;rb_node&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        T key;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_color color; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 颜色字段
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; size;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; count;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;left;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;right;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;parent; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 父节点
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; key(value), color(rb_color&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;red), size(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;), count(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;              left(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;), right(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;), parent(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;print_key&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; key;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ca9ee6&#34;&gt;if&lt;/span&gt; (color &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;==&lt;/span&gt; rb_color&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;black) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            } &lt;span style=&#34;color:#ca9ee6&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;r&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;root;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_tree() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_tree(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) { root &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;new&lt;/span&gt; rb_node(value); }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_tree(std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;initializer_list&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; list) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;insert_aux(&lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;root, &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;list.begin());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;for_each(list.begin() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, list.end(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                      [&lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;](&lt;span style=&#34;color:#ca9ee6&#34;&gt;auto&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;x) { &lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;insert(x); });
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;旋转&#34;&gt;旋转&lt;/h2&gt;
+&lt;p&gt;因为增加了 &lt;code&gt;parent&lt;/code&gt; 字段用于指向当前节点的父节点，因此旋转操作也需要更新 &lt;code&gt;parent&lt;/code&gt; 字段。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Algorithm_avltree</title>
+      <link>https://tpcad.github.io/posts/algorithm_avltree/</link>
+      <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/algorithm_avltree/</guid>
+      <description>&lt;p&gt;平衡二叉树是一种平衡的二叉搜索树。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;空树是平衡二叉树&lt;/li&gt;
+&lt;li&gt;左右子树的高度差的绝对值不超过 1&lt;/li&gt;
+&lt;li&gt;左右子树也是平衡二叉树&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;AVL 树是一种平衡二叉树，它会在插入或删除节点时调整二叉树使每个节点的左右子树的高度差的绝对值不超过 1。通常把左右子树的差叫做 &lt;strong&gt;平衡因子&lt;/strong&gt;。即&lt;/p&gt;
+&lt;p&gt;$$
+平衡因子 = 左子树的高度 - 右子树的高度
+$$&lt;/p&gt;
+&lt;h2 id=&#34;节点定义&#34;&gt;节点定义&lt;/h2&gt;
+&lt;p&gt;AVL 树的节点与二叉搜索树类似，但多了一个 &lt;code&gt;height&lt;/code&gt; 字段，用于保存当前节点的高度。规定空树的高度为 0，非空树的高度等于它的最大层次（其根节点的层次为 1，依次类推）。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;avl_tree&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;avl_node&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#ca9ee6&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        T key;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; size;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; count;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; height;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        avl_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;left;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        avl_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;right;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        avl_node(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; key(value), size(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;), count(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;), height(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;), left(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;              right(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    avl_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;root;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    avl_tree() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    avl_tree(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) { root &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;new&lt;/span&gt; avl_node(value); }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    avl_tree(std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;initializer_list&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; list) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        root &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;new&lt;/span&gt; avl_node(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;list.begin());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;for_each(list.begin() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, list.end(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                      [&lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;](&lt;span style=&#34;color:#ca9ee6&#34;&gt;auto&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;x) { &lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;insert(x); });
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;平衡&#34;&gt;平衡&lt;/h2&gt;
+&lt;h3 id=&#34;旋转&#34;&gt;旋转&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;旋转&lt;/strong&gt; 是一种将节点变成它的子节点的节点的操作，可以分为 &lt;strong&gt;左旋&lt;/strong&gt; 和 &lt;strong&gt;右旋&lt;/strong&gt;。关于旋转方向的定义有很多，甚至有些相互矛盾。这里规定，&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>二叉搜索树</title>
+      <link>https://tpcad.github.io/posts/algorithm_bstree/</link>
+      <pubDate>Wed, 13 Nov 2024 16:22:15 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/algorithm_bstree/</guid>
+      <description>&lt;p&gt;二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。&lt;/p&gt;
+&lt;h2 id=&#34;二叉搜索树定义&#34;&gt;二叉搜索树定义&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;空树是二叉搜索树&lt;/li&gt;
+&lt;li&gt;若左子树不空，则左子树上所有节点的值都 &lt;strong&gt;小于&lt;/strong&gt; 根节点的值&lt;/li&gt;
+&lt;li&gt;若右子树不空，则右子树上所有节点的值都 &lt;strong&gt;大于&lt;/strong&gt; 根节点的值&lt;/li&gt;
+&lt;li&gt;二叉搜索树的左右子树也是二叉搜索树&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;节点定义&#34;&gt;节点定义&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;typename&lt;/span&gt; T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;binary_search_tree&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;bs_node&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#ca9ee6&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        T key;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; size;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; count;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        bs_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;left;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        bs_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;right;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        bs_node(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; key(value), size(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;), count(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;), left(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;), right(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    bs_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;root;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    binary_search_tree() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    binary_search_tree(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        root &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;new&lt;/span&gt; bs_node(value);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    binary_search_tree(std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;initializer_list&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; list) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        root &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;new&lt;/span&gt; bs_node(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;list.begin());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;for_each(list.begin() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, list.end(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                      [&lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;](&lt;span style=&#34;color:#ca9ee6&#34;&gt;auto&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;x) { &lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;insert(x); });
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;遍历二叉搜索树&#34;&gt;遍历二叉搜索树&lt;/h2&gt;
+&lt;p&gt;根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>进程基础</title>
+      <link>https://tpcad.github.io/posts/os_process_basic/</link>
+      <pubDate>Mon, 21 Oct 2024 08:25:27 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/os_process_basic/</guid>
+      <description>&lt;h2 id=&#34;进程&#34;&gt;进程&lt;/h2&gt;
+&lt;h3 id=&#34;进程的状态&#34;&gt;进程的状态&lt;/h3&gt;
+&lt;p&gt;一个进程至少有三种基本状态，即就绪、运行、阻塞状态。&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;stateDiagram-v2
+    Ready --&amp;gt; Running
+    Running --&amp;gt; Ready
+    Running --&amp;gt; Blocked
+    Blocked --&amp;gt; Ready
+&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;就绪状态（Ready）：获得时间片后即可运行&lt;/li&gt;
+&lt;li&gt;运行状态（Running）：运行状态，进程正在占用 CPU&lt;/li&gt;
+&lt;li&gt;阻塞状态（Blocked）：进程正在等待某一事件发生，即使拥有 CPU 也无法运行&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;三种状态之间会因为以下原因发生切换：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;就绪状态 -&amp;gt; 运行状态&lt;/em&gt;：被调度程序选中，获得时间片，开始运行&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;运行状态 -&amp;gt; 就绪状态&lt;/em&gt;：时间片用完&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;运行状态 -&amp;gt; 阻塞状态&lt;/em&gt;：进程请求某个事件且必须等待，如 I/O 事件&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;阻塞状态 -&amp;gt; 就绪状态&lt;/em&gt;：进程请求的事件发生&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;除了以上三种状态外，进程还有两种基本的状态：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建状态（New）：进程正在被创建时的状态&lt;/li&gt;
+&lt;li&gt;结束状态（Exit）：进程结束时的状态&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;此外，当进程被阻塞时，可以将该进程相关的内存换出到磁盘中，这种进程存在但没有占据实际物理内存的状态称为「挂起状态」。挂起状态又可以分为 &lt;strong&gt;就绪挂起状态&lt;/strong&gt; 和 &lt;strong&gt;阻塞挂起状态&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;进程控制块&#34;&gt;进程控制块&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;进程控制块&lt;/strong&gt;（Process Control Block，PCB）是用来进程的数据结构，每个进程对应一个 PCB，PCB 是进程存在的唯一标识。&lt;/p&gt;
+&lt;p&gt;PCB 通常包含以下信息：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;进程描述信息：
+&lt;ul&gt;
+&lt;li&gt;进程标识符：每个进程都有一个唯一的标识符&lt;/li&gt;
+&lt;li&gt;用户标识符：进程所属用户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;进程控制、管理信息：
+&lt;ul&gt;
+&lt;li&gt;进程状态：进程当前状态&lt;/li&gt;
+&lt;li&gt;进程优先级：进程调度时的优先级&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;分配的资源
+&lt;ul&gt;
+&lt;li&gt;进程虚拟地址空间&lt;/li&gt;
+&lt;li&gt;进程打开的文件列表&lt;/li&gt;
+&lt;li&gt;I/O 设备&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CPU 信息
+&lt;ul&gt;
+&lt;li&gt;寄存器的值，如 &lt;code&gt;eip&lt;/code&gt;，&lt;code&gt;esp&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;线程&#34;&gt;线程&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;线程&lt;/strong&gt; 是进程当中的一条执行流程。当进程只有一个线程时，可以认为进程就是线程。&lt;/p&gt;
+&lt;p&gt;线程与进程十分相似，同样拥有就绪、运行、阻塞等状态，也通过 TCB（Thread Control Block）描述。线程共享进程的数据段、代码段、文件等资源，只独享寄存器、栈等资源。进程是资源分配的基本单位，线程是调度的基本单位。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>虚拟内存</title>
+      <link>https://tpcad.github.io/posts/os_virtual_memory/</link>
+      <pubDate>Sun, 20 Oct 2024 09:59:27 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/os_virtual_memory/</guid>
+      <description>&lt;p&gt;为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 &lt;strong&gt;虚拟地址&lt;/strong&gt;。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 &lt;code&gt;4 GB（2^32）&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;分页&#34;&gt;分页&lt;/h2&gt;
+&lt;p&gt;分页机制将虚拟内存分为一个个大小固定的单元，称为 &lt;strong&gt;页（Page）&lt;/strong&gt;。同样的，也将物理内存分为一个个 &lt;strong&gt;页框（Page Frame）&lt;/strong&gt;。页和页框的大小相等，通常为 &lt;strong&gt;4 KB&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;页表&#34;&gt;页表&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;页表&lt;/strong&gt; 的作用是把页 &lt;strong&gt;映射&lt;/strong&gt; 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。&lt;/p&gt;
+&lt;p&gt;每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。&lt;/p&gt;
+&lt;h4 id=&#34;页表项&#34;&gt;页表项&lt;/h4&gt;
+&lt;p&gt;在 32 位操作系统中，一个页表项的大小为 4 字节。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;typedef&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e78284&#34;&gt;page_entry_t&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;present&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;  &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 在内存中
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;write&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;    &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 0 只读，1 可读可写
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;user&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;     &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 1 所有人，0 超级用户 DPL &amp;lt; 3
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;pwt&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;      &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// page write through，1 直写模式，0 回写模式
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;pcd&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;      &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// page cache disable，禁止该页缓冲
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;accessed&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 被访问过，用于统计使用频率
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;dirty&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;    &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 脏页，表示该页缓冲被写过
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;pat&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;      &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// page attribute table，页大小 4K / 4M
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;global&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;   &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 全局，所有进程都会用到了，该页不刷新缓冲
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;ignored&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;;  &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 操作系统决定是否使用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    u32 &lt;span style=&#34;color:#99d1db&#34;&gt;index&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;20&lt;/span&gt;;  &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 页索引
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;} _packed &lt;span style=&#34;color:#e78284&#34;&gt;page_entry_t&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;地址转换&#34;&gt;地址转换&lt;/h4&gt;
+&lt;p&gt;在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How Perfect Forwarding Works</title>
+      <link>https://tpcad.github.io/posts/cpp_perfect_forwarding.md/</link>
+      <pubDate>Mon, 12 Aug 2024 17:46:57 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/cpp_perfect_forwarding.md/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;转发&lt;/strong&gt; 指的是函数之间的参数传递。比如下面的代码，函数 &lt;code&gt;foo&lt;/code&gt; 向函数 &lt;code&gt;bar&lt;/code&gt; 传递了参数 &lt;code&gt;a&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; a) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;bar&lt;/span&gt;(a)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;bar&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; b) {}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;完美转发&lt;/strong&gt;则是在转发过程中，参数的各种属性都保持不变。比如右值仍是右值，左值仍是左值。&lt;/p&gt;
+&lt;h2 id=&#34;普通转发的问题&#34;&gt;普通转发的问题&lt;/h2&gt;
+&lt;p&gt;在下面的代码中，函数 &lt;code&gt;pass&lt;/code&gt; 接受一个右值引用，并将该参数传递给函数 &lt;code&gt;reference&lt;/code&gt;。当向 &lt;code&gt;pass&lt;/code&gt; 传入字面量 &lt;code&gt;1&lt;/code&gt; 时，最终的输出结果是 &lt;code&gt;lvalue&lt;/code&gt;。这是因为虽然向 &lt;code&gt;pass&lt;/code&gt; 传入了右值，但在函数体内，变量 &lt;code&gt;x&lt;/code&gt; 的值类别变成了&lt;strong&gt;左值&lt;/strong&gt;，即 &lt;code&gt;x&lt;/code&gt; 的类型是右值引用，值类别是左值，所以最终会调用 &lt;code&gt;reference(int &amp;amp;y)&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;这就是普通转发存在的问题，在转发过程中可能会改变参数某些属性。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#737994;font-weight:bold;font-style:italic&#34;&gt;&amp;lt;fmt/core.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;reference&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;y) { fmt&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;println&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;rvalue&amp;#34;&lt;/span&gt;); }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;reference&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;y) { fmt&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;println&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;lvalue&amp;#34;&lt;/span&gt;); }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;pass&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;x) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    fmt&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;println&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;general pass&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;reference&lt;/span&gt;(x);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; argc, &lt;span style=&#34;color:#e78284&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;argv[]) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;pass&lt;/span&gt;(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;实现完美转发&#34;&gt;实现完美转发&lt;/h2&gt;
+&lt;h3 id=&#34;万能引用&#34;&gt;万能引用&lt;/h3&gt;
+&lt;p&gt;在普通函数中，若参数类型为 &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;，则函数只能接受右值。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;x) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; a &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// foo(a); 无法编译
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;但在模板函数中，若 &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; 与模板参数结合，即 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;，那么它将不再代表右值引用，而是&lt;strong&gt;万能引用&lt;/strong&gt;。它既能接受左值，又能接受右值。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How Nullptr Works</title>
+      <link>https://tpcad.github.io/posts/cpp_nullptr/</link>
+      <pubDate>Tue, 06 Aug 2024 17:46:57 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/cpp_nullptr/</guid>
+      <description>&lt;h2 id=&#34;为什么需要-nullptr&#34;&gt;为什么需要 nullptr&lt;/h2&gt;
+&lt;p&gt;在 C 中，&lt;code&gt;NULL&lt;/code&gt; 被定义为 &lt;code&gt;(void*)0&lt;/code&gt; 或 &lt;code&gt;0&lt;/code&gt;。而 C++ 因为不允许直接将 &lt;code&gt;void*&lt;/code&gt; 隐式转换到其他类型，所以在没有 &lt;code&gt;nullptr&lt;/code&gt; 之前，C++ 的 &lt;code&gt;NULL&lt;/code&gt; 就是 0（也可能是 &lt;code&gt;0L&lt;/code&gt;）。这导致 0 的二义性。&lt;/p&gt;
+&lt;p&gt;0 的二义性给函数重载带来了混乱。考虑下面的代码，如果 &lt;code&gt;NULL&lt;/code&gt; 被定义为 &lt;code&gt;0&lt;/code&gt;，那么 &lt;code&gt;foo(NULL)&lt;/code&gt; 会严格匹配 &lt;code&gt;foo(int)&lt;/code&gt;，但如果 &lt;code&gt;NULL&lt;/code&gt; 被定义为 &lt;code&gt;0&lt;/code&gt;，那么将不存在严格匹配，而 &lt;code&gt;0L&lt;/code&gt; 可以同时转换为 &lt;code&gt;int&lt;/code&gt; 和 &lt;code&gt;int*&lt;/code&gt;，编译器无法知道应该调用哪个函数。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt;){}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;){}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;foo(&lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;); &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 调用 foo(int)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;foo(&lt;span style=&#34;color:#99d1db&#34;&gt;NULL&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;为了解决这个问题，C++ 11 引入了 &lt;code&gt;nullptr&lt;/code&gt; 关键字，用于区分空指针和 &lt;code&gt;0&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;使用-nullptr&#34;&gt;使用 nullptr&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;nullptr&lt;/code&gt; 是一个纯右值，无法被 &lt;code&gt;&amp;amp;&lt;/code&gt; 取地址，可以被隐式转换为任意的指针或成员指针类型。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt;){}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;){}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;foo(&lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;); &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 调用 foo(int)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;foo(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;); &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 隐式转换到 int*，调用 foo(int*)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;nullptr&lt;/code&gt; 可以取代 &lt;code&gt;NULL&lt;/code&gt; 的所有场景。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Rust Iterator</title>
+      <link>https://tpcad.github.io/posts/rust_iterator/</link>
+      <pubDate>Wed, 10 Jul 2024 20:54:19 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/rust_iterator/</guid>
+      <description>&lt;h1 id=&#34;rust-iterator&#34;&gt;Rust Iterator&lt;/h1&gt;
+&lt;h2 id=&#34;可迭代对象与迭代器iterable-and-iterator&#34;&gt;可迭代对象与迭代器（Iterable and Iterator）&lt;/h2&gt;
+&lt;p&gt;迭代器（Iterator）是一种可以让你方便地遍历序列中每一个元素的工具。迭代器有两个重要的功能：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;记录当前的迭代状态&lt;/li&gt;
+&lt;li&gt;产生可以访问下一个元素的迭代器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可迭代对象（Iterable）是一种可以产生迭代器的对象。比如 &lt;code&gt;Vec&amp;lt;T&amp;gt;&lt;/code&gt; 可以通过 &lt;code&gt;iter&lt;/code&gt; 方法获得一个迭代器，但 &lt;code&gt;Vec&amp;lt;T&amp;gt;&lt;/code&gt; 本省不是一个迭代器。&lt;/p&gt;
+&lt;p&gt;一个可迭代对象通常有三个方法，分别对应三种迭代类型。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;iter()&lt;/code&gt;，迭代 &lt;code&gt;&amp;amp;T&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;iter_mut()&lt;/code&gt;，迭代 &lt;code&gt;&amp;amp;mut T&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;into_iter()&lt;/code&gt;，迭代 &lt;code&gt;T&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;iterator-trait&#34;&gt;Iterator Trait&lt;/h2&gt;
+&lt;p&gt;Rust 迭代器的核心是 &lt;code&gt;Iterator&lt;/code&gt; trait。&lt;code&gt;Iterator&lt;/code&gt; trait 的核心代码看起来像下面这样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;trait&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;Iterator&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;Item&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;next&lt;/span&gt;(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;mut&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#99d1db&#34;&gt;Option&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;Self&lt;/span&gt;::Item&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;关联类型 &lt;code&gt;Item&lt;/code&gt; 表明迭代器返回的对象，&lt;code&gt;next&lt;/code&gt; 方法表明迭代器如何返回该对象。&lt;/p&gt;
+&lt;h3 id=&#34;实现-iterator-trait-遍历-t&#34;&gt;实现 Iterator Trait 遍历 &amp;amp;T&lt;/h3&gt;
+&lt;p&gt;假设有以下结构体，现在需要为 &lt;code&gt;Todos&lt;/code&gt; 实现 &lt;code&gt;Iterator&lt;/code&gt; trait。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;Todos&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;pub&lt;/span&gt; list: &lt;span style=&#34;color:#99d1db&#34;&gt;Vec&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;Todo&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;#[derive(Debug)]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;Todo&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;pub&lt;/span&gt; message: &lt;span style=&#34;color:#99d1db&#34;&gt;String&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;pub&lt;/span&gt; done: &lt;span style=&#34;color:#e78284&#34;&gt;bool&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;实现 &lt;code&gt;Iterator&lt;/code&gt; trait 的关键是记录当前的迭代状态。&lt;code&gt;Todos&lt;/code&gt; 使用一个 &lt;code&gt;Vec&amp;lt;T&amp;gt;&lt;/code&gt; 来进行存储，非常适合用索引来记录迭代状态。我们可以为 &lt;code&gt;Todos&lt;/code&gt; 添加一个 &lt;code&gt;index&lt;/code&gt; 字段来记录迭代状态。但很显然，这并不妥当。当你对 &lt;code&gt;Todos&lt;/code&gt; 进行迭代时会修改 &lt;code&gt;index&lt;/code&gt; 字段的值，如果想要再次进行迭代，就必须重置 &lt;code&gt;index&lt;/code&gt; 字段，因为迭代器不会在迭代结束后重置状态。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>TCP 基础</title>
+      <link>https://tpcad.github.io/posts/net_tcp/</link>
+      <pubDate>Sun, 07 Jul 2024 09:03:08 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/net_tcp/</guid>
+      <description>&lt;h2 id=&#34;tcp-首部&#34;&gt;TCP 首部&lt;/h2&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;---
+title: &amp;#34;TCP Packet&amp;#34;
+---
+packet-beta
+0-15: &amp;#34;源端口号&amp;#34;
+16-31: &amp;#34;目的端口号&amp;#34;
+32-63: &amp;#34;序列号&amp;#34;
+64-95: &amp;#34;确认应答号&amp;#34;
+96-99: &amp;#34;数据偏移量&amp;#34;
+100-105: &amp;#34;保留&amp;#34;
+106: &amp;#34;URG&amp;#34;
+107: &amp;#34;ACK&amp;#34;
+108: &amp;#34;PSH&amp;#34;
+109: &amp;#34;RST&amp;#34;
+110: &amp;#34;SYN&amp;#34;
+111: &amp;#34;FIN&amp;#34;
+112-127: &amp;#34;窗口&amp;#34;
+128-143: &amp;#34;校验和&amp;#34;
+144-159: &amp;#34;紧急指针&amp;#34;
+160-191: &amp;#34;选项（长度可变）&amp;#34;
+&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;序列号&lt;/strong&gt;：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;确认应答号&lt;/strong&gt;：下一次期望收到的数据的序列号&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数据偏移量&lt;/strong&gt;：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;控制位&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;ACK&lt;/em&gt;：该位为 1 时表示确认应答字段有效，除最初建立连接时的 &lt;code&gt;SYN&lt;/code&gt; 包外该位必须置 1&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;RST&lt;/em&gt;：该位为 1 时表示 TCP 连接出现异常必须强制断开连接&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;SYN&lt;/em&gt;：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;FIN&lt;/em&gt;：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;tcp-连接&#34;&gt;TCP 连接&lt;/h2&gt;
+&lt;h3 id=&#34;三次握手&#34;&gt;三次握手&lt;/h3&gt;
+&lt;p&gt;建立一个 TCP 连接需要经过三次握手过程。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Rust Traits</title>
+      <link>https://tpcad.github.io/posts/rust_trait/</link>
+      <pubDate>Thu, 04 Jul 2024 15:00:42 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/rust_trait/</guid>
+      <description>&lt;p&gt;trait 定义了某个特定类型拥有可能与其他类型共享的功能。&lt;/p&gt;
+&lt;h2 id=&#34;定义与实现-trait&#34;&gt;定义与实现 trait&lt;/h2&gt;
+&lt;h3 id=&#34;定义-trait&#34;&gt;定义 trait&lt;/h3&gt;
+&lt;p&gt;一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;trait&lt;/span&gt; Area {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;area&lt;/span&gt;(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#e78284&#34;&gt;u32&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;为类型实现-trait&#34;&gt;为类型实现 trait&lt;/h3&gt;
+&lt;p&gt;使用 &lt;code&gt;impl for&lt;/code&gt; 为类型实现 trait。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;impl&lt;/span&gt; Area &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; Rectangle {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;area&lt;/span&gt;(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#e78284&#34;&gt;u32&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;.width &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;.height
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;impl&lt;/span&gt; Area &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; Circle {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;area&lt;/span&gt;(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#e78284&#34;&gt;u32&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;.radio &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;.radio
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;默认实现&#34;&gt;默认实现&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;trait&lt;/span&gt; Summary {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;summarize&lt;/span&gt;(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;self&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#99d1db&#34;&gt;String&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#99d1db&#34;&gt;String&lt;/span&gt;::from(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;(Read more...)&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 因为有默认实现，所以可以指定一个空 impl 块
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;impl&lt;/span&gt; Summary &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; Tweet {}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;trait-作为参数&#34;&gt;trait 作为参数&lt;/h2&gt;
+&lt;p&gt;通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Thread in Rust</title>
+      <link>https://tpcad.github.io/posts/rust_thread/</link>
+      <pubDate>Wed, 03 Jul 2024 11:47:33 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/rust_thread/</guid>
+      <description>&lt;h2 id=&#34;线程基础&#34;&gt;线程基础&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;创建线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用 &lt;code&gt;thread::spawn&lt;/code&gt; 创建线程，它接受一个 &lt;code&gt;FnOnce&lt;/code&gt; 闭包。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;use&lt;/span&gt; std::{thread, time::Duration};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; handle &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; thread::spawn(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;||&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#ca9ee6&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{i}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;: spawned thread echo&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            thread::sleep(Duration::from_millis(&lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt;));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    });
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#ca9ee6&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;5&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{i}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;: main thread echo&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        thread::sleep(Duration::from_millis(&lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt;));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    handle.join().unwrap();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;等待线程结束&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用 &lt;code&gt;join&lt;/code&gt; 方法等待线程结束。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; handle &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; thread::spawn(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;||&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#ca9ee6&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;..&lt;/span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{i}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;: spawned thread echo&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        thread::sleep(Duration::from_millis(&lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt;));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 对 spawn 的返回值调用 join 方法
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;handle.join().unwrap();
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;move 闭包与线程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;use&lt;/span&gt; std::thread;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; v &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;vec!&lt;/span&gt;[&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 使用 move 获取所有权
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; handle &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; thread::spawn(&lt;span style=&#34;color:#ca9ee6&#34;&gt;move&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;||&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;Here&amp;#39;s a vector: &lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{v:?}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    });
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    handle.join().unwrap();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;消息传递&#34;&gt;消息传递&lt;/h2&gt;
+&lt;p&gt;Rust 通过**信道（channel）**实现消息传递。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Classic Sort Algorithm</title>
+      <link>https://tpcad.github.io/posts/algorithm_sort/</link>
+      <pubDate>Tue, 02 Jul 2024 20:48:29 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/algorithm_sort/</guid>
+      <description>&lt;h2 id=&#34;selection-sort&#34;&gt;Selection Sort&lt;/h2&gt;
+&lt;p&gt;以升序为例，选择排序的思想是遍历未排序元素，选择其中最小的元素，将其移动到未排序元素开始位置。&lt;/p&gt;
+&lt;h3 id=&#34;性质&#34;&gt;性质&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;最好时间复杂度：$O(n^2)$&lt;/li&gt;
+&lt;li&gt;最坏时间复杂度：$O(n^2)$&lt;/li&gt;
+&lt;li&gt;平均时间复杂度：$O(n^2)$&lt;/li&gt;
+&lt;li&gt;稳定性：不稳定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;演示&#34;&gt;演示&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 原数组，所有元素均位于未排序部分
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;9&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;8&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 第一轮，遍历未排序部分，选择最小的元素（0），移动到未排序部分开始位置
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 有序部分位于数组头部
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;9&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;8&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 第二轮，遍历未排序部分，选择最小的元素（1），移动到未排序部分开始位置
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;9&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;8&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 第三轮，遍历未排序部分，选择最小的元素（3），移动到未排序部分开始位置
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;9&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;8&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;4&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// ...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;示例代码&#34;&gt;示例代码&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;selection_sort&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;arr, &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; len) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; i &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;; i &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt; len &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;++&lt;/span&gt;i) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; min_idx &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; i;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; j &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; i &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; (; j &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt; len; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;++&lt;/span&gt;j) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ca9ee6&#34;&gt;if&lt;/span&gt; (arr[min_idx] &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; arr[j]) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                min_idx &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; j; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 记录索引位置
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ca9ee6&#34;&gt;if&lt;/span&gt; (min_idx &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;!=&lt;/span&gt; i) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#8caaee&#34;&gt;swap&lt;/span&gt;(&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;arr[i], &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;arr[min_idx]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;bubble-sort&#34;&gt;Bubble Sort&lt;/h2&gt;
+&lt;p&gt;以升序为例，在未排序元素中依次比较相邻两个元素，若乱序则交换两个元素，这样一来较大的元素就会被慢慢移动到末尾有序排列。通常在冒泡排序中设置一个 &lt;code&gt;flag&lt;/code&gt;，当没有发生交换操作时，说明数组已经有序，停止遍历。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Rust Smart Pointer</title>
+      <link>https://tpcad.github.io/posts/rust_smart_pointer/</link>
+      <pubDate>Tue, 02 Jul 2024 15:57:07 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/rust_smart_pointer/</guid>
+      <description>&lt;h2 id=&#34;boxt&#34;&gt;&lt;code&gt;Box&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; f1 &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; foo { bar: &lt;span style=&#34;color:#ef9f76&#34;&gt;32&lt;/span&gt; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; f2 &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;Box&lt;/span&gt;::new(foo { bar: &lt;span style=&#34;color:#ef9f76&#34;&gt;11&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;address on stack: &lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{:p}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;f1);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;address on heap: &lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{:p}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;, f2);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;address of box(on stack): &lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{:p}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;f2);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;foo&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    bar: &lt;span style=&#34;color:#e78284&#34;&gt;i32&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// address on stack: 0x7ffd34540f0c
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// address on heap: 0x57d39e669ba0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// address of box(on stack): 0x7ffd34540f10
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 利用 Box 实现递归类型
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;List&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Cons(&lt;span style=&#34;color:#e78284&#34;&gt;i32&lt;/span&gt;, &lt;span style=&#34;color:#99d1db&#34;&gt;Box&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Nil,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;use&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;crate&lt;/span&gt;::List::{Cons, Nil};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; list &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; Cons(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#99d1db&#34;&gt;Box&lt;/span&gt;::new(Cons(&lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#99d1db&#34;&gt;Box&lt;/span&gt;::new(Cons(&lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#99d1db&#34;&gt;Box&lt;/span&gt;::new(Nil))))));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;deref-trait&#34;&gt;Deref Trait&lt;/h2&gt;
+&lt;p&gt;实现 &lt;code&gt;Deref&lt;/code&gt; trait 可以重载解引用运算符 &lt;code&gt;*&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Hugo &#43; Github Action，搭建个人博客</title>
+      <link>https://tpcad.github.io/posts/build_blog_with_hugo_and_github_action/</link>
+      <pubDate>Sat, 29 Jun 2024 10:59:27 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/build_blog_with_hugo_and_github_action/</guid>
+      <description>&lt;h2 id=&#34;创建-github-仓库&#34;&gt;创建 Github 仓库&lt;/h2&gt;
+&lt;h3 id=&#34;创建博客源仓库&#34;&gt;创建博客源仓库&lt;/h3&gt;
+&lt;p&gt;博客源仓库用于对 Hugo 的配置文件以及 Markdown 源文件进行备份和管理，并配合 Github Action 自动将生成的静态网页推送到 Github Pages 仓库。&lt;/p&gt;
+&lt;h3 id=&#34;创建-github-pages-仓库&#34;&gt;创建 Github Pages 仓库&lt;/h3&gt;
+&lt;p&gt;以 &lt;code&gt;username.github.io&lt;/code&gt; 形式命名的特殊仓库，使用 Github Pages 实现部署网站。&lt;/p&gt;
+&lt;h2 id=&#34;创建博客&#34;&gt;创建博客&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hugo new site Blog
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Hugo 生成的目录结构。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-language&#34; data-lang=&#34;language&#34;&gt;Blog
+├── archetypes
+│   └── default.md
+├── assets
+├── content
+├── data
+├── hugo.toml
+├── i18n
+├── layouts
+├── static
+└── themes
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;关联博客源仓库&#34;&gt;关联博客源仓库&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;cd&lt;/span&gt; Blog
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git init
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git remote add origin git@github.com:TPCAD/tpcad-blog.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;配置-hugo-主题&#34;&gt;配置 Hugo 主题&lt;/h3&gt;
+&lt;p&gt;为了方便对主题进行自定义和版本控制，我们将 Hugo 主题 fork 到自己的 Github 账户，并以 submodule 的方式将主题添加到我们的博客源仓库。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

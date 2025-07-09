@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.148.0"><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Eulamber</title>
+
+<meta name="description" content="TPCAD&#39;s blog">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://tpcad.github.io/index.xml">
+<link rel="alternate" type="application/json" href="https://tpcad.github.io/index.json">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="Eulamber">
+  <meta property="og:description" content="TPCAD&#39;s blog">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Eulamber">
+<meta name="twitter:description" content="TPCAD&#39;s blog">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Eulamber",
+  "url": "https://tpcad.github.io/",
+  "description": "TPCAD's blog",
+  "logo": "https://tpcad.github.io/favicon.ico",
+  "sameAs": [
+      "https://github.com/TPCAD/tpcad-blog/issues"
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<article class="first-entry home-info">
+    <header class="entry-header">
+        <h1>愿热情在风中永不熄灭</h1>
+    </header>
+    <div class="entry-content">
+        Hi 👋. 欢迎来到我的博客。发现文章有任何问题都可以在 Github 中提交 Issue（点击下面的图标即可跳转）。
+    </div>
+    <footer class="entry-footer">
+        <div class="social-icons" >
+    <a href="https://github.com/TPCAD/tpcad-blog/issues" target="_blank" rel="noopener noreferrer me"
+        title="Blog Repo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path
+        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+    </path>
+</svg>
+    </a>
+</div>
+
+    </footer>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Sed 参考手册
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。
+模式空间与保持空间 Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。
+模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。
+保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。
+Sed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。
+命令行参数 -n, –silent, –quiet Sed 处理完一行后默认会打印模式空间内容到标准输出。
+# test.md line one sed &#39;1p&#39; test.md # output # line one # line one # line two 使用 -n，--silent 或 --quiet 参数可以关闭自动打印。
+sed &#39;1p&#39; test.md # output # line one -e, –expression -e 和 --expression 用于直接指定 sed 脚本。
+sed -e &#39;s/Tmux/Zellij/&#39; todo.md sed --expression=&#39;s/Tmux/Zellij/&#39; todo.md 一般情况下不需要使用参数指定 sed 脚本，但 -e 和 --expression 可以同时指定多个 sed 脚本。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-08 17:20:30 +0800 +0800'>July 8, 2025</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Sed 参考手册" href="https://tpcad.github.io/posts/sed/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43; 初始化
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>变量的初始化会在构造时提供变量的初始值。
+初始值可以由声明符或 new 表达式的 初始化器 部分提供。在函数调用时也会发生：函数形参及函数返回值也会被初始化。
+初始化器（如果存在）必须是下列之一：
+1. = expression 2. = {} = { initializer-list } = { designated-initializer-list } 3. ( expression-list ) ( initializer-list ) 4. {} { initializer-list } { designated-initializer-list } 默认初始化 1. T object; 2. new T; 当没有为对象指定初始化器时，该对象会默认初始化。具体有以下三种情况：
+不带初始化器声明具有自动、静态或线程局部存储器的变量； 不带初始化器使用 new 表达式创建一个对象； 构造函数的成员初始化器列表没有提及某个基类或非静态数据成员，且调用了该构造函数； 默认初始化的效果是：
+如果是类类型，调用默认构造函数； 如果是数组类型，数组的每个元素都被默认初始化； 否则不进行初始化； 不确定值 在获取到具有自动或动态存储期的对象的存储时，该对象具有不确定值。
+如果不对对象进行任何初始化，那么该对象具有不确定值，直到该值被替换。
+示例 case 1 不带初始化器声明具有自动、静态或线程局部存储器的变量。
+#include &lt;print&gt; // 静态全局非类，两次初始化 // 1) 零初始化将 si1 初始化为 0 // 2) 默认初始化不做任何事 int si1; int main() { std::println(&#34;si1 静态全局非类，零初始化：{}&#34;, si1); static int si2; // 静态局部非类，同全局静态非类 std::println(&#34;si2 静态局部非类，零初始化：{}&#34;, si2); int i1; // 自动局部非类，默认初始化不做任何事，不确定值 std::println(&#34;i1 非类，不确定值：{}&#34;, i1); return 0; } case 2 不带初始化器使用 new 表达式创建一个对象。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-12-08 09:54:47 +0800 +0800'>December 8, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43; 初始化" href="https://tpcad.github.io/posts/cpp_initialization/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">红黑树
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>红黑树是一种平衡的二叉搜索树，满足如下性质：
+节点要么是 黑色，要么是 红色 根节点必须是黑色 所有叶子节点都是黑色 红色节点的子节点必须是黑色 从任一节点到叶子节点的所有简单路径都包含相同数量的黑色节点 其中叶子节点指的是为空的节点。如下图所示，null 是叶子节点，而节点 9 和节点 20 不是叶子节点（它们的子结点也是叶子节点，图中没有画出）。
+10 / \ 8 14 / \ / \ null 9 null 20 节点定义 template &lt;typename T&gt; requires std::equality_comparable&lt;T&gt; &amp;&amp; std::totally_ordered&lt;T&gt; struct rb_tree { private: enum rb_color { red, black }; // 节点颜色 struct rb_node { T key; rb_color color; // 颜色字段 unsigned size; unsigned count; rb_node *left; rb_node *right; rb_node *parent; // 父节点 rb_node(const T &amp;value) : key(value), color(rb_color::red), size(1), count(1), left(nullptr), right(nullptr), parent(nullptr) {} void print_key() { std::cout &lt;&lt; key; if (color == rb_color::black) { std::cout &lt;&lt; &#34;b&#34;; } else { std::cout &lt;&lt; &#34;r&#34;; } } }; rb_node *root; public: rb_tree() : root(nullptr) {} rb_tree(const T &amp;value) : root(nullptr) { root = new rb_node(value); } rb_tree(std::initializer_list&lt;T&gt; list) : root(nullptr) { this-&gt;insert_aux(this-&gt;root, *list.begin()); std::for_each(list.begin() &#43; 1, list.end(), [this](auto &amp;&amp;x) { this-&gt;insert(x); }); } } 旋转 因为增加了 parent 字段用于指向当前节点的父节点，因此旋转操作也需要更新 parent 字段。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-26 10:43:39 +0800 +0800'>November 26, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to 红黑树" href="https://tpcad.github.io/posts/algorithm_rbtree/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Algorithm_avltree
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>平衡二叉树是一种平衡的二叉搜索树。
+空树是平衡二叉树 左右子树的高度差的绝对值不超过 1 左右子树也是平衡二叉树 AVL 树是一种平衡二叉树，它会在插入或删除节点时调整二叉树使每个节点的左右子树的高度差的绝对值不超过 1。通常把左右子树的差叫做 平衡因子。即
+$$ 平衡因子 = 左子树的高度 - 右子树的高度 $$
+节点定义 AVL 树的节点与二叉搜索树类似，但多了一个 height 字段，用于保存当前节点的高度。规定空树的高度为 0，非空树的高度等于它的最大层次（其根节点的层次为 1，依次类推）。
+struct avl_tree { private: struct avl_node { public: T key; unsigned size; unsigned count; unsigned height; avl_node *left; avl_node *right; avl_node(const T &amp;value) : key(value), size(1), count(1), height(1), left(nullptr), right(nullptr) {} }; avl_node *root; public: avl_tree() : root(nullptr) {} avl_tree(const T &amp;value) : root(nullptr) { root = new avl_node(value); } avl_tree(std::initializer_list&lt;T&gt; list) : root(nullptr) { root = new avl_node(*list.begin()); std::for_each(list.begin() &#43; 1, list.end(), [this](auto &amp;&amp;x) { this-&gt;insert(x); }); } } 平衡 旋转 旋转 是一种将节点变成它的子节点的节点的操作，可以分为 左旋 和 右旋。关于旋转方向的定义有很多，甚至有些相互矛盾。这里规定，
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-22 08:24:44 +0800 +0800'>November 22, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Algorithm_avltree" href="https://tpcad.github.io/posts/algorithm_avltree/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">二叉搜索树
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。
+二叉搜索树定义 空树是二叉搜索树 若左子树不空，则左子树上所有节点的值都 小于 根节点的值 若右子树不空，则右子树上所有节点的值都 大于 根节点的值 二叉搜索树的左右子树也是二叉搜索树 节点定义 template &lt;typename T&gt; struct binary_search_tree { private: struct bs_node { public: T key; unsigned int size; unsigned int count; bs_node *left; bs_node *right; bs_node(const T &amp;value) : key(value), size(1), count(1), left(nullptr), right(nullptr) {} }; bs_node *root; public: binary_search_tree() : root(nullptr) {} binary_search_tree(const T &amp;value) : root(nullptr) { root = new bs_node(value); } binary_search_tree(std::initializer_list&lt;T&gt; list) : root(nullptr) { root = new bs_node(*list.begin()); std::for_each(list.begin() &#43; 1, list.end(), [this](auto &amp;&amp;x) { this-&gt;insert(x); }); } 遍历二叉搜索树 根据二叉搜索树的定义，中序遍历得到的序列是升序序列。因为要遍历所有节点，所以时间复杂度为 $O(n)$。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-13 16:22:15 +0800 +0800'>November 13, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to 二叉搜索树" href="https://tpcad.github.io/posts/algorithm_bstree/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">进程基础
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>进程 进程的状态 一个进程至少有三种基本状态，即就绪、运行、阻塞状态。
+stateDiagram-v2 Ready --&gt; Running Running --&gt; Ready Running --&gt; Blocked Blocked --&gt; Ready 就绪状态（Ready）：获得时间片后即可运行 运行状态（Running）：运行状态，进程正在占用 CPU 阻塞状态（Blocked）：进程正在等待某一事件发生，即使拥有 CPU 也无法运行 三种状态之间会因为以下原因发生切换：
+就绪状态 -&gt; 运行状态：被调度程序选中，获得时间片，开始运行 运行状态 -&gt; 就绪状态：时间片用完 运行状态 -&gt; 阻塞状态：进程请求某个事件且必须等待，如 I/O 事件 阻塞状态 -&gt; 就绪状态：进程请求的事件发生 除了以上三种状态外，进程还有两种基本的状态：
+创建状态（New）：进程正在被创建时的状态 结束状态（Exit）：进程结束时的状态 此外，当进程被阻塞时，可以将该进程相关的内存换出到磁盘中，这种进程存在但没有占据实际物理内存的状态称为「挂起状态」。挂起状态又可以分为 就绪挂起状态 和 阻塞挂起状态。
+进程控制块 进程控制块（Process Control Block，PCB）是用来进程的数据结构，每个进程对应一个 PCB，PCB 是进程存在的唯一标识。
+PCB 通常包含以下信息：
+进程描述信息： 进程标识符：每个进程都有一个唯一的标识符 用户标识符：进程所属用户 进程控制、管理信息： 进程状态：进程当前状态 进程优先级：进程调度时的优先级 分配的资源 进程虚拟地址空间 进程打开的文件列表 I/O 设备 CPU 信息 寄存器的值，如 eip，esp 线程 线程 是进程当中的一条执行流程。当进程只有一个线程时，可以认为进程就是线程。
+线程与进程十分相似，同样拥有就绪、运行、阻塞等状态，也通过 TCB（Thread Control Block）描述。线程共享进程的数据段、代码段、文件等资源，只独享寄存器、栈等资源。进程是资源分配的基本单位，线程是调度的基本单位。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-21 08:25:27 +0800 +0800'>October 21, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to 进程基础" href="https://tpcad.github.io/posts/os_process_basic/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">虚拟内存
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 虚拟地址。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 4 GB（2^32）。
+分页 分页机制将虚拟内存分为一个个大小固定的单元，称为 页（Page）。同样的，也将物理内存分为一个个 页框（Page Frame）。页和页框的大小相等，通常为 4 KB。
+页表 页表 的作用是把页 映射 为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。
+每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。
+页表项 在 32 位操作系统中，一个页表项的大小为 4 字节。
+typedef struct page_entry_t { u8 present : 1; // 在内存中 u8 write : 1; // 0 只读，1 可读可写 u8 user : 1; // 1 所有人，0 超级用户 DPL &lt; 3 u8 pwt : 1; // page write through，1 直写模式，0 回写模式 u8 pcd : 1; // page cache disable，禁止该页缓冲 u8 accessed : 1; // 被访问过，用于统计使用频率 u8 dirty : 1; // 脏页，表示该页缓冲被写过 u8 pat : 1; // page attribute table，页大小 4K / 4M u8 global : 1; // 全局，所有进程都会用到了，该页不刷新缓冲 u8 ignored : 3; // 操作系统决定是否使用 u32 index : 20; // 页索引 } _packed page_entry_t; 地址转换 在 32 位操作系统中，虚拟内存大小为 4 GB（$2^{32}$），页面大小通常为 4 KB。由此可知，虚拟内存被划分为 1 M（$2^{20}$） 个页面。因此，32 位的虚拟地址中前 20 位表示页索引，剩下 12 位则表示页内偏移量。利用页索引在页表中查找到对应的页框号后，将其与页内偏移量相加即可得到物理地址。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-20 09:59:27 +0800 +0800'>October 20, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to 虚拟内存" href="https://tpcad.github.io/posts/os_virtual_memory/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">How Perfect Forwarding Works
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>转发 指的是函数之间的参数传递。比如下面的代码，函数 foo 向函数 bar 传递了参数 a。
+foo(int a) { bar(a) } bar(int b) {} 完美转发则是在转发过程中，参数的各种属性都保持不变。比如右值仍是右值，左值仍是左值。
+普通转发的问题 在下面的代码中，函数 pass 接受一个右值引用，并将该参数传递给函数 reference。当向 pass 传入字面量 1 时，最终的输出结果是 lvalue。这是因为虽然向 pass 传入了右值，但在函数体内，变量 x 的值类别变成了左值，即 x 的类型是右值引用，值类别是左值，所以最终会调用 reference(int &amp;y)。
+这就是普通转发存在的问题，在转发过程中可能会改变参数某些属性。
+#include &lt;fmt/core.h&gt; void reference(int &amp;&amp;y) { fmt::println(&#34;rvalue&#34;); } void reference(int &amp;y) { fmt::println(&#34;lvalue&#34;); } void pass(int &amp;&amp;x) { fmt::println(&#34;general pass&#34;); reference(x); } int main(int argc, char *argv[]) { pass(1); return 0; } 实现完美转发 万能引用 在普通函数中，若参数类型为 &amp;&amp;，则函数只能接受右值。
+void foo(int &amp;&amp;x) {} int main() { int a = 1; foo(1); // foo(a); 无法编译 } 但在模板函数中，若 &amp;&amp; 与模板参数结合，即 T&amp;&amp;，那么它将不再代表右值引用，而是万能引用。它既能接受左值，又能接受右值。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-12 17:46:57 +0800 +0800'>August 12, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to How Perfect Forwarding Works" href="https://tpcad.github.io/posts/cpp_perfect_forwarding.md/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">How Nullptr Works
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>为什么需要 nullptr 在 C 中，NULL 被定义为 (void*)0 或 0。而 C&#43;&#43; 因为不允许直接将 void* 隐式转换到其他类型，所以在没有 nullptr 之前，C&#43;&#43; 的 NULL 就是 0（也可能是 0L）。这导致 0 的二义性。
+0 的二义性给函数重载带来了混乱。考虑下面的代码，如果 NULL 被定义为 0，那么 foo(NULL) 会严格匹配 foo(int)，但如果 NULL 被定义为 0，那么将不存在严格匹配，而 0L 可以同时转换为 int 和 int*，编译器无法知道应该调用哪个函数。
+void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(NULL); 为了解决这个问题，C&#43;&#43; 11 引入了 nullptr 关键字，用于区分空指针和 0。
+使用 nullptr nullptr 是一个纯右值，无法被 &amp; 取地址，可以被隐式转换为任意的指针或成员指针类型。
+void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(nullptr); // 隐式转换到 int*，调用 foo(int*) nullptr 可以取代 NULL 的所有场景。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-06 17:46:57 +0800 +0800'>August 6, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to How Nullptr Works" href="https://tpcad.github.io/posts/cpp_nullptr/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Rust Iterator
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Rust Iterator 可迭代对象与迭代器（Iterable and Iterator） 迭代器（Iterator）是一种可以让你方便地遍历序列中每一个元素的工具。迭代器有两个重要的功能：
+记录当前的迭代状态 产生可以访问下一个元素的迭代器 可迭代对象（Iterable）是一种可以产生迭代器的对象。比如 Vec&lt;T&gt; 可以通过 iter 方法获得一个迭代器，但 Vec&lt;T&gt; 本省不是一个迭代器。
+一个可迭代对象通常有三个方法，分别对应三种迭代类型。
+iter()，迭代 &amp;T iter_mut()，迭代 &amp;mut T into_iter()，迭代 T Iterator Trait Rust 迭代器的核心是 Iterator trait。Iterator trait 的核心代码看起来像下面这样：
+trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; } 关联类型 Item 表明迭代器返回的对象，next 方法表明迭代器如何返回该对象。
+实现 Iterator Trait 遍历 &amp;T 假设有以下结构体，现在需要为 Todos 实现 Iterator trait。
+pub struct Todos { pub list: Vec&lt;Todo&gt;, } #[derive(Debug)] pub struct Todo { pub message: String, pub done: bool, } 实现 Iterator trait 的关键是记录当前的迭代状态。Todos 使用一个 Vec&lt;T&gt; 来进行存储，非常适合用索引来记录迭代状态。我们可以为 Todos 添加一个 index 字段来记录迭代状态。但很显然，这并不妥当。当你对 Todos 进行迭代时会修改 index 字段的值，如果想要再次进行迭代，就必须重置 index 字段，因为迭代器不会在迭代结束后重置状态。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-10 20:54:19 +0800 +0800'>July 10, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Rust Iterator" href="https://tpcad.github.io/posts/rust_iterator/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://tpcad.github.io/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

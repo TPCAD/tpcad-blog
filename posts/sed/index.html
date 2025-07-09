@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Sed 参考手册 | Eulamber</title>
+<meta name="keywords" content="Linux">
+<meta name="description" content="Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。
+模式空间与保持空间
+Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。
+模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。
+保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。
+Sed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。
+命令行参数
+-n, &ndash;silent, &ndash;quiet
+Sed 处理完一行后默认会打印模式空间内容到标准输出。
+# test.md
+line one
+
+sed &#39;1p&#39; test.md
+# output
+# line one
+# line one
+# line two
+使用 -n，--silent 或 --quiet 参数可以关闭自动打印。
+sed &#39;1p&#39; test.md
+# output
+# line one
+-e, &ndash;expression
+-e 和 --expression 用于直接指定 sed 脚本。
+sed -e &#39;s/Tmux/Zellij/&#39; todo.md
+sed --expression=&#39;s/Tmux/Zellij/&#39; todo.md
+一般情况下不需要使用参数指定 sed 脚本，但 -e 和 --expression 可以同时指定多个 sed 脚本。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/posts/sed/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/posts/sed/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/posts/sed/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="Sed 参考手册">
+  <meta property="og:description" content="Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。
+模式空间与保持空间 Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。
+模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。
+保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。
+Sed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。
+命令行参数 -n, –silent, –quiet Sed 处理完一行后默认会打印模式空间内容到标准输出。
+# test.md line one sed &#39;1p&#39; test.md # output # line one # line one # line two 使用 -n，--silent 或 --quiet 参数可以关闭自动打印。
+sed &#39;1p&#39; test.md # output # line one -e, –expression -e 和 --expression 用于直接指定 sed 脚本。
+sed -e &#39;s/Tmux/Zellij/&#39; todo.md sed --expression=&#39;s/Tmux/Zellij/&#39; todo.md 一般情况下不需要使用参数指定 sed 脚本，但 -e 和 --expression 可以同时指定多个 sed 脚本。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-08T17:20:30+08:00">
+    <meta property="article:modified_time" content="2025-07-08T17:20:30+08:00">
+    <meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sed 参考手册">
+<meta name="twitter:description" content="Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。
+模式空间与保持空间
+Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。
+模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。
+保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。
+Sed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。
+命令行参数
+-n, &ndash;silent, &ndash;quiet
+Sed 处理完一行后默认会打印模式空间内容到标准输出。
+# test.md
+line one
+
+sed &#39;1p&#39; test.md
+# output
+# line one
+# line one
+# line two
+使用 -n，--silent 或 --quiet 参数可以关闭自动打印。
+sed &#39;1p&#39; test.md
+# output
+# line one
+-e, &ndash;expression
+-e 和 --expression 用于直接指定 sed 脚本。
+sed -e &#39;s/Tmux/Zellij/&#39; todo.md
+sed --expression=&#39;s/Tmux/Zellij/&#39; todo.md
+一般情况下不需要使用参数指定 sed 脚本，但 -e 和 --expression 可以同时指定多个 sed 脚本。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Sed 参考手册",
+      "item": "https://tpcad.github.io/posts/sed/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Sed 参考手册",
+  "name": "Sed 参考手册",
+  "description": "Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。\n模式空间与保持空间 Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。\n模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。\n保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。\nSed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。\n命令行参数 -n, \u0026ndash;silent, \u0026ndash;quiet Sed 处理完一行后默认会打印模式空间内容到标准输出。\n# test.md line one sed \u0026#39;1p\u0026#39; test.md # output # line one # line one # line two 使用 -n，--silent 或 --quiet 参数可以关闭自动打印。\nsed \u0026#39;1p\u0026#39; test.md # output # line one -e, \u0026ndash;expression -e 和 --expression 用于直接指定 sed 脚本。\nsed -e \u0026#39;s/Tmux/Zellij/\u0026#39; todo.md sed --expression=\u0026#39;s/Tmux/Zellij/\u0026#39; todo.md 一般情况下不需要使用参数指定 sed 脚本，但 -e 和 --expression 可以同时指定多个 sed 脚本。\n",
+  "keywords": [
+    "Linux"
+  ],
+  "articleBody": "Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。\n模式空间与保持空间 Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。\n模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。\n保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。\nSed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。\n命令行参数 -n, –silent, –quiet Sed 处理完一行后默认会打印模式空间内容到标准输出。\n# test.md line one sed '1p' test.md # output # line one # line one # line two 使用 -n，--silent 或 --quiet 参数可以关闭自动打印。\nsed '1p' test.md # output # line one -e, –expression -e 和 --expression 用于直接指定 sed 脚本。\nsed -e 's/Tmux/Zellij/' todo.md sed --expression='s/Tmux/Zellij/' todo.md 一般情况下不需要使用参数指定 sed 脚本，但 -e 和 --expression 可以同时指定多个 sed 脚本。\nsed --expression='s/Tmux/Zellij/' -e 's/\\[\\ \\]/[x]/' todo.md #output [x] Zellij 重复环境变量 [x] 地址 地址用于过滤需要处理的行。没有提供地址时，sed 会处理所有的输入行。提供一个地址时 sed 只会选择对应的行。提供两个地址时，sed 会选择对应范围的行。\n地址有「数字」和「正则表达式」两种形式。\n数字表示某一行，正则表达式则表示所有匹配行。数字不能为 0，正则表达式有两种书写方式。\n# 1. /regexp/ # 2. \\cregexpc # 第二种方式中的 'c' 可以是任意字符。若 'c' 出现在正则表达式中，则需要转义。 sed '/font/d' alacritty.toml sed '\\cfontcd' alacritty.toml sed '\\tfon\\ttd' alacritty.toml 单地址 单个数字选择某一行，单个正则表达式选择匹配的所有行。\nsed '3d' test.md # 删除第 3 行 sed '/font/d' alacritty.toml # 删除所有含「font」的行 双地址 双地址可以组合使用数字和正则表达式，两个地址之间以 , 分隔。\n# 测试文本 alacritty.toml 1 [font] 2 size = 18.0 3 [font.bold] 4 family = \"Maple Mono NL NF CN\" 5 style = \"Bold\" 6 [font.bold_italic] 7 family = \"Maple Mono NL NF CN\" 8 style = \"Bold Italic\" 9 [font.italic] 10 family = \"Maple Mono NL NF CN\" 11 style = \"Italic\" 12 [font.normal] 13 family = \"Maple Mono NL NF CN\" 14 style = \"Regular\" 15 [general] 16 import = [\"/home/tpcad/.config/alacritty/catppuccin-frappe.toml\"] sed '2,4d' test.md # 删除 2, 3, 4 行 sed '/Italic/, /Maple/d' alacritty.toml # 删除第 8～10 行，第 11～13 行 sed '2,/Italic/d' test.md # 删除第 2 行到第一次匹配到「Italic」的行（2～8 行） sed '/font/, 7d' test.md # 删除第一次匹配到「font」的行到第 7 行（1～7 行）以及之后所有包含「font」的行 当以正则表达式为起始条件时，sed 会选择所有符合条件的「范围」。如 /Italic/, /Maple/ 选择了第 8～10 行和第 11～13 行两个范围。下一个范围不会选择上一个范围的行，也就是说每个范围不会互相重叠。\n若没有匹配的结束条件，则会一直选择至下一个匹配的起始条件，若已是最后一个范围则选择至最后一行。若结束条件为数字并小于起始条件匹配到的第一行，则只会选择起始条件匹配的所有行。\n# 结束条件不存在，选择至下一个匹配的起始条件 nl alacritty.toml | sed -n '/style/,/non/p' nl alacritty.toml | sed -n '/style/,33p' # 5 style = \"Bold\" # 6 [font.bold_italic] # 7 family = \"Maple Mono NL NF CN\" # 8 style = \"Bold Italic\" # 9 [font.italic] # 10 family = \"Maple Mono NL NF CN\" # 11 style = \"Italic\" # 12 [font.normal] # 13 family = \"Maple Mono NL NF CN\" # 14 style = \"Regular\" # 15 [general] # 16 import = [\"/home/tpcad/.config/alacritty/catppuccin-frappe.toml\"] # 小于起始条件匹配到的第一行，选择所有含有 `style` 的行 nl alacritty.toml | sed -n '/style/,3p' # 5 style = \"Bold\" # 8 style = \"Bold Italic\" # 11 style = \"Italic\" # 14 style = \"Regular\" 使用双地址时，匹配起始条件的行无论如何都会被选中，哪怕结束条件匹配的行在该行之前。\nsed '3, 2p' -n # 打印第 3 行 当第二个地址是正则表达式时，sed 不会再检查第一个地址所选择的行是否满足第二个地址的正则表达式。\nsed '3, /font/p' -n # 打印 3～6 行 其他形式 $ 表示最后一行。\nsed '$d' alacritty.toml # 删除最后一行 first~step 表示从第 first 行开始，步进为 step 行。first 可以为 0，此时相当于从 step 行开始。\nsed '2~4d' test.md # 删除 2, 6, 10 行（从 2 开始，步进为 4） 0,regexp 表示从第 1 行开始直至第一次匹配到 regexp。与 number,regexp 不同，该形式检查第一个地址是否匹配正则表达式。\nsed '0,/font/d' alacritty.toml # [font] sed '1,/font/d' alacritty.toml # [font] # size = 18.0 # [font.bold] addr1,+N 表示选择 addr1 和其随后的 N 行。N 为数字。\nnl alacritty.toml | sed '/font/,+3' # 1 [font] # 2 size = 18.0 # 3 [font.bold] # 4 family = \"Maple Mono NL NF CN\" # 6 [font.bold_italic] # 7 family = \"Maple Mono NL NF CN\" # 8 style = \"Bold Italic\" # 9 [font.italic] # 12 [font.normal] # 13 family = \"Maple Mono NL NF CN\" # 14 style = \"Regular\" # 15 [general] # 正则表达式作为第一个地址时仍然会选择多个范围 addr1,~N 表示选择 addr1 和其随后的行，直至行号等于 N 的倍数。\nnl alacritty.toml | sed -n '/style/,~5p' # 两个范围 # 5 style = \"Bold\" # 6 [font.bold_italic] # 7 family = \"Maple Mono NL NF CN\" # 8 style = \"Bold Italic\" # 9 [font.italic] # 10 family = \"Maple Mono NL NF CN\" # 11 style = \"Italic\" # 12 [font.normal] # 13 family = \"Maple Mono NL NF CN\" # 14 style = \"Regular\" # 15 [general] nl alacritty.toml | sed -n '9,~5p' # 9 [font.italic] # 10 family = \"Maple Mono NL NF CN\" 命令 命令必须包裹在单引号中。\n常用命令 打印行号 = 打印当前行行号。行号会在新的一行输出。\nsed '/font/=' alacritty.toml -n # 1 # 3 # 6 # 9 # 12 插入内容 a 在行后插入内容。若有多行内容使用 \\ 分隔。\nsed '/general/anew line' alacritty.toml sed '/general/aline one\\ line two\\ line three' alacritty.toml i 在行前插入内容。若有多行内容使用 \\ 分隔。\nsed '/general/inew line' alacritty.toml sed '/general/iline one\\ line two\\ line three' alacritty.toml 删除 d 清空当前模式空间并开始处理下一行。\nsed '/font/, /Maple/d' alacritty.toml D 删除模式空间的第一行并立即开始（跳过自动打印和清空）下一轮处理但不读取新的行。\n# 与 d 相同，因为模式空间总是只有一行 sed '/font/, /Maple/D' alacritty.toml sed 'N;D' alacritty.toml # 打印最后一行 替换 c 替换所选择的行为指定内容。若有多行内容使用 \\ 分隔。\n# test.md # line one # line two # line three sed '/line/c\\new line' test.md # new line # new line # new line # 若为范围则会替换整个范围。 sed '/one/,/two/c\\new line' test.md # new line # line three s/regexp/replacement 替换行的匹配部分为指定内容。\nsed '/line/s/line/LINE/' append.txt # LINE one # LINE two # LINE three sed '1,2s/line/LINE/' append.txt # LINE one # LINE two # line three 打印模式空间 p 打印整个模式空间；P 打印模式空间的第一行。\n打印命令通常搭配 -n 参数使用，避免自动打印影响输出内容。\n读取下一行 n 清空当前模式空间并读取下一行到模式空间；N 读取下一行并附加到模式空间。若没有可读取的下一行则结束 sed。\nsed 'n;p;q' test.md -n # line two sed 'N;p;q' test.md -n # line one # line two 进阶命令 停止并退出 q，Q 立即停止并退出 sed。q 不会停止自定打印，Q 会停止自动打印。\nnl alacritty.toml | sed '/font/p;q' # 1 [font] # 1 [font] nl alacritty.toml | sed '/font/p;Q' # 1 [font] 从文件获取插入内容 r 从文件中获取所有内容并插入到匹配「行后」。\nsed '/font/r append.txt' alacritty.toml # [font] # line one # line two # size = 18.0 # [font.bold] # line one # line two # family = \"Maple Mono NL NF CN\" # style = \"Bold\" # [font.bold_italic] # line one # line two 操作保持空间 x 交换模式空间和保持空间。保持空间默认只有一个换行符。\nsed 'x;p;q' test.md # 打印空行。 h 拷贝模式空间内容到保持空间；H 附加模式空间内容到保持空间。拷贝会覆盖原有的内容。\nsed 'h;x;p' test.md -n # line one # line two # line three sed 'H;${x;p}' test.md -n # # line one # line two # line three g 拷贝保持空间内容到模式空间；G 附加保持空间内容到模式空间。拷贝会覆盖原有的内容。\n# 倒序 sed '1!G;h;$!d' test.md # line three # line two # line one 保存模式空间到文件 w 将模式空间写入到指定文件（会覆盖已有内容）。\nsed '/font/!wnew.txt' alacritty.toml 字符替换 y/source/dest 将匹配行中 dest 的字符替换为 source 中的对应字符。soucre 和 dest 的长度必须相同。\nsed 'y/abcefghijk/1234567980' test.md # l8n4 on4 # l8n4 two # l8n4 t7r44 GNU 扩展 q，Q 可以指定退出码。\nnl alacritty.toml | sed '/font/p;Q 0' nl alacritty.toml | sed '/font/p;Q 3' R 逐行读取文件内容并插入到匹配行后。\nsed '/font/R append.txt' alacritty.toml # [font] # line one # 第一行 # size = 18.0 # [font.bold] # line two # 第一行 # family = \"Maple Mono NL NF CN\" # style = \"Bold\" # [font.bold_italic] # family = \"Maple Mono NL NF CN\" W 将模式空间第一行写入指定文件。\n",
+  "wordCount" : "990",
+  "inLanguage": "en",
+  "datePublished": "2025-07-08T17:20:30+08:00",
+  "dateModified": "2025-07-08T17:20:30+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/posts/sed/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Sed 参考手册
+    </h1>
+    <div class="post-meta"><span title='2025-07-08 17:20:30 +0800 +0800'>July 8, 2025</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e6%a8%a1%e5%bc%8f%e7%a9%ba%e9%97%b4%e4%b8%8e%e4%bf%9d%e6%8c%81%e7%a9%ba%e9%97%b4" aria-label="模式空间与保持空间">模式空间与保持空间</a></li>
+                    <li>
+                        <a href="#%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%8f%82%e6%95%b0" aria-label="命令行参数">命令行参数</a><ul>
+                            
+                    <li>
+                        <a href="#-n-silent-quiet" aria-label="-n, &ndash;silent, &ndash;quiet">-n, &ndash;silent, &ndash;quiet</a></li>
+                    <li>
+                        <a href="#-e-expression" aria-label="-e, &ndash;expression">-e, &ndash;expression</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%9c%b0%e5%9d%80" aria-label="地址">地址</a><ul>
+                            <ul>
+                            
+                    <li>
+                        <a href="#%e5%8d%95%e5%9c%b0%e5%9d%80" aria-label="单地址">单地址</a></li>
+                    <li>
+                        <a href="#%e5%8f%8c%e5%9c%b0%e5%9d%80" aria-label="双地址">双地址</a></li>
+                    <li>
+                        <a href="#%e5%85%b6%e4%bb%96%e5%bd%a2%e5%bc%8f" aria-label="其他形式">其他形式</a></li></ul>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%91%bd%e4%bb%a4" aria-label="命令">命令</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4" aria-label="常用命令">常用命令</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%89%93%e5%8d%b0%e8%a1%8c%e5%8f%b7" aria-label="打印行号">打印行号</a></li>
+                    <li>
+                        <a href="#%e6%8f%92%e5%85%a5%e5%86%85%e5%ae%b9" aria-label="插入内容">插入内容</a></li>
+                    <li>
+                        <a href="#%e5%88%a0%e9%99%a4" aria-label="删除">删除</a></li>
+                    <li>
+                        <a href="#%e6%9b%bf%e6%8d%a2" aria-label="替换">替换</a></li>
+                    <li>
+                        <a href="#%e6%89%93%e5%8d%b0%e6%a8%a1%e5%bc%8f%e7%a9%ba%e9%97%b4" aria-label="打印模式空间">打印模式空间</a></li>
+                    <li>
+                        <a href="#%e8%af%bb%e5%8f%96%e4%b8%8b%e4%b8%80%e8%a1%8c" aria-label="读取下一行">读取下一行</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%bf%9b%e9%98%b6%e5%91%bd%e4%bb%a4" aria-label="进阶命令">进阶命令</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%81%9c%e6%ad%a2%e5%b9%b6%e9%80%80%e5%87%ba" aria-label="停止并退出">停止并退出</a></li>
+                    <li>
+                        <a href="#%e4%bb%8e%e6%96%87%e4%bb%b6%e8%8e%b7%e5%8f%96%e6%8f%92%e5%85%a5%e5%86%85%e5%ae%b9" aria-label="从文件获取插入内容">从文件获取插入内容</a></li>
+                    <li>
+                        <a href="#%e6%93%8d%e4%bd%9c%e4%bf%9d%e6%8c%81%e7%a9%ba%e9%97%b4" aria-label="操作保持空间">操作保持空间</a></li>
+                    <li>
+                        <a href="#%e4%bf%9d%e5%ad%98%e6%a8%a1%e5%bc%8f%e7%a9%ba%e9%97%b4%e5%88%b0%e6%96%87%e4%bb%b6" aria-label="保存模式空间到文件">保存模式空间到文件</a></li>
+                    <li>
+                        <a href="#%e5%ad%97%e7%ac%a6%e6%9b%bf%e6%8d%a2" aria-label="字符替换">字符替换</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#gnu-%e6%89%a9%e5%b1%95" aria-label="GNU 扩展">GNU 扩展</a>
+                    </li>
+                </ul>
+                </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。</p>
+<h2 id="模式空间与保持空间">模式空间与保持空间<a hidden class="anchor" aria-hidden="true" href="#模式空间与保持空间">#</a></h2>
+<p>Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。</p>
+<p>模式空间相当于工厂的流水线，每一个输入行都会进入模式空间，一般的命令都会在模式空间进行。在处理结束后模式空间的内容会被打印到标准输出，并自动清空模式空间。</p>
+<p>保持空间是模式空间的缓冲区，用于临时保存模式空间的数据，一般的命令无法作用于保持空间。保持空间的内容不会主动清空，也不会主动打印。</p>
+<p>Sed 每处理一行都会先将其保存到模式空间，若该行满足条件，则执行命令。命令执行完毕或输入行不满足条件，则打印模式空间内容到标准输出并清空模式空间。</p>
+<h2 id="命令行参数">命令行参数<a hidden class="anchor" aria-hidden="true" href="#命令行参数">#</a></h2>
+<h3 id="-n-silent-quiet">-n, &ndash;silent, &ndash;quiet<a hidden class="anchor" aria-hidden="true" href="#-n-silent-quiet">#</a></h3>
+<p>Sed 处理完一行后默认会打印模式空间内容到标准输出。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># test.md</span>
+</span></span><span style="display:flex;"><span>line one
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;1p&#39;</span> test.md
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># output</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span></code></pre></div><p>使用 <code>-n</code>，<code>--silent</code> 或 <code>--quiet</code> 参数可以关闭自动打印。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;1p&#39;</span> test.md
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># output</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span></code></pre></div><h3 id="-e-expression">-e, &ndash;expression<a hidden class="anchor" aria-hidden="true" href="#-e-expression">#</a></h3>
+<p><code>-e</code> 和 <code>--expression</code> 用于直接指定 sed 脚本。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed -e <span style="color:#a6d189">&#39;s/Tmux/Zellij/&#39;</span> todo.md
+</span></span><span style="display:flex;"><span>sed --expression<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#39;s/Tmux/Zellij/&#39;</span> todo.md
+</span></span></code></pre></div><p>一般情况下不需要使用参数指定 sed 脚本，但 <code>-e</code> 和 <code>--expression</code> 可以同时指定多个 sed 脚本。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed --expression<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#39;s/Tmux/Zellij/&#39;</span> -e <span style="color:#a6d189">&#39;s/\[\ \]/[x]/&#39;</span> todo.md
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#output</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db;font-weight:bold">[</span>x<span style="color:#99d1db;font-weight:bold">]</span> Zellij 重复环境变量
+</span></span><span style="display:flex;"><span><span style="color:#99d1db;font-weight:bold">[</span>x<span style="color:#99d1db;font-weight:bold">]</span>
+</span></span></code></pre></div><h2 id="地址">地址<a hidden class="anchor" aria-hidden="true" href="#地址">#</a></h2>
+<p>地址用于过滤需要处理的行。没有提供地址时，sed 会处理所有的输入行。提供一个地址时 sed 只会选择对应的行。提供两个地址时，sed 会选择对应范围的行。</p>
+<p>地址有「数字」和「正则表达式」两种形式。</p>
+<p>数字表示某一行，正则表达式则表示所有匹配行。数字不能为 0，正则表达式有两种书写方式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 1. /regexp/</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 2. \cregexpc</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 第二种方式中的 &#39;c&#39; 可以是任意字符。若 &#39;c&#39; 出现在正则表达式中，则需要转义。</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/d&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;\cfontcd&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;\tfon\ttd&#39;</span> alacritty.toml
+</span></span></code></pre></div><h4 id="单地址">单地址<a hidden class="anchor" aria-hidden="true" href="#单地址">#</a></h4>
+<p>单个数字选择某一行，单个正则表达式选择匹配的所有行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;3d&#39;</span> test.md <span style="color:#737994;font-style:italic"># 删除第 3 行</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/d&#39;</span> alacritty.toml <span style="color:#737994;font-style:italic"># 删除所有含「font」的行</span>
+</span></span></code></pre></div><h4 id="双地址">双地址<a hidden class="anchor" aria-hidden="true" href="#双地址">#</a></h4>
+<p>双地址可以组合使用数字和正则表达式，两个地址之间以 <code>,</code> 分隔。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># 测试文本 alacritty.toml
+</span></span><span style="display:flex;"><span>1  [font]
+</span></span><span style="display:flex;"><span>2  size = 18.0
+</span></span><span style="display:flex;"><span>3  [font.bold]
+</span></span><span style="display:flex;"><span>4  family = &#34;Maple Mono NL NF CN&#34;
+</span></span><span style="display:flex;"><span>5  style = &#34;Bold&#34;
+</span></span><span style="display:flex;"><span>6  [font.bold_italic]
+</span></span><span style="display:flex;"><span>7  family = &#34;Maple Mono NL NF CN&#34;
+</span></span><span style="display:flex;"><span>8  style = &#34;Bold Italic&#34;
+</span></span><span style="display:flex;"><span>9  [font.italic]
+</span></span><span style="display:flex;"><span>10 family = &#34;Maple Mono NL NF CN&#34;
+</span></span><span style="display:flex;"><span>11 style = &#34;Italic&#34;
+</span></span><span style="display:flex;"><span>12 [font.normal]
+</span></span><span style="display:flex;"><span>13 family = &#34;Maple Mono NL NF CN&#34;
+</span></span><span style="display:flex;"><span>14 style = &#34;Regular&#34;
+</span></span><span style="display:flex;"><span>15 [general]
+</span></span><span style="display:flex;"><span>16 import = [&#34;/home/tpcad/.config/alacritty/catppuccin-frappe.toml&#34;]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;2,4d&#39;</span> test.md <span style="color:#737994;font-style:italic"># 删除 2, 3, 4 行</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/Italic/, /Maple/d&#39;</span> alacritty.toml <span style="color:#737994;font-style:italic"># 删除第 8～10 行，第 11～13 行</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;2,/Italic/d&#39;</span> test.md <span style="color:#737994;font-style:italic"># 删除第 2 行到第一次匹配到「Italic」的行（2～8 行）</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/, 7d&#39;</span> test.md <span style="color:#737994;font-style:italic"># 删除第一次匹配到「font」的行到第 7 行（1～7 行）以及之后所有包含「font」的行</span>
+</span></span></code></pre></div><p>当以正则表达式为起始条件时，sed 会选择所有符合条件的「范围」。如 <code>/Italic/, /Maple/</code> 选择了第 8～10 行和第 11～13 行两个范围。下一个范围不会选择上一个范围的行，也就是说每个范围不会互相重叠。</p>
+<p>若没有匹配的结束条件，则会一直选择至下一个匹配的起始条件，若已是最后一个范围则选择至最后一行。若结束条件为数字并小于起始条件匹配到的第一行，则只会选择起始条件匹配的所有行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 结束条件不存在，选择至下一个匹配的起始条件</span>
+</span></span><span style="display:flex;"><span>nl alacritty.toml | sed -n <span style="color:#a6d189">&#39;/style/,/non/p&#39;</span>
+</span></span><span style="display:flex;"><span>nl alacritty.toml | sed -n <span style="color:#a6d189">&#39;/style/,33p&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      5  style = &#34;Bold&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      6  [font.bold_italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      7  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      8  style = &#34;Bold Italic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      9  [font.italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     10  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     11  style = &#34;Italic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     12  [font.normal]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     13  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     14  style = &#34;Regular&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     15  [general]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     16  import = [&#34;/home/tpcad/.config/alacritty/catppuccin-frappe.toml&#34;]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 小于起始条件匹配到的第一行，选择所有含有 `style` 的行</span>
+</span></span><span style="display:flex;"><span>nl alacritty.toml | sed -n <span style="color:#a6d189">&#39;/style/,3p&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      5  style = &#34;Bold&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      8  style = &#34;Bold Italic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     11  style = &#34;Italic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     14  style = &#34;Regular&#34;</span>
+</span></span></code></pre></div><p>使用双地址时，匹配起始条件的行无论如何都会被选中，哪怕结束条件匹配的行在该行之前。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;3, 2p&#39;</span> -n <span style="color:#737994;font-style:italic"># 打印第 3 行</span>
+</span></span></code></pre></div><p>当第二个地址是正则表达式时，sed 不会再检查第一个地址所选择的行是否满足第二个地址的正则表达式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;3, /font/p&#39;</span> -n <span style="color:#737994;font-style:italic"># 打印 3～6 行</span>
+</span></span></code></pre></div><h4 id="其他形式">其他形式<a hidden class="anchor" aria-hidden="true" href="#其他形式">#</a></h4>
+<p><code>$</code> 表示最后一行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;$d&#39;</span> alacritty.toml <span style="color:#737994;font-style:italic"># 删除最后一行</span>
+</span></span></code></pre></div><p><code>first~step</code> 表示从第 <code>first</code> 行开始，步进为 <code>step</code> 行。<code>first</code> 可以为 0，此时相当于从 <code>step</code> 行开始。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;2~4d&#39;</span> test.md <span style="color:#737994;font-style:italic"># 删除 2, 6, 10 行（从 2 开始，步进为 4）</span>
+</span></span></code></pre></div><p><code>0,regexp</code> 表示从第 1 行开始直至第一次匹配到 <code>regexp</code>。与 <code>number,regexp</code> 不同，该形式检查第一个地址是否匹配正则表达式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;0,/font/d&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font]</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;1,/font/d&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># size = 18.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font.bold]</span>
+</span></span></code></pre></div><p><code>addr1,+N</code> 表示选择 <code>addr1</code> 和其随后的 <code>N</code> 行。<code>N</code> 为数字。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nl alacritty.toml | sed <span style="color:#a6d189">&#39;/font/,+3&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     1  [font]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     2  size = 18.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     3  [font.bold]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     4  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     6  [font.bold_italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     7  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     8  style = &#34;Bold Italic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     9  [font.italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#    12  [font.normal]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#    13  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#    14  style = &#34;Regular&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#    15  [general]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 正则表达式作为第一个地址时仍然会选择多个范围</span>
+</span></span></code></pre></div><p><code>addr1,~N</code> 表示选择 <code>addr1</code> 和其随后的行，直至行号等于 <code>N</code> 的倍数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nl alacritty.toml | sed -n <span style="color:#a6d189">&#39;/style/,~5p&#39;</span> <span style="color:#737994;font-style:italic"># 两个范围</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      5  style = &#34;Bold&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      6  [font.bold_italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      7  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      8  style = &#34;Bold Italic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      9  [font.italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     10  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     11  style = &#34;Italic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     12  [font.normal]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     13  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     14  style = &#34;Regular&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     15  [general]</span>
+</span></span><span style="display:flex;"><span>nl alacritty.toml | sed -n <span style="color:#a6d189">&#39;9,~5p&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      9  [font.italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#     10  family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span></code></pre></div><h2 id="命令">命令<a hidden class="anchor" aria-hidden="true" href="#命令">#</a></h2>
+<p>命令必须包裹在单引号中。</p>
+<h3 id="常用命令">常用命令<a hidden class="anchor" aria-hidden="true" href="#常用命令">#</a></h3>
+<h4 id="打印行号">打印行号<a hidden class="anchor" aria-hidden="true" href="#打印行号">#</a></h4>
+<p><code>=</code> 打印当前行行号。行号会在新的一行输出。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/=&#39;</span> alacritty.toml -n
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 3</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 6</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 9</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 12</span>
+</span></span></code></pre></div><h4 id="插入内容">插入内容<a hidden class="anchor" aria-hidden="true" href="#插入内容">#</a></h4>
+<p><code>a</code> 在行后插入内容。若有多行内容使用 <code>\</code> 分隔。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/general/anew line&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/general/aline one\
+</span></span></span><span style="display:flex;"><span><span style="color:#a6d189">line two\
+</span></span></span><span style="display:flex;"><span><span style="color:#a6d189">line three&#39;</span> alacritty.toml
+</span></span></code></pre></div><p><code>i</code> 在行前插入内容。若有多行内容使用 <code>\</code> 分隔。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/general/inew line&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/general/iline one\
+</span></span></span><span style="display:flex;"><span><span style="color:#a6d189">line two\
+</span></span></span><span style="display:flex;"><span><span style="color:#a6d189">line three&#39;</span> alacritty.toml
+</span></span></code></pre></div><h4 id="删除">删除<a hidden class="anchor" aria-hidden="true" href="#删除">#</a></h4>
+<p><code>d</code> 清空当前模式空间并开始处理下一行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/, /Maple/d&#39;</span> alacritty.toml
+</span></span></code></pre></div><p><code>D</code> 删除模式空间的第一行并立即开始（跳过自动打印和清空）下一轮处理但不读取新的行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 与 d 相同，因为模式空间总是只有一行</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/, /Maple/D&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;N;D&#39;</span> alacritty.toml <span style="color:#737994;font-style:italic"># 打印最后一行</span>
+</span></span></code></pre></div><h4 id="替换">替换<a hidden class="anchor" aria-hidden="true" href="#替换">#</a></h4>
+<p><code>c</code> 替换所选择的行为指定内容。若有多行内容使用 <code>\</code> 分隔。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># test.md</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line three</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/line/c\new line&#39;</span> test.md
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># new line</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># new line</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># new line</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 若为范围则会替换整个范围。</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/one/,/two/c\new line&#39;</span> test.md
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># new line</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line three</span>
+</span></span></code></pre></div><p><code>s/regexp/replacement</code> 替换行的匹配部分为指定内容。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/line/s/line/LINE/&#39;</span> append.txt
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># LINE one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># LINE two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># LINE three</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;1,2s/line/LINE/&#39;</span> append.txt
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># LINE one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># LINE two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line three</span>
+</span></span></code></pre></div><h4 id="打印模式空间">打印模式空间<a hidden class="anchor" aria-hidden="true" href="#打印模式空间">#</a></h4>
+<p><code>p</code> 打印整个模式空间；<code>P</code> 打印模式空间的第一行。</p>
+<p>打印命令通常搭配 <code>-n</code> 参数使用，避免自动打印影响输出内容。</p>
+<h4 id="读取下一行">读取下一行<a hidden class="anchor" aria-hidden="true" href="#读取下一行">#</a></h4>
+<p><code>n</code> 清空当前模式空间并读取下一行到模式空间；<code>N</code> 读取下一行并附加到模式空间。若没有可读取的下一行则结束 sed。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;n;p;q&#39;</span> test.md -n
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;N;p;q&#39;</span> test.md -n
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span></code></pre></div><h3 id="进阶命令">进阶命令<a hidden class="anchor" aria-hidden="true" href="#进阶命令">#</a></h3>
+<h4 id="停止并退出">停止并退出<a hidden class="anchor" aria-hidden="true" href="#停止并退出">#</a></h4>
+<p><code>q</code>，<code>Q</code> 立即停止并退出 sed。<code>q</code> 不会停止自定打印，<code>Q</code> 会停止自动打印。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nl alacritty.toml | sed <span style="color:#a6d189">&#39;/font/p;q&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      1  [font]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      1  [font]</span>
+</span></span><span style="display:flex;"><span>nl alacritty.toml | sed <span style="color:#a6d189">&#39;/font/p;Q&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#      1  [font]</span>
+</span></span></code></pre></div><h4 id="从文件获取插入内容">从文件获取插入内容<a hidden class="anchor" aria-hidden="true" href="#从文件获取插入内容">#</a></h4>
+<p><code>r</code> 从文件中获取所有内容并插入到匹配「行后」。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/r append.txt&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># size = 18.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font.bold]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># style = &#34;Bold&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font.bold_italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span></code></pre></div><h4 id="操作保持空间">操作保持空间<a hidden class="anchor" aria-hidden="true" href="#操作保持空间">#</a></h4>
+<p><code>x</code> 交换模式空间和保持空间。保持空间默认只有一个换行符。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;x;p;q&#39;</span> test.md <span style="color:#737994;font-style:italic"># 打印空行。</span>
+</span></span></code></pre></div><p><code>h</code> 拷贝模式空间内容到保持空间；<code>H</code> 附加模式空间内容到保持空间。拷贝会覆盖原有的内容。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;h;x;p&#39;</span> test.md -n
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line three</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;H;${x;p}&#39;</span> test.md -n
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># </span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line three</span>
+</span></span></code></pre></div><p><code>g</code> 拷贝保持空间内容到模式空间；<code>G</code> 附加保持空间内容到模式空间。拷贝会覆盖原有的内容。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 倒序</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;1!G;h;$!d&#39;</span> test.md
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line three</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one</span>
+</span></span></code></pre></div><h4 id="保存模式空间到文件">保存模式空间到文件<a hidden class="anchor" aria-hidden="true" href="#保存模式空间到文件">#</a></h4>
+<p><code>w</code> 将模式空间写入到指定文件（会覆盖已有内容）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/!wnew.txt&#39;</span> alacritty.toml
+</span></span></code></pre></div><h4 id="字符替换">字符替换<a hidden class="anchor" aria-hidden="true" href="#字符替换">#</a></h4>
+<p><code>y/source/dest</code> 将匹配行中 <code>dest</code> 的字符替换为 <code>source</code> 中的对应字符。<code>soucre</code> 和 <code>dest</code> 的长度必须相同。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;y/abcefghijk/1234567980&#39;</span> test.md
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># l8n4 on4</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># l8n4 two</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># l8n4 t7r44</span>
+</span></span></code></pre></div><h3 id="gnu-扩展">GNU 扩展<a hidden class="anchor" aria-hidden="true" href="#gnu-扩展">#</a></h3>
+<p><code>q</code>，<code>Q</code> 可以指定退出码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nl alacritty.toml | sed <span style="color:#a6d189">&#39;/font/p;Q 0&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nl alacritty.toml | sed <span style="color:#a6d189">&#39;/font/p;Q 3&#39;</span>
+</span></span></code></pre></div><p><code>R</code> 逐行读取文件内容并插入到匹配行后。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed <span style="color:#a6d189">&#39;/font/R append.txt&#39;</span> alacritty.toml
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line one # 第一行</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># size = 18.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font.bold]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># line two # 第一行</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># style = &#34;Bold&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [font.bold_italic]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># family = &#34;Maple Mono NL NF CN&#34;</span>
+</span></span></code></pre></div><p><code>W</code> 将模式空间第一行写入指定文件。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://tpcad.github.io/tags/linux/">Linux</a></li>
+    </ul>
+  </footer>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

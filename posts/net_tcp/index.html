@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>TCP 基础 | Eulamber</title>
+<meta name="keywords" content="">
+<meta name="description" content="TCP 首部
+---
+title: &#34;TCP Packet&#34;
+---
+packet-beta
+0-15: &#34;源端口号&#34;
+16-31: &#34;目的端口号&#34;
+32-63: &#34;序列号&#34;
+64-95: &#34;确认应答号&#34;
+96-99: &#34;数据偏移量&#34;
+100-105: &#34;保留&#34;
+106: &#34;URG&#34;
+107: &#34;ACK&#34;
+108: &#34;PSH&#34;
+109: &#34;RST&#34;
+110: &#34;SYN&#34;
+111: &#34;FIN&#34;
+112-127: &#34;窗口&#34;
+128-143: &#34;校验和&#34;
+144-159: &#34;紧急指针&#34;
+160-191: &#34;选项（长度可变）&#34;
+
+
+序列号：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数
+确认应答号：下一次期望收到的数据的序列号
+数据偏移量：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。
+控制位：
+
+ACK：该位为 1 时表示确认应答字段有效，除最初建立连接时的 SYN 包外该位必须置 1
+RST：该位为 1 时表示 TCP 连接出现异常必须强制断开连接
+SYN：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值
+FIN：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接
+
+TCP 连接
+三次握手
+建立一个 TCP 连接需要经过三次握手过程。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/posts/net_tcp/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/posts/net_tcp/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/posts/net_tcp/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="TCP 基础">
+  <meta property="og:description" content="TCP 首部 --- title: &#34;TCP Packet&#34; --- packet-beta 0-15: &#34;源端口号&#34; 16-31: &#34;目的端口号&#34; 32-63: &#34;序列号&#34; 64-95: &#34;确认应答号&#34; 96-99: &#34;数据偏移量&#34; 100-105: &#34;保留&#34; 106: &#34;URG&#34; 107: &#34;ACK&#34; 108: &#34;PSH&#34; 109: &#34;RST&#34; 110: &#34;SYN&#34; 111: &#34;FIN&#34; 112-127: &#34;窗口&#34; 128-143: &#34;校验和&#34; 144-159: &#34;紧急指针&#34; 160-191: &#34;选项（长度可变）&#34; 序列号：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数
+确认应答号：下一次期望收到的数据的序列号
+数据偏移量：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。
+控制位：
+ACK：该位为 1 时表示确认应答字段有效，除最初建立连接时的 SYN 包外该位必须置 1 RST：该位为 1 时表示 TCP 连接出现异常必须强制断开连接 SYN：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值 FIN：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接 TCP 连接 三次握手 建立一个 TCP 连接需要经过三次握手过程。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-07T09:03:08+08:00">
+    <meta property="article:modified_time" content="2024-07-07T09:03:08+08:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP 基础">
+<meta name="twitter:description" content="TCP 首部
+---
+title: &#34;TCP Packet&#34;
+---
+packet-beta
+0-15: &#34;源端口号&#34;
+16-31: &#34;目的端口号&#34;
+32-63: &#34;序列号&#34;
+64-95: &#34;确认应答号&#34;
+96-99: &#34;数据偏移量&#34;
+100-105: &#34;保留&#34;
+106: &#34;URG&#34;
+107: &#34;ACK&#34;
+108: &#34;PSH&#34;
+109: &#34;RST&#34;
+110: &#34;SYN&#34;
+111: &#34;FIN&#34;
+112-127: &#34;窗口&#34;
+128-143: &#34;校验和&#34;
+144-159: &#34;紧急指针&#34;
+160-191: &#34;选项（长度可变）&#34;
+
+
+序列号：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数
+确认应答号：下一次期望收到的数据的序列号
+数据偏移量：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。
+控制位：
+
+ACK：该位为 1 时表示确认应答字段有效，除最初建立连接时的 SYN 包外该位必须置 1
+RST：该位为 1 时表示 TCP 连接出现异常必须强制断开连接
+SYN：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值
+FIN：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接
+
+TCP 连接
+三次握手
+建立一个 TCP 连接需要经过三次握手过程。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "TCP 基础",
+      "item": "https://tpcad.github.io/posts/net_tcp/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "TCP 基础",
+  "name": "TCP 基础",
+  "description": "TCP 首部 --- title: \u0026#34;TCP Packet\u0026#34; --- packet-beta 0-15: \u0026#34;源端口号\u0026#34; 16-31: \u0026#34;目的端口号\u0026#34; 32-63: \u0026#34;序列号\u0026#34; 64-95: \u0026#34;确认应答号\u0026#34; 96-99: \u0026#34;数据偏移量\u0026#34; 100-105: \u0026#34;保留\u0026#34; 106: \u0026#34;URG\u0026#34; 107: \u0026#34;ACK\u0026#34; 108: \u0026#34;PSH\u0026#34; 109: \u0026#34;RST\u0026#34; 110: \u0026#34;SYN\u0026#34; 111: \u0026#34;FIN\u0026#34; 112-127: \u0026#34;窗口\u0026#34; 128-143: \u0026#34;校验和\u0026#34; 144-159: \u0026#34;紧急指针\u0026#34; 160-191: \u0026#34;选项（长度可变）\u0026#34; 序列号：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数\n确认应答号：下一次期望收到的数据的序列号\n数据偏移量：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。\n控制位：\nACK：该位为 1 时表示确认应答字段有效，除最初建立连接时的 SYN 包外该位必须置 1 RST：该位为 1 时表示 TCP 连接出现异常必须强制断开连接 SYN：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值 FIN：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接 TCP 连接 三次握手 建立一个 TCP 连接需要经过三次握手过程。\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "TCP 首部 --- title: \"TCP Packet\" --- packet-beta 0-15: \"源端口号\" 16-31: \"目的端口号\" 32-63: \"序列号\" 64-95: \"确认应答号\" 96-99: \"数据偏移量\" 100-105: \"保留\" 106: \"URG\" 107: \"ACK\" 108: \"PSH\" 109: \"RST\" 110: \"SYN\" 111: \"FIN\" 112-127: \"窗口\" 128-143: \"校验和\" 144-159: \"紧急指针\" 160-191: \"选项（长度可变）\" 序列号：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数\n确认应答号：下一次期望收到的数据的序列号\n数据偏移量：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。\n控制位：\nACK：该位为 1 时表示确认应答字段有效，除最初建立连接时的 SYN 包外该位必须置 1 RST：该位为 1 时表示 TCP 连接出现异常必须强制断开连接 SYN：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值 FIN：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接 TCP 连接 三次握手 建立一个 TCP 连接需要经过三次握手过程。\nsequenceDiagram participant Client participant Server Client-\u003e\u003eServer: SYN (SEQ=client_seq) Server--\u003e\u003eClient: SYN-ACK (SEQ=server_seq, ACK=client_seq+1) Client-\u003e\u003eServer: ACK (SEQ=client_seq+1, ACK=server_seq+1) 第一次握手：SYN 报文 客户端将 SYN 字段置为 1，表示希望建立连接，并随机初始化序列号，该报文 不包含数据。之后客户端进入 SYN-SENT 状态。 第二次握手：SYN-ACK 报文 服务端收到客户端的 SYN 报文后，也随机初始化自己的序列号，并将 client_seq+1 作为确认应答号，同时将 SYN 和 ACK 字段置为 1。该报文 不包含数据。之后服务端进入 SYN-RCVD 状态。 第三次握手：ACK 报文 客户端收到服务端的报文后，向服务端发送 ACK 报文。该报文的序列号为 client_seq+1，确认应答号为 server_seq+1，ACK 字段置为 1。该报文 可以包含数据。之后客户端进入 ESTABLISHED 状态。 服务端收到 ACK 报文后也会进入 ESTABLISHED 状态，此时连接成功建立。 四次挥手 关闭一个 TCP 连接需要经过三次挥手过程。\nsequenceDiagram participant Client participant Server Client-\u003e\u003eServer: FIN (SEQ=x) Server--\u003e\u003eClient: ACK (SEQ=y, ACK=x+1) Server-\u003e\u003eClient: Data Server-\u003e\u003eClient: FIN (SEQ=w, ACK=x+1) Client--\u003e\u003eServer: ACK (SEQ=x+1, ACK=w+1) 第一次挥手：客户端 FIN 报文 客户端向服务端发送 FIN 字段为 1 的报文，表示关闭 TCP 连接，客户端进入 FIN_WAIT_1 状态，不再向服务端发送数据。 第二次挥手：服务端 ACK 报文 服务端接收到客户端的 FIN 报文后发送 ACK 报文，服务端进入 CLOSE_WAIT 状态。此时服务端仍能向客户端发送数据。 客户端接收到该 ACK 报文后进入 FIN_WAIT_2 状态。 第三次挥手：服务端 FIN 报文 服务端向客户端发送 FIN 字段为 1 的报文，表示关闭 TCP 连接，服务端进入 LAST_ACK 状态，不再向客户端发送数据。 第四次挥手：服务端 ACK 报文 客户端接收到服务端的 FIN 报文后发送 ACK 报文，客户端进入 TIME_WAIT 状态。客户端在经过 2MSL 时间后，自动进入 CLOSE 状态，完成关闭。 服务端接收到 ACK 报文后进入 CLOSE 状态，完成关闭。 重传 重传 是 TCP 实现可靠传输的方式之一。发送端的数据到达接收端后，接收端会回复一个确认报文，表示已收到。在错综复杂的网络中，数据可能在传输过程中丢失，因此需要重新传输丢失的数据。数据丢失有两种情况：\n数据报文丢失（接收端没有收到数据报文） 确认报文丢失（发送端没有收到确认报文） 超时重传 每一个数据报发送时都会设置一个定时器，若超过指定时间没有收到确认报文，就会重发该数据。这就是 超时重传。\n超时重传的时间通常略大于往返时延（详情见处）。\n若超时重传的数据超时，TCP 采取 超时间隔加倍 策略。也就是说，每遇到一次超时，下一次超时重传的时间都是上次的两倍。\n超时重传存在等待时间过长的问题。\n快速重传 快速重传 可以有效解决 超时重传 时间过长的问题。\n假设发送端向接收端发送 6 个数据报，它们的序列号分别为：Seq1、Seq2、Seq3、Seq4、Seq5。其中序列号为 Seq2 的数据报丢失，接收端收到 Seq1 后回复 ACK 报文，收到 Seq3 及其后的数据报时，因为 Seq2 丢失（接收端没有收到），回复了 3 个相同的 ACK 报文（确认应答号均为 Seq2）。\n收到三个相同的 ACK 报文后，发送端会在定时器过期之前重发对应的数据，这就是 快速重传。\n最后接收端收到了 Seq2，于是 ACK 报文的确认应答号为 Seq6。\n对于上面单个数据报丢失的情况，快速重传的等待时间较短，但若出现多个数据报丢失，后面的数据报必须在前面的数据报被接收后才能触发快速重传，这又会增加重传的等待时间。如果全部重传后面的数据，那么已接收的数据就被浪费了。\nSACK 选择性确认 （Selective Acknowledge，SACK）可以将已收到的数据告诉发送端，从而可以只重传丢失的数据。\nsequenceDiagram participant Sender participant Receiver Sender-\u003e\u003eReceiver: 100~199 Receiver--\u003e\u003eSender: ACK=200 Sender-\u003e\u003eReceiver: 200~299 (lost) Sender-\u003e\u003eReceiver: 300~399 Receiver--\u003e\u003eSender: ACK=200, SACK: 300~400 Sender-\u003e\u003eReceiver: 400~499 Receiver--\u003e\u003eSender: ACK=200, SACK: 300~500 Sender-\u003e\u003eReceiver: 500~599 Receiver--\u003e\u003eSender: ACK=200, SACK: 300~600 Sender-\u003e\u003eReceiver: 200~299 Receiver--\u003e\u003eSender: ACK=600 当接收端收到乱序的数据报时（序列号比确认号大）会在 ACK 报文中加上 SACK 选项以告知发送端已接收的部分。发送端在触发快速重传时根据确认号和 SACK 选项得知丢失的数据部分并重传该部分。\nSACK 选项 SACK 选项包含两个选项。\nSACK-Permitted 选项 该选项只能出现在 SYN 报文中，在连接建立时告知对方自己支持 SACK。选项格式如下： --- title: \"SACK-Permitted\" --- packet-beta 0-8: \"Kind=4\" 9-15: \"Length=2\" SACK 选项 该选项通过范围表示已经接收到的数据，不连续的部分就是丢失的数据。 --- title: \"SACK\" --- packet-beta 0-8: \"Padding\" 9-15: \"Padding\" 16-23: \"Kind=5\" 24-31: \"Length=variable\" 32-63: \"Left Edge of 1st Block\" 64-95: \"Right Edge of 1st Block\" 96-223: \"...\" 224-255: \"Left Edge of 4th Block\" 256-287: \"Right Edge of 4th Block\" D-SACK Duplicate SACK 又称 D-SACK，其主要使用 SACK 来告诉发送方有哪些数据被重复接收了。\n流量控制 在通信过程中，发送方不能无脑地向接收方发送数据，接收方可能无法及时处理数据而丢失数据，从而触发发送方的重传导致浪费网络流量。\n因此，TCP 提供了一种可以让发送方根据接收方的实际接收能力控制发送的数据量的机制，也就是 流量控制。\n累计应答 发送方收到确认报文后就可以认为该确认号之前的数据已全部被接收，即使没有收到前面的数据的确认报文。\n滑动窗口 接收窗口：接收端处理数据的能力，通过 TCP 首部的 Window 字段告知 发送窗口：控制发送端发送数据，约等于 接收窗口 窗口并不是一成不变的，而是会根据当前的应用、系统运行情况，网络状况等动态地变化，变化会通过首部的 Window 字段告知对端。\n发送端的窗口 |30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55| ^ ^ | send window(20 bytes) | ^ ^ |free window(6)| | #1 | #2 | #3 | #4 | #1：已发送且已确认的数据 #2：已发送但未确认的数据 #3：未发送但可发送的数据 #4：未发送且不可发送的数据 当可发送数据全部发送之后，可用窗口变为 0，表示接收端已经达到最大处理能力，不应再向其发送数据。\n|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55| ^ ^ | send window(20 bytes) | | #1 | #2 | #3 | 当收到确认报文后，窗口就会向右 滑动，从而可用窗口不为 0，可以继续发送数据。\n|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55| ^ ^ | send window(20 bytes) | ^ ^ |free | | #1 | #2 | #3 | #4 | 可用窗口的计算公式为：\n可用窗口 = 窗口大小 - (可发送的第一字节 - 已发送未确认的第一字节) 不可发送的第一字节 = 已发送未确认的第一字节 + 窗口大小 接收端的窗口 接收端的窗口相对简单，没有可用窗口的概念。\n|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55| ^ ^ | send window(20 bytes) | | #1 | #2 | #3 | 窗口大小 TCP 首部的 Window 字段只有 16 位，最大表示 65535 字节。窗口缩放选项可以突破这个限制。\nWindow Scale option (WSopt): Kind: 3, Length: 3 +---------+---------+---------+ | Kind=3 |Length=3 |shift.cnt| +---------+---------+---------+ 1 1 1 窗口缩放选项只能在 SYN 报文中确认且必须双方都启用才能生效，缩放因子确认后就不能再更改。之后的报文必须都包含窗口缩放选项。缩放因子最大有效值为 14。窗口大小的计算公式如下：\n$$ Size = Window * 2^{Scale} $$\n窗口关闭 当接收端发送 Window=0 的报文时，发送端就会停止发送数据，直到再次收到窗口值为非 0 的报文。此时若接收端的窗口非 0 报文丢失则可能会造成死锁。为了避免死锁，TCP 在收到零窗口通知时会启动 持续计时器。如果计时器超时，就会发送 窗口探测报文，对方在确认该报文时会给出新的窗口大小。如果新窗口仍为 0 则会重新启动持续计时器。一定次数后若窗口仍为 0，那么 TCP 将强制中断连接。\n糊涂窗口综合征 如果接收端的数据处理速度太慢，会导致发送端的发送窗口越来越小。到最后，只要接收端能够接收数据，发送端都会发送数据，哪怕只有几字节，这就是 糊涂窗口综合征。\n糊涂窗口综合征发生的条件有两个：\n接收端可以通告小窗口 发送端可以发送小数据 于是，避免出现以上两种情况便能避免糊涂窗口综合征。\n针对条件 1，可以让窗口大小小于 min(MSS, 缓存空间/2) 时发送零窗口通知，阻止发送端继续发送数据，等待接收端处理一些数据后再打开窗口。\n针对条件 2，发送端使用 Nagle 算法，只有满足以下 任一 条件时才发送数据：\n窗口大小大于或等于 MSS 并且数据大小大于或等于 MSS 收到之前发送数据的确认报文 if 有数据要发送 { if 可用窗口大小 \u003e= MSS \u0026\u0026 可发送的数据 \u003e= MSS { 立刻发送MSS大小的数据 } else { if 有未确认的数据 { 将数据放入缓存等待接收 ACK } else { 立刻发送数据 } } } 如果接收端可以通告小窗口，那么即使开启 Nagle 算法也无法避免糊涂窗口综合征。因为如果对端确认报文回复得快的话（满足 Nagle 算法条件 2），Nagle 算法就无法等到数据足够多时再进行传输。\n因此，接收端不通告小窗口且发送端开启 Nagle 算法才可以避免糊涂窗口综合征。\n拥塞控制 流量控制可以避免发送端的数据填满接收端的缓存，但并不考虑网络的拥塞状况。当网络拥堵时，如果继续发送大量数据会造成数据包丢失等情况，此时，TCP 会开始重传数据，这样会进一步加剧网络拥堵，从而陷入恶性循环。\n为此，TCP 引入了 拥塞控制，避免发送端的数据填满网络。\n拥塞窗口 拥塞窗口 是发送端维护的一个变量，它会根据网络的拥塞程度动态变化。\n加入拥塞窗口后，发送窗口 的大小为 min(拥塞窗口, 接收窗口)。\n当网络没有出现拥塞时，拥塞窗口会增大，当出现拥塞时，拥塞窗口就会减小。TCP 通过超时重传判断网络是否出现拥塞。\n慢启动 慢启动的核心规则是：每收到一个 ACK，拥塞窗口就会加 1。\n假设拥塞窗口 cwnd 初始值为 1 个 MSS，\n连接建立后，发送端发送 cwnd 字节数据 收到 ACK 后，cwnd 加 1，变为 2 个 MSS，继续发送数据 收到 2 个 ACK 后，cwnd 加 2，变为 4 个 MSS，继续发送数据 …… 由此可见，每一轮 RTT 后，cwnd 变为原来的两倍，在慢启动阶段，拥塞窗口呈指数增长。\n当 cwnd 大于慢开始门限 ssthresh 后，就会进入 拥塞避免 阶段。\n拥塞避免 慢启动的核心规则是：每收到一个 ACK，拥塞窗口就会增加 1/cwnd。\n假设此时拥塞窗口 cwnd 为 8 个 MSS，\n发送端发送 8 个长度为 MSS 的数据报 收到 8个 ACK 后，cwnd 加 1，变为 9 个 MSS，继续发送数据 收到 9 个 ACK 后，cwnd 加 1，变为 10 个 MSS，继续发送数据 …… 由此可见，每一轮 RTT 后，cwnd 加 1，在拥塞避免阶段，拥塞窗口呈线性增长。\n拥塞发生 随着拥塞窗口的增加，拥塞不可避免地发生，TCP 通过是否发生重传来判断拥塞情况。\n超时重传 发生超时重传时，TCP 会先将 ssthresh 设为 cwnd/2，并将 cwnd 重置为初始值，然后进入慢启动。\n快速重传 当发生快速重传时，TCP 会先将 cwnd 设为 cwnd/2，并将 ssthresh 设为 cwnd，然后执行 快速恢复 算法。\n快速恢复算法如下：\ncwnd = ssthresh + 3。3 表示收到的三个重复的 ACK 重传数据报 每收到一个同样的 ACK，cwnd 加 1，每 3 个相同的 ACK 触发一次快速重传 重复 3 直至收到新的 ACK。收到新的 ACK 后将 cwnd 设为 ssthresh 并进入拥塞避免阶段 快速重传是为了尽快将丢失的数据发送给对方，所以在收到相同的 ACK 后 cwnd 会加 1 以加快从对端获得 ACK 的速度。\n",
+  "wordCount" : "768",
+  "inLanguage": "en",
+  "datePublished": "2024-07-07T09:03:08+08:00",
+  "dateModified": "2024-07-07T09:03:08+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/posts/net_tcp/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      TCP 基础
+    </h1>
+    <div class="post-meta"><span title='2024-07-07 09:03:08 +0800 +0800'>July 7, 2024</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#tcp-%e9%a6%96%e9%83%a8" aria-label="TCP 首部">TCP 首部</a></li>
+                    <li>
+                        <a href="#tcp-%e8%bf%9e%e6%8e%a5" aria-label="TCP 连接">TCP 连接</a><ul>
+                            
+                    <li>
+                        <a href="#%e4%b8%89%e6%ac%a1%e6%8f%a1%e6%89%8b" aria-label="三次握手">三次握手</a></li>
+                    <li>
+                        <a href="#%e5%9b%9b%e6%ac%a1%e6%8c%a5%e6%89%8b" aria-label="四次挥手">四次挥手</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e9%87%8d%e4%bc%a0" aria-label="重传">重传</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%b6%85%e6%97%b6%e9%87%8d%e4%bc%a0" aria-label="超时重传">超时重传</a></li>
+                    <li>
+                        <a href="#%e5%bf%ab%e9%80%9f%e9%87%8d%e4%bc%a0" aria-label="快速重传">快速重传</a></li>
+                    <li>
+                        <a href="#sack" aria-label="SACK">SACK</a><ul>
+                            
+                    <li>
+                        <a href="#sack-%e9%80%89%e9%a1%b9" aria-label="SACK 选项"><code>SACK</code> 选项</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#d-sack" aria-label="D-SACK">D-SACK</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%b5%81%e9%87%8f%e6%8e%a7%e5%88%b6" aria-label="流量控制">流量控制</a><ul>
+                            
+                    <li>
+                        <a href="#%e7%b4%af%e8%ae%a1%e5%ba%94%e7%ad%94" aria-label="累计应答">累计应答</a></li>
+                    <li>
+                        <a href="#%e6%bb%91%e5%8a%a8%e7%aa%97%e5%8f%a3" aria-label="滑动窗口">滑动窗口</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%8f%91%e9%80%81%e7%ab%af%e7%9a%84%e7%aa%97%e5%8f%a3" aria-label="发送端的窗口">发送端的窗口</a></li>
+                    <li>
+                        <a href="#%e6%8e%a5%e6%94%b6%e7%ab%af%e7%9a%84%e7%aa%97%e5%8f%a3" aria-label="接收端的窗口">接收端的窗口</a></li>
+                    <li>
+                        <a href="#%e7%aa%97%e5%8f%a3%e5%a4%a7%e5%b0%8f" aria-label="窗口大小">窗口大小</a></li>
+                    <li>
+                        <a href="#%e7%aa%97%e5%8f%a3%e5%85%b3%e9%97%ad" aria-label="窗口关闭">窗口关闭</a></li>
+                    <li>
+                        <a href="#%e7%b3%8a%e6%b6%82%e7%aa%97%e5%8f%a3%e7%bb%bc%e5%90%88%e5%be%81" aria-label="糊涂窗口综合征">糊涂窗口综合征</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%8b%a5%e5%a1%9e%e6%8e%a7%e5%88%b6" aria-label="拥塞控制">拥塞控制</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%8b%a5%e5%a1%9e%e7%aa%97%e5%8f%a3" aria-label="拥塞窗口">拥塞窗口</a></li>
+                    <li>
+                        <a href="#%e6%85%a2%e5%90%af%e5%8a%a8" aria-label="慢启动">慢启动</a></li>
+                    <li>
+                        <a href="#%e6%8b%a5%e5%a1%9e%e9%81%bf%e5%85%8d" aria-label="拥塞避免">拥塞避免</a></li>
+                    <li>
+                        <a href="#%e6%8b%a5%e5%a1%9e%e5%8f%91%e7%94%9f" aria-label="拥塞发生">拥塞发生</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%b6%85%e6%97%b6%e9%87%8d%e4%bc%a0-1" aria-label="超时重传">超时重传</a></li>
+                    <li>
+                        <a href="#%e5%bf%ab%e9%80%9f%e9%87%8d%e4%bc%a0-1" aria-label="快速重传">快速重传</a>
+                    </li>
+                </ul>
+                </li>
+                </ul>
+                </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><h2 id="tcp-首部">TCP 首部<a hidden class="anchor" aria-hidden="true" href="#tcp-首部">#</a></h2>
+<pre class="mermaid">---
+title: &#34;TCP Packet&#34;
+---
+packet-beta
+0-15: &#34;源端口号&#34;
+16-31: &#34;目的端口号&#34;
+32-63: &#34;序列号&#34;
+64-95: &#34;确认应答号&#34;
+96-99: &#34;数据偏移量&#34;
+100-105: &#34;保留&#34;
+106: &#34;URG&#34;
+107: &#34;ACK&#34;
+108: &#34;PSH&#34;
+109: &#34;RST&#34;
+110: &#34;SYN&#34;
+111: &#34;FIN&#34;
+112-127: &#34;窗口&#34;
+128-143: &#34;校验和&#34;
+144-159: &#34;紧急指针&#34;
+160-191: &#34;选项（长度可变）&#34;
+</pre>
+
+<p><strong>序列号</strong>：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数</p>
+<p><strong>确认应答号</strong>：下一次期望收到的数据的序列号</p>
+<p><strong>数据偏移量</strong>：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。</p>
+<p><strong>控制位</strong>：</p>
+<ul>
+<li><em>ACK</em>：该位为 1 时表示确认应答字段有效，除最初建立连接时的 <code>SYN</code> 包外该位必须置 1</li>
+<li><em>RST</em>：该位为 1 时表示 TCP 连接出现异常必须强制断开连接</li>
+<li><em>SYN</em>：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值</li>
+<li><em>FIN</em>：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接</li>
+</ul>
+<h2 id="tcp-连接">TCP 连接<a hidden class="anchor" aria-hidden="true" href="#tcp-连接">#</a></h2>
+<h3 id="三次握手">三次握手<a hidden class="anchor" aria-hidden="true" href="#三次握手">#</a></h3>
+<p>建立一个 TCP 连接需要经过三次握手过程。</p>
+<pre class="mermaid">sequenceDiagram
+    participant Client
+    participant Server
+
+    Client-&gt;&gt;Server: SYN (SEQ=client_seq)
+    Server--&gt;&gt;Client: SYN-ACK (SEQ=server_seq, ACK=client_seq+1)
+    Client-&gt;&gt;Server: ACK (SEQ=client_seq+1, ACK=server_seq+1)
+</pre>
+
+<ul>
+<li>第一次握手：<code>SYN</code> 报文
+客户端将 <code>SYN</code> 字段置为 1，表示希望建立连接，并随机初始化序列号，该报文 <strong>不包含数据</strong>。之后客户端进入 <code>SYN-SENT</code> 状态。</li>
+<li>第二次握手：<code>SYN-ACK</code> 报文
+服务端收到客户端的 <code>SYN</code> 报文后，也随机初始化自己的序列号，并将 <code>client_seq+1</code> 作为确认应答号，同时将 <code>SYN</code> 和 <code>ACK</code> 字段置为 1。该报文 <strong>不包含数据</strong>。之后服务端进入 <code>SYN-RCVD</code> 状态。</li>
+<li>第三次握手：<code>ACK</code> 报文
+客户端收到服务端的报文后，向服务端发送 <code>ACK</code> 报文。该报文的序列号为 <code>client_seq+1</code>，确认应答号为 <code>server_seq+1</code>，<code>ACK</code> 字段置为 1。该报文 <strong>可以包含数据</strong>。之后客户端进入 <code>ESTABLISHED</code> 状态。
+服务端收到 <code>ACK</code> 报文后也会进入 <code>ESTABLISHED</code> 状态，此时连接成功建立。</li>
+</ul>
+<h3 id="四次挥手">四次挥手<a hidden class="anchor" aria-hidden="true" href="#四次挥手">#</a></h3>
+<p>关闭一个 TCP 连接需要经过三次挥手过程。</p>
+<pre class="mermaid">sequenceDiagram
+    participant Client
+    participant Server
+
+    Client-&gt;&gt;Server: FIN (SEQ=x)
+    Server--&gt;&gt;Client: ACK (SEQ=y, ACK=x+1)
+
+    Server-&gt;&gt;Client: Data
+
+    Server-&gt;&gt;Client: FIN (SEQ=w, ACK=x+1)
+    Client--&gt;&gt;Server: ACK (SEQ=x+1, ACK=w+1)
+</pre>
+
+<ul>
+<li>第一次挥手：客户端 <code>FIN</code> 报文
+客户端向服务端发送 <code>FIN</code> 字段为 1 的报文，表示关闭 TCP 连接，客户端进入 <code>FIN_WAIT_1</code> 状态，不再向服务端发送数据。</li>
+<li>第二次挥手：服务端 <code>ACK</code> 报文
+服务端接收到客户端的 <code>FIN</code> 报文后发送 <code>ACK</code> 报文，服务端进入 <code>CLOSE_WAIT</code> 状态。此时服务端仍能向客户端发送数据。
+客户端接收到该 <code>ACK</code> 报文后进入 <code>FIN_WAIT_2</code> 状态。</li>
+<li>第三次挥手：服务端 <code>FIN</code> 报文
+服务端向客户端发送 <code>FIN</code> 字段为 1 的报文，表示关闭 TCP 连接，服务端进入 <code>LAST_ACK</code> 状态，不再向客户端发送数据。</li>
+<li>第四次挥手：服务端 <code>ACK</code> 报文
+客户端接收到服务端的 <code>FIN</code> 报文后发送 <code>ACK</code> 报文，客户端进入 <code>TIME_WAIT</code> 状态。客户端在经过 <code>2MSL</code> 时间后，自动进入 <code>CLOSE</code> 状态，完成关闭。
+服务端接收到 <code>ACK</code> 报文后进入 <code>CLOSE</code> 状态，完成关闭。</li>
+</ul>
+<h2 id="重传">重传<a hidden class="anchor" aria-hidden="true" href="#重传">#</a></h2>
+<p><strong>重传</strong> 是 TCP 实现可靠传输的方式之一。发送端的数据到达接收端后，接收端会回复一个确认报文，表示已收到。在错综复杂的网络中，数据可能在传输过程中丢失，因此需要重新传输丢失的数据。数据丢失有两种情况：</p>
+<ol>
+<li>数据报文丢失（接收端没有收到数据报文）</li>
+<li>确认报文丢失（发送端没有收到确认报文）</li>
+</ol>
+<h3 id="超时重传">超时重传<a hidden class="anchor" aria-hidden="true" href="#超时重传">#</a></h3>
+<p>每一个数据报发送时都会设置一个定时器，若超过指定时间没有收到确认报文，就会重发该数据。这就是 <strong>超时重传</strong>。</p>
+<p>超时重传的时间通常略大于往返时延（<a href="https://www.xiaolincoding.com/network/3_tcp/tcp_feature.html#%E8%B6%85%E6%97%B6%E9%87%8D%E4%BC%A0">详情见处</a>）。</p>
+<p>若超时重传的数据超时，TCP 采取 <strong>超时间隔加倍</strong> 策略。也就是说，每遇到一次超时，下一次超时重传的时间都是上次的两倍。</p>
+<p>超时重传存在等待时间过长的问题。</p>
+<h3 id="快速重传">快速重传<a hidden class="anchor" aria-hidden="true" href="#快速重传">#</a></h3>
+<p><strong>快速重传</strong> 可以有效解决 <strong>超时重传</strong> 时间过长的问题。</p>
+<p>假设发送端向接收端发送 6 个数据报，它们的序列号分别为：<code>Seq1</code>、<code>Seq2</code>、<code>Seq3</code>、<code>Seq4</code>、<code>Seq5</code>。其中序列号为 <code>Seq2</code> 的数据报丢失，接收端收到 <code>Seq1</code> 后回复 <code>ACK</code> 报文，收到 <code>Seq3</code> 及其后的数据报时，因为 <code>Seq2</code> 丢失（接收端没有收到），回复了 3 个相同的 <code>ACK</code> 报文（确认应答号均为 <code>Seq2</code>）。</p>
+<p>收到三个相同的 <code>ACK</code> 报文后，发送端会在定时器过期之前重发对应的数据，这就是 <strong>快速重传</strong>。</p>
+<p>最后接收端收到了 <code>Seq2</code>，于是 <code>ACK</code> 报文的确认应答号为 <code>Seq6</code>。</p>
+<p>对于上面单个数据报丢失的情况，快速重传的等待时间较短，但若出现多个数据报丢失，后面的数据报必须在前面的数据报被接收后才能触发快速重传，这又会增加重传的等待时间。如果全部重传后面的数据，那么已接收的数据就被浪费了。</p>
+<h3 id="sack">SACK<a hidden class="anchor" aria-hidden="true" href="#sack">#</a></h3>
+<p><strong>选择性确认</strong> （Selective Acknowledge，SACK）可以将已收到的数据告诉发送端，从而可以只重传丢失的数据。</p>
+<pre class="mermaid">sequenceDiagram
+    participant Sender
+    participant Receiver
+    
+    Sender-&gt;&gt;Receiver: 100~199
+    Receiver--&gt;&gt;Sender: ACK=200
+
+    Sender-&gt;&gt;Receiver: 200~299 (lost)
+
+    Sender-&gt;&gt;Receiver: 300~399
+    Receiver--&gt;&gt;Sender: ACK=200, SACK: 300~400
+
+    Sender-&gt;&gt;Receiver: 400~499
+    Receiver--&gt;&gt;Sender: ACK=200, SACK: 300~500
+
+    Sender-&gt;&gt;Receiver: 500~599
+    Receiver--&gt;&gt;Sender: ACK=200, SACK: 300~600
+
+    Sender-&gt;&gt;Receiver: 200~299
+    Receiver--&gt;&gt;Sender: ACK=600
+</pre>
+
+<p>当接收端收到乱序的数据报时（序列号比确认号大）会在 <code>ACK</code> 报文中加上 <code>SACK</code> 选项以告知发送端已接收的部分。发送端在触发快速重传时根据确认号和 <code>SACK</code> 选项得知丢失的数据部分并重传该部分。</p>
+<h4 id="sack-选项"><code>SACK</code> 选项<a hidden class="anchor" aria-hidden="true" href="#sack-选项">#</a></h4>
+<p><code>SACK</code> 选项包含两个选项。</p>
+<ul>
+<li><code>SACK-Permitted</code> 选项
+该选项只能出现在 <code>SYN</code> 报文中，在连接建立时告知对方自己支持 <code>SACK</code>。选项格式如下：</li>
+</ul>
+<pre class="mermaid">---
+title: &#34;SACK-Permitted&#34;
+---
+packet-beta
+0-8: &#34;Kind=4&#34;
+9-15: &#34;Length=2&#34;
+</pre>
+
+<ul>
+<li><code>SACK</code> 选项
+该选项通过范围表示已经接收到的数据，不连续的部分就是丢失的数据。</li>
+</ul>
+<pre class="mermaid">---
+title: &#34;SACK&#34;
+---
+packet-beta
+0-8: &#34;Padding&#34;
+9-15: &#34;Padding&#34;
+16-23: &#34;Kind=5&#34;
+24-31: &#34;Length=variable&#34;
+32-63: &#34;Left Edge of 1st Block&#34;
+64-95: &#34;Right Edge of 1st Block&#34;
+96-223: &#34;...&#34;
+224-255: &#34;Left Edge of 4th Block&#34;
+256-287: &#34;Right Edge of 4th Block&#34;
+</pre>
+
+<h3 id="d-sack">D-SACK<a hidden class="anchor" aria-hidden="true" href="#d-sack">#</a></h3>
+<p>Duplicate SACK 又称 D-SACK，其主要使用 SACK 来告诉发送方有哪些数据被重复接收了。</p>
+<h2 id="流量控制">流量控制<a hidden class="anchor" aria-hidden="true" href="#流量控制">#</a></h2>
+<p>在通信过程中，发送方不能无脑地向接收方发送数据，接收方可能无法及时处理数据而丢失数据，从而触发发送方的重传导致浪费网络流量。</p>
+<p>因此，TCP 提供了一种可以让发送方根据接收方的实际接收能力控制发送的数据量的机制，也就是 <strong>流量控制</strong>。</p>
+<h3 id="累计应答">累计应答<a hidden class="anchor" aria-hidden="true" href="#累计应答">#</a></h3>
+<p>发送方收到确认报文后就可以认为该确认号之前的数据已全部被接收，即使没有收到前面的数据的确认报文。</p>
+<h3 id="滑动窗口">滑动窗口<a hidden class="anchor" aria-hidden="true" href="#滑动窗口">#</a></h3>
+<ul>
+<li><strong>接收窗口</strong>：接收端处理数据的能力，通过 TCP 首部的 <code>Window</code> 字段告知</li>
+<li><strong>发送窗口</strong>：控制发送端发送数据，约等于 <strong>接收窗口</strong></li>
+</ul>
+<p>窗口并不是一成不变的，而是会根据当前的应用、系统运行情况，网络状况等动态地变化，变化会通过首部的 <code>Window</code> 字段告知对端。</p>
+<h4 id="发送端的窗口">发送端的窗口<a hidden class="anchor" aria-hidden="true" href="#发送端的窗口">#</a></h4>
+<pre tabindex="0"><code class="language-language" data-lang="language">|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|
+       ^                                                        ^              
+       |            send window(20 bytes)                       |
+                                                 ^              ^
+                                                 |free window(6)|
+|  #1  |                    #2                   |      #3      |     #4      |
+</code></pre><ul>
+<li>#1：已发送且已确认的数据</li>
+<li>#2：已发送但未确认的数据</li>
+<li>#3：未发送但可发送的数据</li>
+<li>#4：未发送且不可发送的数据</li>
+</ul>
+<p>当可发送数据全部发送之后，可用窗口变为 0，表示接收端已经达到最大处理能力，不应再向其发送数据。</p>
+<pre tabindex="0"><code class="language-language" data-lang="language">|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|
+       ^                                                        ^              
+       |            send window(20 bytes)                       |
+|  #1  |                             #2                         |     #3      |
+</code></pre><p>当收到确认报文后，窗口就会向右 <strong>滑动</strong>，从而可用窗口不为 0，可以继续发送数据。</p>
+<pre tabindex="0"><code class="language-language" data-lang="language">|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|
+                ^                                                        ^     
+                |              send window(20 bytes)                     |
+                                                                   ^     ^
+                                                                   |free |
+|      #1       |                    #2                            |  #3 | #4 |
+</code></pre><p>可用窗口的计算公式为：</p>
+<pre tabindex="0"><code class="language-language" data-lang="language">可用窗口 = 窗口大小 - (可发送的第一字节 - 已发送未确认的第一字节)
+
+不可发送的第一字节 = 已发送未确认的第一字节 + 窗口大小
+</code></pre><h4 id="接收端的窗口">接收端的窗口<a hidden class="anchor" aria-hidden="true" href="#接收端的窗口">#</a></h4>
+<p>接收端的窗口相对简单，没有可用窗口的概念。</p>
+<pre tabindex="0"><code class="language-language" data-lang="language">|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|
+       ^                                                        ^              
+       |            send window(20 bytes)                       |
+|  #1  |                             #2                         |     #3      |
+</code></pre><h4 id="窗口大小">窗口大小<a hidden class="anchor" aria-hidden="true" href="#窗口大小">#</a></h4>
+<p>TCP 首部的 <code>Window</code> 字段只有 16 位，最大表示 65535 字节。窗口缩放选项可以突破这个限制。</p>
+<pre tabindex="0"><code class="language-language" data-lang="language">Window Scale option (WSopt): Kind: 3, Length: 3
+    +---------+---------+---------+
+    | Kind=3  |Length=3 |shift.cnt|
+    +---------+---------+---------+
+         1         1         1
+</code></pre><p>窗口缩放选项只能在 <code>SYN</code> 报文中确认且必须双方都启用才能生效，缩放因子确认后就不能再更改。之后的报文必须都包含窗口缩放选项。缩放因子最大有效值为 14。窗口大小的计算公式如下：</p>
+<p>$$
+Size = Window * 2^{Scale}
+$$</p>
+<h4 id="窗口关闭">窗口关闭<a hidden class="anchor" aria-hidden="true" href="#窗口关闭">#</a></h4>
+<p>当接收端发送 <code>Window=0</code> 的报文时，发送端就会停止发送数据，直到再次收到窗口值为非 0 的报文。此时若接收端的窗口非 0 报文丢失则可能会造成死锁。为了避免死锁，TCP 在收到零窗口通知时会启动 <strong>持续计时器</strong>。如果计时器超时，就会发送 <strong>窗口探测报文</strong>，对方在确认该报文时会给出新的窗口大小。如果新窗口仍为 0 则会重新启动持续计时器。一定次数后若窗口仍为 0，那么 TCP 将强制中断连接。</p>
+<h4 id="糊涂窗口综合征">糊涂窗口综合征<a hidden class="anchor" aria-hidden="true" href="#糊涂窗口综合征">#</a></h4>
+<p>如果接收端的数据处理速度太慢，会导致发送端的发送窗口越来越小。到最后，只要接收端能够接收数据，发送端都会发送数据，哪怕只有几字节，这就是 <strong>糊涂窗口综合征</strong>。</p>
+<p>糊涂窗口综合征发生的条件有两个：</p>
+<ol>
+<li>接收端可以通告小窗口</li>
+<li>发送端可以发送小数据</li>
+</ol>
+<p>于是，避免出现以上两种情况便能避免糊涂窗口综合征。</p>
+<p>针对条件 1，可以让窗口大小小于 <code>min(MSS, 缓存空间/2)</code> 时发送零窗口通知，阻止发送端继续发送数据，等待接收端处理一些数据后再打开窗口。</p>
+<p>针对条件 2，发送端使用 Nagle 算法，只有满足以下 <em><strong>任一</strong></em> 条件时才发送数据：</p>
+<ol>
+<li>窗口大小大于或等于 <code>MSS</code> 并且数据大小大于或等于 <code>MSS</code></li>
+<li>收到之前发送数据的确认报文</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#ca9ee6">if</span> <span style="color:#e78284">有数据要发送</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">if</span> <span style="color:#e78284">可用窗口大小</span> <span style="color:#99d1db;font-weight:bold">&gt;=</span> MSS <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> <span style="color:#e78284">可发送的数据</span> <span style="color:#99d1db;font-weight:bold">&gt;=</span> MSS {
+</span></span><span style="display:flex;"><span>        <span style="color:#e78284">立刻发送</span>MSS大小的数据
+</span></span><span style="display:flex;"><span>    } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> <span style="color:#e78284">有未确认的数据</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e78284">将数据放入缓存等待接收</span> ACK
+</span></span><span style="display:flex;"><span>        } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e78284">立刻发送数据</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>如果接收端可以通告小窗口，那么即使开启 Nagle 算法也无法避免糊涂窗口综合征。因为如果对端确认报文回复得快的话（满足 Nagle 算法条件 2），Nagle 算法就无法等到数据足够多时再进行传输。</p>
+<p>因此，接收端不通告小窗口且发送端开启 Nagle 算法才可以避免糊涂窗口综合征。</p>
+<h2 id="拥塞控制">拥塞控制<a hidden class="anchor" aria-hidden="true" href="#拥塞控制">#</a></h2>
+<p>流量控制可以避免发送端的数据填满接收端的缓存，但并不考虑网络的拥塞状况。当网络拥堵时，如果继续发送大量数据会造成数据包丢失等情况，此时，TCP 会开始重传数据，这样会进一步加剧网络拥堵，从而陷入恶性循环。</p>
+<p>为此，TCP 引入了 <strong>拥塞控制</strong>，避免发送端的数据填满网络。</p>
+<h3 id="拥塞窗口">拥塞窗口<a hidden class="anchor" aria-hidden="true" href="#拥塞窗口">#</a></h3>
+<p><strong>拥塞窗口</strong> 是发送端维护的一个变量，它会根据网络的拥塞程度动态变化。</p>
+<p>加入拥塞窗口后，<strong>发送窗口</strong> 的大小为 <code>min(拥塞窗口, 接收窗口)</code>。</p>
+<p>当网络没有出现拥塞时，拥塞窗口会增大，当出现拥塞时，拥塞窗口就会减小。TCP 通过<strong>超时重传</strong>判断网络是否出现拥塞。</p>
+<h3 id="慢启动">慢启动<a hidden class="anchor" aria-hidden="true" href="#慢启动">#</a></h3>
+<p>慢启动的核心规则是：<strong>每收到一个 ACK，拥塞窗口就会加 1</strong>。</p>
+<p>假设拥塞窗口 <code>cwnd</code> 初始值为 1 个 <code>MSS</code>，</p>
+<ul>
+<li>连接建立后，发送端发送 <code>cwnd</code> 字节数据</li>
+<li>收到 ACK 后，<code>cwnd</code> 加 1，变为 2 个 <code>MSS</code>，继续发送数据</li>
+<li>收到 2 个 ACK 后，<code>cwnd</code> 加 2，变为 4 个 <code>MSS</code>，继续发送数据</li>
+<li>……</li>
+</ul>
+<p>由此可见，每一轮 RTT 后，<code>cwnd</code> 变为原来的两倍，在慢启动阶段，拥塞窗口呈指数增长。</p>
+<p><img alt="slow start" loading="lazy" src="http://interview.wzcu.com/static/tcp15_img.png"></p>
+<p>当 <code>cwnd</code> 大于慢开始门限 <code>ssthresh</code> 后，就会进入 <strong>拥塞避免</strong> 阶段。</p>
+<h3 id="拥塞避免">拥塞避免<a hidden class="anchor" aria-hidden="true" href="#拥塞避免">#</a></h3>
+<p>慢启动的核心规则是：<strong>每收到一个 ACK，拥塞窗口就会增加 1/cwnd</strong>。</p>
+<p>假设此时拥塞窗口 <code>cwnd</code> 为 8 个 <code>MSS</code>，</p>
+<ul>
+<li>发送端发送 8 个长度为 <code>MSS</code> 的数据报</li>
+<li>收到 8个 ACK 后，<code>cwnd</code> 加 1，变为 9 个 <code>MSS</code>，继续发送数据</li>
+<li>收到 9 个 ACK 后，<code>cwnd</code> 加 1，变为 10 个 <code>MSS</code>，继续发送数据</li>
+<li>……</li>
+</ul>
+<p>由此可见，每一轮 RTT 后，<code>cwnd</code> 加 1，在拥塞避免阶段，拥塞窗口呈线性增长。</p>
+<p><img alt="congestion avoidance" loading="lazy" src="https://s21.ax1x.com/2024/10/31/pABL8p9.png"></p>
+<h3 id="拥塞发生">拥塞发生<a hidden class="anchor" aria-hidden="true" href="#拥塞发生">#</a></h3>
+<p>随着拥塞窗口的增加，拥塞不可避免地发生，TCP 通过是否发生重传来判断拥塞情况。</p>
+<h4 id="超时重传-1">超时重传<a hidden class="anchor" aria-hidden="true" href="#超时重传-1">#</a></h4>
+<p>发生超时重传时，TCP 会先将 <code>ssthresh</code> 设为 <code>cwnd/2</code>，并将 <code>cwnd</code> 重置为初始值，然后进入慢启动。</p>
+<p><img alt="overtime retransmit" loading="lazy" src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost2/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP-%E5%8F%AF%E9%9D%A0%E7%89%B9%E6%80%A7/29.jpg?image_process=watermark,text_5YWs5LyX5Y-377ya5bCP5p6XY29kaW5n,type_ZnpsdHpoaw,x_10,y_10,g_se,size_20,color_0000CD,t_70,fill_0"></p>
+<h4 id="快速重传-1">快速重传<a hidden class="anchor" aria-hidden="true" href="#快速重传-1">#</a></h4>
+<p>当发生快速重传时，TCP 会先将 <code>cwnd</code> 设为 <code>cwnd/2</code>，并将 <code>ssthresh</code> 设为 <code>cwnd</code>，然后执行 <strong>快速恢复</strong> 算法。</p>
+<p>快速恢复算法如下：</p>
+<ol>
+<li><code>cwnd = ssthresh + 3</code>。3 表示收到的三个重复的 ACK</li>
+<li>重传数据报</li>
+<li>每收到一个同样的 ACK，<code>cwnd</code> 加 1，每 3 个相同的 ACK 触发一次快速重传</li>
+<li>重复 3 直至收到新的 ACK。收到新的 ACK 后将 <code>cwnd</code> 设为 <code>ssthresh</code> 并进入拥塞避免阶段</li>
+</ol>
+<p><img alt="fast recover" loading="lazy" src="https://cdn.xiaolincoding.com/gh/xiaolincoder/ImageHost4@main/%E7%BD%91%E7%BB%9C/%E6%8B%A5%E5%A1%9E%E5%8F%91%E7%94%9F-%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0.drawio.png?image_process=watermark,text_5YWs5LyX5Y-377ya5bCP5p6XY29kaW5n,type_ZnpsdHpoaw,x_10,y_10,g_se,size_20,color_0000CD,t_70,fill_0"></p>
+<p>快速重传是为了尽快将丢失的数据发送给对方，所以在收到相同的 ACK 后 <code>cwnd</code> 会加 1 以加快从对端获得 ACK 的速度。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  const elementCode = ".mermaid";
+  const loadMermaid = function (theme) {
+    mermaid.initialize({ theme });
+    mermaid.init({
+      theme,
+      themeVariables: { 
+        fontFamily: ["MapleMonoNL-Regular"]
+      }}, document.querySelectorAll(elementCode));
+  };
+  const saveOriginalData = function () {
+    return new Promise((resolve, reject) => {
+      try {
+        var els = document.querySelectorAll(elementCode),
+          count = els.length;
+        els.forEach((element) => {
+          element.setAttribute("data-original-code", element.innerHTML);
+          count--;
+          if (count == 0) {
+            resolve();
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+  const resetProcessed = function () {
+    return new Promise((resolve, reject) => {
+      try {
+        var els = document.querySelectorAll(elementCode),
+          count = els.length;
+        els.forEach((element) => {
+          if (element.getAttribute("data-original-code") != null) {
+            element.removeAttribute("data-processed");
+            element.innerHTML = element.getAttribute("data-original-code");
+          }
+          count--;
+          if (count == 0) {
+            resolve();
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  saveOriginalData().catch(console.error);
+  
+  let isdark = document.body.className.includes("dark");
+  if (isdark) {
+    resetProcessed().then(loadMermaid("dark")).catch(console.error);
+  } else {
+    resetProcessed().then(loadMermaid("neutral")).catch(console.error);
+  }
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    resetProcessed();
+    document.body.className.includes("dark")
+      ? loadMermaid("neutral")
+      : loadMermaid("dark").catch(console.error);
+  });
+</script>
+
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

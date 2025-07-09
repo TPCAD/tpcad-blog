@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Rust Traits | Eulamber</title>
+<meta name="keywords" content="Rust">
+<meta name="description" content="trait 定义了某个特定类型拥有可能与其他类型共享的功能。
+定义与实现 trait
+定义 trait
+一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。
+trait Area {
+    fn area(&amp;self) -&gt; u32;
+}
+为类型实现 trait
+使用 impl for 为类型实现 trait。
+impl Area for Rectangle {
+    fn area(&amp;self) -&gt; u32 {
+        self.width * self.height
+    }
+}
+
+impl Area for Circle {
+    fn area(&amp;self) -&gt; u32 {
+        3 * self.radio * self.radio
+    }
+}
+默认实现
+trait Summary {
+    fn summarize(&amp;self) -&gt; String {
+        String::from(&#34;(Read more...)&#34;);
+    }
+}
+
+// 因为有默认实现，所以可以指定一个空 impl 块
+impl Summary for Tweet {}
+trait 作为参数
+通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/posts/rust_trait/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/posts/rust_trait/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/posts/rust_trait/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="Rust Traits">
+  <meta property="og:description" content="trait 定义了某个特定类型拥有可能与其他类型共享的功能。
+定义与实现 trait 定义 trait 一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。
+trait Area { fn area(&amp;self) -&gt; u32; } 为类型实现 trait 使用 impl for 为类型实现 trait。
+impl Area for Rectangle { fn area(&amp;self) -&gt; u32 { self.width * self.height } } impl Area for Circle { fn area(&amp;self) -&gt; u32 { 3 * self.radio * self.radio } } 默认实现 trait Summary { fn summarize(&amp;self) -&gt; String { String::from(&#34;(Read more...)&#34;); } } // 因为有默认实现，所以可以指定一个空 impl 块 impl Summary for Tweet {} trait 作为参数 通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-04T15:00:42+08:00">
+    <meta property="article:modified_time" content="2024-07-04T15:00:42+08:00">
+    <meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rust Traits">
+<meta name="twitter:description" content="trait 定义了某个特定类型拥有可能与其他类型共享的功能。
+定义与实现 trait
+定义 trait
+一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。
+trait Area {
+    fn area(&amp;self) -&gt; u32;
+}
+为类型实现 trait
+使用 impl for 为类型实现 trait。
+impl Area for Rectangle {
+    fn area(&amp;self) -&gt; u32 {
+        self.width * self.height
+    }
+}
+
+impl Area for Circle {
+    fn area(&amp;self) -&gt; u32 {
+        3 * self.radio * self.radio
+    }
+}
+默认实现
+trait Summary {
+    fn summarize(&amp;self) -&gt; String {
+        String::from(&#34;(Read more...)&#34;);
+    }
+}
+
+// 因为有默认实现，所以可以指定一个空 impl 块
+impl Summary for Tweet {}
+trait 作为参数
+通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Rust Traits",
+      "item": "https://tpcad.github.io/posts/rust_trait/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Rust Traits",
+  "name": "Rust Traits",
+  "description": "trait 定义了某个特定类型拥有可能与其他类型共享的功能。\n定义与实现 trait 定义 trait 一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。\ntrait Area { fn area(\u0026amp;self) -\u0026gt; u32; } 为类型实现 trait 使用 impl for 为类型实现 trait。\nimpl Area for Rectangle { fn area(\u0026amp;self) -\u0026gt; u32 { self.width * self.height } } impl Area for Circle { fn area(\u0026amp;self) -\u0026gt; u32 { 3 * self.radio * self.radio } } 默认实现 trait Summary { fn summarize(\u0026amp;self) -\u0026gt; String { String::from(\u0026#34;(Read more...)\u0026#34;); } } // 因为有默认实现，所以可以指定一个空 impl 块 impl Summary for Tweet {} trait 作为参数 通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。\n",
+  "keywords": [
+    "Rust"
+  ],
+  "articleBody": "trait 定义了某个特定类型拥有可能与其他类型共享的功能。\n定义与实现 trait 定义 trait 一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。\ntrait Area { fn area(\u0026self) -\u003e u32; } 为类型实现 trait 使用 impl for 为类型实现 trait。\nimpl Area for Rectangle { fn area(\u0026self) -\u003e u32 { self.width * self.height } } impl Area for Circle { fn area(\u0026self) -\u003e u32 { 3 * self.radio * self.radio } } 默认实现 trait Summary { fn summarize(\u0026self) -\u003e String { String::from(\"(Read more...)\"); } } // 因为有默认实现，所以可以指定一个空 impl 块 impl Summary for Tweet {} trait 作为参数 通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。\nimpl Trait 语法 fn notify(item: \u0026impl Summary) { println!(\"{}\", item.summarize()); } Trait Bound 语法 fn notify\u003cT: Summary\u003e(item: \u0026T) { println!(\"{}\", item.summarize()); } // 泛型限制了两个参数必须是相同类型 fn notify\u003cT: Summary\u003e(item1: \u0026T, item2: \u0026T) { // impl Trait 允许两个参数是不同类型 fn notify(item1: \u0026impl Summary, item2: \u0026impl Summary) { 通过 + 指定多个 trait bound fn notify(item: \u0026(impl Summary + Display)) {} fn notify\u003cT: Summary + Display\u003e(item: \u0026T) {} 通过 where 简化 trait bound fn some_function\u003cT, U\u003e(t: \u0026T, u: \u0026U) -\u003e i32 where T: Display + Clone, U: Clone + Debug, { 返回实现了 trait 的类型 fn returns_summarizable() -\u003e impl Summary { 注意，这只适用于返回单一类型的情况。\n使用 trait bound 有条件地实现方法 impl\u003cT\u003e Pair\u003cT\u003e { fn new(x: T, y: T) -\u003e Self { Self { x, y } } } // 只有实现了 Display 和 PartialOrd Trait 的泛型 T 才会拥有这个方法 impl\u003cT: Display + PartialOrd\u003e Pair\u003cT\u003e { fn cmp_display(\u0026self) { if self.x \u003e= self.y { println!(\"The largest member is x = {}\", self.x); } else { println!(\"The largest member is y = {}\", self.y); } } } 也可以对任何实现了特定 trait 的类型有条件地实现 trait。对任何满足特定 trait bound 的类型实现 trait 被称为 blanket implementations\n// blanket implementations // 任何实现了 Display trait 的类型都会自动实现 ToString trait impl\u003cT: Display\u003e ToString for T { 孤儿规则 只有在 trait 或类型至少有一个属于当前 crate 时，才能对类型实现该 trait。\n比如，不能在自己的 crate 中为标准库中的类型实现标准库中的 trait。因为它们均不属于当前 crate。\nTrait 对象 泛型虽然很方便，但也有限制。比如，泛型限制了参数只能是同一种类型。\n如下代码所示，Vec 的元素必须是相同类型的。\ntrait Draw { fn draw(\u0026self); } struct Button { name: String, } impl Draw for Button { fn draw(\u0026self) { println!(\"Draw button\"); } } struct TextField { name: String, } impl Draw for TextField { fn draw(\u0026self) { println!(\"Draw text field\"); } } fn main() { let vec = vec![ Box::new(Button { name: \"button\".to_string(), }), // mismatched types expected `Button`, found `TextField` Box::new(TextField { name: \"text field\".to_string(), }), ]; } Trait 对象则允许在运行时替代多种具体类型。\n// 使用 dyn 关键字声明 trait 对象 let vec: Vec\u003cBox\u003cdyn Draw\u003e\u003e = vec![ Box::new(Button { name: \"button\".to_string(), }), Box::new(TextField { name: \"text field\".to_string(), }), ]; for i in vec { i.draw(); } Rust 使用使用动态分发（Dynamic Dispatch）实现 trait 对象。此时编译器无法知晓所有可能用于 trait 对象代码的类型，所以它也不知道应该调用哪个类型的哪个方法实现。为此，Rust 在运行时使用 trait 对象中的指针来知晓需要调用哪个方法。而编译器只能保证类型实现了相应的 trait。\n关联类型 关联类型（associated types）的作用与泛型十分相似，但关联类型限制了我们只能实现一次 trait。\npub trait Iterator { type Item; fn next(\u0026mut self) -\u003e Option\u003cSelf::Item\u003e; } impl Iterator for Counter { // 只能指定一次 Item 的类型 type Item = u32; fn next(\u0026mut self) -\u003e Option\u003cSelf::Item\u003e { // --snip-- 默认泛型类型参数 在使用泛型类型参数时，可以为泛型指定一个默认的具体类型。\n// 提供默认的泛型类型参数 trait Add\u003cRhs=Self\u003e { type Output; fn add(self, rhs: Rhs) -\u003e Self::Output; } // 使用默认泛型类型参数 impl Add for Point { type Output = Point; fn add(self, other: Point) -\u003e Point { Point { x: self.x + other.x, y: self.y + other.y, } } } // 不使用默认泛型类型参数 impl Add\u003cMeters\u003e for Millimeters { type Output = Millimeters; fn add(self, other: Meters) -\u003e Millimeters { Millimeters(self.0 + (other.0 * 1000)) } } 完全限定语法 Rust 不能避免一个 trait 与另一个 trait 拥有同名的方法，也不能阻止为同一类型实现这两个 trait。\ntrait Pilot { fn fly(\u0026self); } trait Wizard { fn fly(\u0026self); } struct Human; // 实现两个有同名方法的 trait impl Pilot for Human { fn fly(\u0026self) { println!(\"Pilot fly\"); } } impl Wizard for Human { fn fly(\u0026self) { println!(\"Wizard fly\"); } } // 自身也实现该方法 impl Human { fn fly(\u0026self) { println!(\"Flying\"); } } fn main() { let human = Human {}; // 默认调用自身实现 human.fly(); Wizard::fly(\u0026human); Pilot::fly(\u0026human); } 关联函数没有 \u0026self 参数，不能使用上面的方法来消除歧义。此时只能使用完全限定语法（fully qualified syntax）。\n// 关联函数而非方法 trait Pilot { fn fly(); } trait Wizard { fn fly(); } struct Human; impl Pilot for Human { fn fly() { println!(\"Pilot fly\"); } } impl Wizard for Human { fn fly() { println!(\"Wizard fly\"); } } impl Human { fn fly() { println!(\"Flying\"); } } fn main() { Human::fly(); // 完全限定语法调用同名关联函数 \u003cHuman as Wizard\u003e::fly(); \u003cHuman as Pilot\u003e::fly(); } 父 trait 父 trait 可以让类型在一个 trait 的同时也必须实现另一个 trait。\nuse std::fmt; // 父 trait trait OutlinePrint: fmt::Display { fn outline_print(\u0026self) { // 可以使用父 trait 的方法 let output = self.to_string(); let len = output.len(); println!(\"{}\", \"*\".repeat(len + 4)); println!(\"*{}*\", \" \".repeat(len + 2)); println!(\"* {output} *\"); println!(\"*{}*\", \" \".repeat(len + 2)); println!(\"{}\", \"*\".repeat(len + 4)); } } Sized Trait **动态大小类型（dynamically sized types）**允许我们处理只用在运行时才知道大小的类型。\n因为动态大小类型只能在运行时确定，所以它的值必须置于某种指针之后。\n比如 trait。每一个 trait 都是一个可以通过 trait 名称来引用的动态大小类型。所以它必须放在指针之后，\u0026dyn trait 或 Box。\n为了处理 DST，Rust 提供了 Sized trait 来决定一个类型的大小是否在编译时可知。这个 trait 会自动为所有在编译时就知道大小的类型实现。另外，Rust 会为每一个泛型函数增加 Sized bound。\nfn generic\u003cT\u003e(t: T){} fn generic\u003cT: Sized\u003e(t: T){} Sized trait 还有一个特殊的语法，?Sized。它表示该类型可能是也可能不是 Sized。该语法只能用于 Sized。\n// 参数类型从 T 变成了 \u0026T，因为 DST 必须置于某种指针之后 fn generic\u003cT: ?Sized\u003e(t: \u0026T){} #[derive(Debug)] struct Bar\u003cT: ?Sized\u003e(T); // [i32] 没有实现 Sized trait，所以它的大小在编译时是不可知的 // 如果不使用 ?Sized trait，以下代码将无法编译 fn main() { let sized: Bar\u003c[i32; 8]\u003e = Bar([0; 8]); let dynamic1: Box\u003cBar\u003c[i32]\u003e\u003e = Box::new(Bar([])); let dynamic2: Box\u003cBar\u003c[i32]\u003e\u003e = Box::new(sized); println!(\"{:#?}\", dynamic1); println!(\"{:#?}\", dynamic2); } ",
+  "wordCount" : "798",
+  "inLanguage": "en",
+  "datePublished": "2024-07-04T15:00:42+08:00",
+  "dateModified": "2024-07-04T15:00:42+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/posts/rust_trait/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Rust Traits
+    </h1>
+    <div class="post-meta"><span title='2024-07-04 15:00:42 +0800 +0800'>July 4, 2024</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e5%ae%9a%e4%b9%89%e4%b8%8e%e5%ae%9e%e7%8e%b0-trait" aria-label="定义与实现 trait">定义与实现 trait</a><ul>
+                            
+                    <li>
+                        <a href="#%e5%ae%9a%e4%b9%89-trait" aria-label="定义 trait">定义 trait</a></li>
+                    <li>
+                        <a href="#%e4%b8%ba%e7%b1%bb%e5%9e%8b%e5%ae%9e%e7%8e%b0-trait" aria-label="为类型实现 trait">为类型实现 trait</a></li>
+                    <li>
+                        <a href="#%e9%bb%98%e8%ae%a4%e5%ae%9e%e7%8e%b0" aria-label="默认实现">默认实现</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#trait-%e4%bd%9c%e4%b8%ba%e5%8f%82%e6%95%b0" aria-label="trait 作为参数">trait 作为参数</a><ul>
+                            
+                    <li>
+                        <a href="#impl-trait-%e8%af%ad%e6%b3%95" aria-label="impl Trait 语法">impl Trait 语法</a></li>
+                    <li>
+                        <a href="#trait-bound-%e8%af%ad%e6%b3%95" aria-label="Trait Bound 语法">Trait Bound 语法</a></li>
+                    <li>
+                        <a href="#%e9%80%9a%e8%bf%87--%e6%8c%87%e5%ae%9a%e5%a4%9a%e4%b8%aa-trait-bound" aria-label="通过 &#43; 指定多个 trait bound">通过 + 指定多个 trait bound</a></li>
+                    <li>
+                        <a href="#%e9%80%9a%e8%bf%87-where-%e7%ae%80%e5%8c%96-trait-bound" aria-label="通过 where 简化 trait bound">通过 where 简化 trait bound</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%bf%94%e5%9b%9e%e5%ae%9e%e7%8e%b0%e4%ba%86-trait-%e7%9a%84%e7%b1%bb%e5%9e%8b" aria-label="返回实现了 trait 的类型">返回实现了 trait 的类型</a></li>
+                    <li>
+                        <a href="#%e4%bd%bf%e7%94%a8-trait-bound-%e6%9c%89%e6%9d%a1%e4%bb%b6%e5%9c%b0%e5%ae%9e%e7%8e%b0%e6%96%b9%e6%b3%95" aria-label="使用 trait bound 有条件地实现方法">使用 trait bound 有条件地实现方法</a></li>
+                    <li>
+                        <a href="#%e5%ad%a4%e5%84%bf%e8%a7%84%e5%88%99" aria-label="孤儿规则">孤儿规则</a></li>
+                    <li>
+                        <a href="#trait-%e5%af%b9%e8%b1%a1" aria-label="Trait 对象">Trait 对象</a></li>
+                    <li>
+                        <a href="#%e5%85%b3%e8%81%94%e7%b1%bb%e5%9e%8b" aria-label="关联类型">关联类型</a></li>
+                    <li>
+                        <a href="#%e9%bb%98%e8%ae%a4%e6%b3%9b%e5%9e%8b%e7%b1%bb%e5%9e%8b%e5%8f%82%e6%95%b0" aria-label="默认泛型类型参数">默认泛型类型参数</a></li>
+                    <li>
+                        <a href="#%e5%ae%8c%e5%85%a8%e9%99%90%e5%ae%9a%e8%af%ad%e6%b3%95" aria-label="完全限定语法">完全限定语法</a></li>
+                    <li>
+                        <a href="#%e7%88%b6-trait" aria-label="父 trait">父 trait</a></li>
+                    <li>
+                        <a href="#sized-trait" aria-label="Sized Trait">Sized Trait</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>trait 定义了某个特定类型拥有可能与其他类型共享的功能。</p>
+<h2 id="定义与实现-trait">定义与实现 trait<a hidden class="anchor" aria-hidden="true" href="#定义与实现-trait">#</a></h2>
+<h3 id="定义-trait">定义 trait<a hidden class="anchor" aria-hidden="true" href="#定义-trait">#</a></h3>
+<p>一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">trait</span> Area {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">area</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) -&gt; <span style="color:#e78284">u32</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="为类型实现-trait">为类型实现 trait<a hidden class="anchor" aria-hidden="true" href="#为类型实现-trait">#</a></h3>
+<p>使用 <code>impl for</code> 为类型实现 trait。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Area <span style="color:#ca9ee6">for</span> Rectangle {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">area</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) -&gt; <span style="color:#e78284">u32</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">self</span>.width <span style="color:#99d1db;font-weight:bold">*</span> <span style="color:#99d1db">self</span>.height
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Area <span style="color:#ca9ee6">for</span> Circle {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">area</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) -&gt; <span style="color:#e78284">u32</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ef9f76">3</span> <span style="color:#99d1db;font-weight:bold">*</span> <span style="color:#99d1db">self</span>.radio <span style="color:#99d1db;font-weight:bold">*</span> <span style="color:#99d1db">self</span>.radio
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="默认实现">默认实现<a hidden class="anchor" aria-hidden="true" href="#默认实现">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">trait</span> Summary {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">summarize</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) -&gt; <span style="color:#99d1db">String</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">String</span>::from(<span style="color:#a6d189">&#34;(Read more...)&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 因为有默认实现，所以可以指定一个空 impl 块
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span> Summary <span style="color:#ca9ee6">for</span> Tweet {}
+</span></span></code></pre></div><h2 id="trait-作为参数">trait 作为参数<a hidden class="anchor" aria-hidden="true" href="#trait-作为参数">#</a></h2>
+<p>通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。</p>
+<h3 id="impl-trait-语法">impl Trait 语法<a hidden class="anchor" aria-hidden="true" href="#impl-trait-语法">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">notify</span>(item: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">impl</span> Summary) {
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, item.summarize());
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="trait-bound-语法">Trait Bound 语法<a hidden class="anchor" aria-hidden="true" href="#trait-bound-语法">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">notify</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#e5c890">Summary</span><span style="color:#99d1db;font-weight:bold">&gt;</span>(item: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">T</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, item.summarize());
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 泛型限制了两个参数必须是相同类型
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">notify</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#e5c890">Summary</span><span style="color:#99d1db;font-weight:bold">&gt;</span>(item1: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">T</span>, item2: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">T</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// impl Trait 允许两个参数是不同类型
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">notify</span>(item1: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">impl</span> Summary, item2: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">impl</span> Summary) {
+</span></span></code></pre></div><h3 id="通过--指定多个-trait-bound">通过 + 指定多个 trait bound<a hidden class="anchor" aria-hidden="true" href="#通过--指定多个-trait-bound">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">notify</span>(item: <span style="color:#ca9ee6">&amp;</span>(<span style="color:#ca9ee6">impl</span> Summary <span style="color:#99d1db;font-weight:bold">+</span> Display)) {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">notify</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#e5c890">Summary</span> <span style="color:#99d1db;font-weight:bold">+</span> Display<span style="color:#99d1db;font-weight:bold">&gt;</span>(item: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">T</span>) {}
+</span></span></code></pre></div><h3 id="通过-where-简化-trait-bound">通过 where 简化 trait bound<a hidden class="anchor" aria-hidden="true" href="#通过-where-简化-trait-bound">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">some_function</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T, U<span style="color:#99d1db;font-weight:bold">&gt;</span>(t: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">T</span>, u: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">U</span>) -&gt; <span style="color:#e78284">i32</span>
+</span></span><span style="display:flex;"><span><span style="color:#e5c890">where</span>
+</span></span><span style="display:flex;"><span>    T: <span style="color:#e5c890">Display</span> <span style="color:#99d1db;font-weight:bold">+</span> <span style="color:#99d1db">Clone</span>,
+</span></span><span style="display:flex;"><span>    U: <span style="color:#99d1db">Clone</span> <span style="color:#99d1db;font-weight:bold">+</span> Debug,
+</span></span><span style="display:flex;"><span>{
+</span></span></code></pre></div><h2 id="返回实现了-trait-的类型">返回实现了 trait 的类型<a hidden class="anchor" aria-hidden="true" href="#返回实现了-trait-的类型">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">returns_summarizable</span>() -&gt; <span style="color:#e5c890">impl</span> Summary {
+</span></span></code></pre></div><p>注意，这只适用于返回单一类型的情况。</p>
+<h2 id="使用-trait-bound-有条件地实现方法">使用 trait bound 有条件地实现方法<a hidden class="anchor" aria-hidden="true" href="#使用-trait-bound-有条件地实现方法">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> Pair<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">new</span>(x: <span style="color:#e5c890">T</span>, y: <span style="color:#e5c890">T</span>) -&gt; <span style="color:#e5c890">Self</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">Self</span> { x, y }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 只有实现了 Display 和 PartialOrd Trait 的泛型 T 才会拥有这个方法
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#e5c890">Display</span> <span style="color:#99d1db;font-weight:bold">+</span> <span style="color:#99d1db">PartialOrd</span><span style="color:#99d1db;font-weight:bold">&gt;</span> Pair<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">cmp_display</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> <span style="color:#99d1db">self</span>.x <span style="color:#99d1db;font-weight:bold">&gt;=</span> <span style="color:#99d1db">self</span>.y {
+</span></span><span style="display:flex;"><span>            <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;The largest member is x = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, <span style="color:#99d1db">self</span>.x);
+</span></span><span style="display:flex;"><span>        } <span style="color:#ca9ee6">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;The largest member is y = </span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, <span style="color:#99d1db">self</span>.y);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>也可以对任何实现了特定 trait 的类型有条件地实现 trait。对任何满足特定 trait bound 的类型实现 trait 被称为 blanket implementations</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// blanket implementations
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 任何实现了 Display trait 的类型都会自动实现 ToString trait
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#e5c890">Display</span><span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#99d1db">ToString</span> <span style="color:#ca9ee6">for</span> T {
+</span></span></code></pre></div><h2 id="孤儿规则">孤儿规则<a hidden class="anchor" aria-hidden="true" href="#孤儿规则">#</a></h2>
+<p>只有在 trait 或类型至少有一个属于当前 crate 时，才能对类型实现该 trait。</p>
+<p>比如，不能在自己的 crate 中为标准库中的类型实现标准库中的 trait。因为它们均不属于当前 crate。</p>
+<h2 id="trait-对象">Trait 对象<a hidden class="anchor" aria-hidden="true" href="#trait-对象">#</a></h2>
+<p>泛型虽然很方便，但也有限制。比如，泛型限制了参数只能是同一种类型。</p>
+<p>如下代码所示，Vec 的元素必须是相同类型的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">trait</span> Draw {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">draw</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">Button</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#99d1db">String</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Draw <span style="color:#ca9ee6">for</span> Button {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">draw</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Draw button&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">TextField</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#99d1db">String</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Draw <span style="color:#ca9ee6">for</span> TextField {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">draw</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Draw text field&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> vec <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#8caaee">vec!</span>[
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">Box</span>::new(Button {
+</span></span><span style="display:flex;"><span>            name: <span style="color:#a6d189">&#34;button&#34;</span>.to_string(),
+</span></span><span style="display:flex;"><span>        }),
+</span></span><span style="display:flex;"><span>        <span style="color:#737994;font-style:italic">// mismatched types expected `Button`, found `TextField` 
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>        <span style="color:#99d1db">Box</span>::new(TextField {
+</span></span><span style="display:flex;"><span>            name: <span style="color:#a6d189">&#34;text field&#34;</span>.to_string(),
+</span></span><span style="display:flex;"><span>        }),
+</span></span><span style="display:flex;"><span>    ];
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Trait 对象则允许在运行时替代多种具体类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 使用 dyn 关键字声明 trait 对象
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#e78284">let</span> vec: <span style="color:#99d1db">Vec</span><span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#99d1db">Box</span><span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">dyn</span> Draw<span style="color:#99d1db;font-weight:bold">&gt;&gt;</span> <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#8caaee">vec!</span>[
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">Box</span>::new(Button {
+</span></span><span style="display:flex;"><span>        name: <span style="color:#a6d189">&#34;button&#34;</span>.to_string(),
+</span></span><span style="display:flex;"><span>    }),
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">Box</span>::new(TextField {
+</span></span><span style="display:flex;"><span>        name: <span style="color:#a6d189">&#34;text field&#34;</span>.to_string(),
+</span></span><span style="display:flex;"><span>    }),
+</span></span><span style="display:flex;"><span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> i <span style="color:#ca9ee6">in</span> vec {
+</span></span><span style="display:flex;"><span>    i.draw();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Rust 使用使用动态分发（Dynamic Dispatch）实现 trait 对象。此时编译器无法知晓所有可能用于 trait 对象代码的类型，所以它也不知道应该调用哪个类型的哪个方法实现。为此，Rust 在运行时使用 trait 对象中的指针来知晓需要调用哪个方法。而编译器只能保证类型实现了相应的 trait。</p>
+<h2 id="关联类型">关联类型<a hidden class="anchor" aria-hidden="true" href="#关联类型">#</a></h2>
+<p>关联类型（associated types）的作用与泛型十分相似，但关联类型限制了我们只能实现一次 trait。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">pub</span> <span style="color:#ca9ee6">trait</span> <span style="color:#99d1db">Iterator</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">type</span> <span style="color:#e5c890">Item</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">next</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#ca9ee6">mut</span> <span style="color:#99d1db">self</span>) -&gt; <span style="color:#99d1db">Option</span><span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#99d1db">Self</span>::Item<span style="color:#99d1db;font-weight:bold">&gt;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> <span style="color:#99d1db">Iterator</span> <span style="color:#ca9ee6">for</span> Counter {
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// 只能指定一次 Item 的类型
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#ca9ee6">type</span> <span style="color:#e5c890">Item</span> <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#e78284">u32</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">next</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#ca9ee6">mut</span> <span style="color:#99d1db">self</span>) -&gt; <span style="color:#99d1db">Option</span><span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#99d1db">Self</span>::Item<span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#737994;font-style:italic">// --snip--
+</span></span></span></code></pre></div><h2 id="默认泛型类型参数">默认泛型类型参数<a hidden class="anchor" aria-hidden="true" href="#默认泛型类型参数">#</a></h2>
+<p>在使用泛型类型参数时，可以为泛型指定一个默认的具体类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 提供默认的泛型类型参数
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">trait</span> Add<span style="color:#99d1db;font-weight:bold">&lt;</span>Rhs<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#99d1db">Self</span><span style="color:#99d1db;font-weight:bold">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">type</span> <span style="color:#e5c890">Output</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">add</span>(<span style="color:#99d1db">self</span>, rhs: <span style="color:#e5c890">Rhs</span>) -&gt; <span style="color:#e5c890">Self</span>::Output;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 使用默认泛型类型参数
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span> Add <span style="color:#ca9ee6">for</span> Point {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">type</span> <span style="color:#e5c890">Output</span> <span style="color:#99d1db;font-weight:bold">=</span> Point;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">add</span>(<span style="color:#99d1db">self</span>, other: <span style="color:#e5c890">Point</span>) -&gt; <span style="color:#e5c890">Point</span> {
+</span></span><span style="display:flex;"><span>        Point {
+</span></span><span style="display:flex;"><span>            x: <span style="color:#e5c890">self</span>.x <span style="color:#99d1db;font-weight:bold">+</span> other.x,
+</span></span><span style="display:flex;"><span>            y: <span style="color:#e5c890">self</span>.y <span style="color:#99d1db;font-weight:bold">+</span> other.y,
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 不使用默认泛型类型参数
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span> Add<span style="color:#99d1db;font-weight:bold">&lt;</span>Meters<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ca9ee6">for</span> Millimeters {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">type</span> <span style="color:#e5c890">Output</span> <span style="color:#99d1db;font-weight:bold">=</span> Millimeters;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">add</span>(<span style="color:#99d1db">self</span>, other: <span style="color:#e5c890">Meters</span>) -&gt; <span style="color:#e5c890">Millimeters</span> {
+</span></span><span style="display:flex;"><span>        Millimeters(<span style="color:#99d1db">self</span>.<span style="color:#ef9f76">0</span> <span style="color:#99d1db;font-weight:bold">+</span> (other.<span style="color:#ef9f76">0</span> <span style="color:#99d1db;font-weight:bold">*</span> <span style="color:#ef9f76">1000</span>))
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="完全限定语法">完全限定语法<a hidden class="anchor" aria-hidden="true" href="#完全限定语法">#</a></h2>
+<p>Rust 不能避免一个 trait 与另一个 trait 拥有同名的方法，也不能阻止为同一类型实现这两个 trait。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">trait</span> Pilot {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">trait</span> Wizard {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">Human</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 实现两个有同名方法的 trait
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span> Pilot <span style="color:#ca9ee6">for</span> Human {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Pilot fly&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Wizard <span style="color:#ca9ee6">for</span> Human {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Wizard fly&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 自身也实现该方法
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">impl</span> Human {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Flying&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> human <span style="color:#99d1db;font-weight:bold">=</span> Human {};
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// 默认调用自身实现
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    human.fly();
+</span></span><span style="display:flex;"><span>    Wizard::fly(<span style="color:#99d1db;font-weight:bold">&amp;</span>human);
+</span></span><span style="display:flex;"><span>    Pilot::fly(<span style="color:#99d1db;font-weight:bold">&amp;</span>human);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>关联函数没有 <code>&amp;self</code> 参数，不能使用上面的方法来消除歧义。此时只能使用<strong>完全限定语法（fully qualified syntax）</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 关联函数而非方法
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">trait</span> Pilot {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">trait</span> Wizard {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">Human</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Pilot <span style="color:#ca9ee6">for</span> Human {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Pilot fly&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Wizard <span style="color:#ca9ee6">for</span> Human {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Wizard fly&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">impl</span> Human {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">fly</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;Flying&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    Human::fly();
+</span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// 完全限定语法调用同名关联函数
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>    <span style="color:#99d1db;font-weight:bold">&lt;</span>Human <span style="color:#ca9ee6">as</span> Wizard<span style="color:#99d1db;font-weight:bold">&gt;</span>::fly();
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db;font-weight:bold">&lt;</span>Human <span style="color:#ca9ee6">as</span> Pilot<span style="color:#99d1db;font-weight:bold">&gt;</span>::fly();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="父-trait">父 trait<a hidden class="anchor" aria-hidden="true" href="#父-trait">#</a></h2>
+<p>父 trait 可以让类型在一个 trait 的同时也必须实现另一个 trait。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::fmt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 父 trait
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">trait</span> OutlinePrint: <span style="color:#e5c890">fmt</span>::Display {
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">outline_print</span>(<span style="color:#99d1db;font-weight:bold">&amp;</span><span style="color:#99d1db">self</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#737994;font-style:italic">// 可以使用父 trait 的方法
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span>        <span style="color:#e78284">let</span> output <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">self</span>.to_string();
+</span></span><span style="display:flex;"><span>        <span style="color:#e78284">let</span> len <span style="color:#99d1db;font-weight:bold">=</span> output.len();
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, <span style="color:#a6d189">&#34;*&#34;</span>.repeat(len <span style="color:#99d1db;font-weight:bold">+</span> <span style="color:#ef9f76">4</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;*</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">*&#34;</span>, <span style="color:#a6d189">&#34; &#34;</span>.repeat(len <span style="color:#99d1db;font-weight:bold">+</span> <span style="color:#ef9f76">2</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;* </span><span style="color:#a6d189">{output}</span><span style="color:#a6d189"> *&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;*</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">*&#34;</span>, <span style="color:#a6d189">&#34; &#34;</span>.repeat(len <span style="color:#99d1db;font-weight:bold">+</span> <span style="color:#ef9f76">2</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{}</span><span style="color:#a6d189">&#34;</span>, <span style="color:#a6d189">&#34;*&#34;</span>.repeat(len <span style="color:#99d1db;font-weight:bold">+</span> <span style="color:#ef9f76">4</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="sized-trait">Sized Trait<a hidden class="anchor" aria-hidden="true" href="#sized-trait">#</a></h2>
+<p>**动态大小类型（dynamically sized types）**允许我们处理只用在运行时才知道大小的类型。</p>
+<p>因为动态大小类型只能在运行时确定，所以它的<strong>值必须置于某种指针之后</strong>。</p>
+<p>比如 trait。每一个 trait 都是一个可以通过 trait 名称来引用的动态大小类型。所以它必须放在指针之后，<code>&amp;dyn trait</code> 或 <code>Box&lt;dyn trait&gt;</code>。</p>
+<p>为了处理 DST，Rust 提供了 Sized trait 来决定一个类型的大小是否在编译时可知。这个 trait 会自动为所有在编译时就知道大小的类型实现。另外，Rust 会为每一个泛型函数增加 <code>Sized</code> bound。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">generic</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span>(t: <span style="color:#e5c890">T</span>){}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">generic</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#99d1db">Sized</span><span style="color:#99d1db;font-weight:bold">&gt;</span>(t: <span style="color:#e5c890">T</span>){}
+</span></span></code></pre></div><p><code>Sized</code> trait 还有一个特殊的语法，<code>?Sized</code>。它表示该类型可能是也可能不是 <code>Sized</code>。该语法只能用于 <code>Sized</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 参数类型从 T 变成了 &amp;T，因为 DST 必须置于某种指针之后
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">generic</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#99d1db;font-weight:bold">?</span><span style="color:#99d1db">Sized</span><span style="color:#99d1db;font-weight:bold">&gt;</span>(t: <span style="color:#ca9ee6">&amp;</span><span style="color:#e5c890">T</span>){}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">Bar</span><span style="color:#99d1db;font-weight:bold">&lt;</span>T: <span style="color:#99d1db;font-weight:bold">?</span><span style="color:#99d1db">Sized</span><span style="color:#99d1db;font-weight:bold">&gt;</span>(T);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// [i32] 没有实现 Sized trait，所以它的大小在编译时是不可知的
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 如果不使用 ?Sized trait，以下代码将无法编译
+</span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"></span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> sized: <span style="color:#e5c890">Bar</span><span style="color:#99d1db;font-weight:bold">&lt;</span>[<span style="color:#e78284">i32</span>; <span style="color:#ef9f76">8</span>]<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#99d1db;font-weight:bold">=</span> Bar([<span style="color:#ef9f76">0</span>; <span style="color:#ef9f76">8</span>]);
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> dynamic1: <span style="color:#99d1db">Box</span><span style="color:#99d1db;font-weight:bold">&lt;</span>Bar<span style="color:#99d1db;font-weight:bold">&lt;</span>[<span style="color:#e78284">i32</span>]<span style="color:#99d1db;font-weight:bold">&gt;&gt;</span> <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">Box</span>::new(Bar([]));
+</span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> dynamic2: <span style="color:#99d1db">Box</span><span style="color:#99d1db;font-weight:bold">&lt;</span>Bar<span style="color:#99d1db;font-weight:bold">&lt;</span>[<span style="color:#e78284">i32</span>]<span style="color:#99d1db;font-weight:bold">&gt;&gt;</span> <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">Box</span>::new(sized);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:#?}</span><span style="color:#a6d189">&#34;</span>, dynamic1);
+</span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{:#?}</span><span style="color:#a6d189">&#34;</span>, dynamic2);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://tpcad.github.io/tags/rust/">Rust</a></li>
+    </ul>
+  </footer>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Cpp | Eulamber</title>
+<meta name="keywords" content="">
+<meta name="description" content="TPCAD&#39;s blog">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/tags/cpp/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://tpcad.github.io/tags/cpp/index.xml">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/tags/cpp/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/tags/cpp/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="Cpp">
+  <meta property="og:description" content="TPCAD&#39;s blog">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cpp">
+<meta name="twitter:description" content="TPCAD&#39;s blog">
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/tags/">Tags</a></div>
+  <h1>
+    Cpp
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">How Perfect Forwarding Works
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>转发 指的是函数之间的参数传递。比如下面的代码，函数 foo 向函数 bar 传递了参数 a。
+foo(int a) { bar(a) } bar(int b) {} 完美转发则是在转发过程中，参数的各种属性都保持不变。比如右值仍是右值，左值仍是左值。
+普通转发的问题 在下面的代码中，函数 pass 接受一个右值引用，并将该参数传递给函数 reference。当向 pass 传入字面量 1 时，最终的输出结果是 lvalue。这是因为虽然向 pass 传入了右值，但在函数体内，变量 x 的值类别变成了左值，即 x 的类型是右值引用，值类别是左值，所以最终会调用 reference(int &amp;y)。
+这就是普通转发存在的问题，在转发过程中可能会改变参数某些属性。
+#include &lt;fmt/core.h&gt; void reference(int &amp;&amp;y) { fmt::println(&#34;rvalue&#34;); } void reference(int &amp;y) { fmt::println(&#34;lvalue&#34;); } void pass(int &amp;&amp;x) { fmt::println(&#34;general pass&#34;); reference(x); } int main(int argc, char *argv[]) { pass(1); return 0; } 实现完美转发 万能引用 在普通函数中，若参数类型为 &amp;&amp;，则函数只能接受右值。
+void foo(int &amp;&amp;x) {} int main() { int a = 1; foo(1); // foo(a); 无法编译 } 但在模板函数中，若 &amp;&amp; 与模板参数结合，即 T&amp;&amp;，那么它将不再代表右值引用，而是万能引用。它既能接受左值，又能接受右值。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-12 17:46:57 +0800 +0800'>August 12, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to How Perfect Forwarding Works" href="https://tpcad.github.io/posts/cpp_perfect_forwarding.md/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">How Nullptr Works
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>为什么需要 nullptr 在 C 中，NULL 被定义为 (void*)0 或 0。而 C&#43;&#43; 因为不允许直接将 void* 隐式转换到其他类型，所以在没有 nullptr 之前，C&#43;&#43; 的 NULL 就是 0（也可能是 0L）。这导致 0 的二义性。
+0 的二义性给函数重载带来了混乱。考虑下面的代码，如果 NULL 被定义为 0，那么 foo(NULL) 会严格匹配 foo(int)，但如果 NULL 被定义为 0，那么将不存在严格匹配，而 0L 可以同时转换为 int 和 int*，编译器无法知道应该调用哪个函数。
+void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(NULL); 为了解决这个问题，C&#43;&#43; 11 引入了 nullptr 关键字，用于区分空指针和 0。
+使用 nullptr nullptr 是一个纯右值，无法被 &amp; 取地址，可以被隐式转换为任意的指针或成员指针类型。
+void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(nullptr); // 隐式转换到 int*，调用 foo(int*) nullptr 可以取代 NULL 的所有场景。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-06 17:46:57 +0800 +0800'>August 6, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to How Nullptr Works" href="https://tpcad.github.io/posts/cpp_nullptr/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

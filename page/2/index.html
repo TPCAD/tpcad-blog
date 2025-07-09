@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.148.0"><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Eulamber</title>
+
+<meta name="description" content="TPCAD&#39;s blog">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://tpcad.github.io/index.xml">
+<link rel="alternate" type="application/json" href="https://tpcad.github.io/index.json">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="Eulamber">
+  <meta property="og:description" content="TPCAD&#39;s blog">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Eulamber">
+<meta name="twitter:description" content="TPCAD&#39;s blog">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Eulamber",
+  "url": "https://tpcad.github.io/",
+  "description": "TPCAD's blog",
+  "logo": "https://tpcad.github.io/favicon.ico",
+  "sameAs": [
+      "https://github.com/TPCAD/tpcad-blog/issues"
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">TCP 基础
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>TCP 首部 --- title: &#34;TCP Packet&#34; --- packet-beta 0-15: &#34;源端口号&#34; 16-31: &#34;目的端口号&#34; 32-63: &#34;序列号&#34; 64-95: &#34;确认应答号&#34; 96-99: &#34;数据偏移量&#34; 100-105: &#34;保留&#34; 106: &#34;URG&#34; 107: &#34;ACK&#34; 108: &#34;PSH&#34; 109: &#34;RST&#34; 110: &#34;SYN&#34; 111: &#34;FIN&#34; 112-127: &#34;窗口&#34; 128-143: &#34;校验和&#34; 144-159: &#34;紧急指针&#34; 160-191: &#34;选项（长度可变）&#34; 序列号：TCP 是面向字节流的，其传输的每一个数据字节都对应一个序列号。序列号的初始值是一个随机数，每发送一次 TCP 报文序列号都会累加一次报文的数据字节数
+确认应答号：下一次期望收到的数据的序列号
+数据偏移量：数据部分的偏移量，也就是首部的长度。单位为 4 字节。因此 TCP 首部最长为 $(2^4-1)*4=60$ 字节。
+控制位：
+ACK：该位为 1 时表示确认应答字段有效，除最初建立连接时的 SYN 包外该位必须置 1 RST：该位为 1 时表示 TCP 连接出现异常必须强制断开连接 SYN：该位为 1 时表示希望建立 TCP 连接，并在其序列号字段确定序列号初始值 FIN：该位为 1 时表示今后不会再有数据发送，希望断开 TCP 连接 TCP 连接 三次握手 建立一个 TCP 连接需要经过三次握手过程。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-07 09:03:08 +0800 +0800'>July 7, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to TCP 基础" href="https://tpcad.github.io/posts/net_tcp/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Rust Traits
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>trait 定义了某个特定类型拥有可能与其他类型共享的功能。
+定义与实现 trait 定义 trait 一个 trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。
+trait Area { fn area(&amp;self) -&gt; u32; } 为类型实现 trait 使用 impl for 为类型实现 trait。
+impl Area for Rectangle { fn area(&amp;self) -&gt; u32 { self.width * self.height } } impl Area for Circle { fn area(&amp;self) -&gt; u32 { 3 * self.radio * self.radio } } 默认实现 trait Summary { fn summarize(&amp;self) -&gt; String { String::from(&#34;(Read more...)&#34;); } } // 因为有默认实现，所以可以指定一个空 impl 块 impl Summary for Tweet {} trait 作为参数 通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-04 15:00:42 +0800 +0800'>July 4, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Rust Traits" href="https://tpcad.github.io/posts/rust_trait/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Thread in Rust
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>线程基础 创建线程 使用 thread::spawn 创建线程，它接受一个 FnOnce 闭包。
+use std::{thread, time::Duration}; fn main() { let handle = thread::spawn(|| { for i in 0..10 { println!(&#34;{i}: spawned thread echo&#34;); thread::sleep(Duration::from_millis(10)); } }); for i in 0..5 { println!(&#34;{i}: main thread echo&#34;); thread::sleep(Duration::from_millis(10)); } handle.join().unwrap(); } 等待线程结束 使用 join 方法等待线程结束。
+let handle = thread::spawn(|| { for i in 0..10 { println!(&#34;{i}: spawned thread echo&#34;); thread::sleep(Duration::from_millis(10)); } }); // 对 spawn 的返回值调用 join 方法 handle.join().unwrap(); move 闭包与线程 use std::thread; fn main() { let v = vec![1, 2, 3]; // 使用 move 获取所有权 let handle = thread::spawn(move || { println!(&#34;Here&#39;s a vector: {v:?}&#34;); }); handle.join().unwrap(); } 消息传递 Rust 通过**信道（channel）**实现消息传递。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-03 11:47:33 +0800 +0800'>July 3, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Thread in Rust" href="https://tpcad.github.io/posts/rust_thread/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Classic Sort Algorithm
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Selection Sort 以升序为例，选择排序的思想是遍历未排序元素，选择其中最小的元素，将其移动到未排序元素开始位置。
+性质 最好时间复杂度：$O(n^2)$ 最坏时间复杂度：$O(n^2)$ 平均时间复杂度：$O(n^2)$ 稳定性：不稳定 演示 // 原数组，所有元素均位于未排序部分 [3, 4, 1, 9, 5, 8, 0] // 第一轮，遍历未排序部分，选择最小的元素（0），移动到未排序部分开始位置 // 有序部分位于数组头部 [0, 4, 3, 9, 5, 8, 1] // 第二轮，遍历未排序部分，选择最小的元素（1），移动到未排序部分开始位置 [0, 1, 4, 9, 5, 8, 3] // 第三轮，遍历未排序部分，选择最小的元素（3），移动到未排序部分开始位置 [0, 1, 3, 9, 5, 8, 4] // ... 示例代码 void selection_sort(int *arr, int len) { for (int i = 0; i &lt; len - 1; &#43;&#43;i) { int min_idx = i; int j = i &#43; 1; for (; j &lt; len; &#43;&#43;j) { if (arr[min_idx] &gt; arr[j]) { min_idx = j; // 记录索引位置 } } if (min_idx != i) { swap(&amp;arr[i], &amp;arr[min_idx]); } } } Bubble Sort 以升序为例，在未排序元素中依次比较相邻两个元素，若乱序则交换两个元素，这样一来较大的元素就会被慢慢移动到末尾有序排列。通常在冒泡排序中设置一个 flag，当没有发生交换操作时，说明数组已经有序，停止遍历。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-02 20:48:29 +0800 +0800'>July 2, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Classic Sort Algorithm" href="https://tpcad.github.io/posts/algorithm_sort/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Rust Smart Pointer
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Box&lt;T&gt; Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。
+fn main() { let f1 = foo { bar: 32 }; let f2 = Box::new(foo { bar: 11 }); println!(&#34;address on stack: {:p}&#34;, &amp;f1); println!(&#34;address on heap: {:p}&#34;, f2); println!(&#34;address of box(on stack): {:p}&#34;, &amp;f2); } struct foo { bar: i32, } // address on stack: 0x7ffd34540f0c // address on heap: 0x57d39e669ba0 // address of box(on stack): 0x7ffd34540f10 Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。
+// 利用 Box 实现递归类型 enum List { Cons(i32, Box&lt;List&gt;), Nil, } use crate::List::{Cons, Nil}; fn main() { let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil)))))); } Deref Trait 实现 Deref trait 可以重载解引用运算符 *。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-02 15:57:07 +0800 +0800'>July 2, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Rust Smart Pointer" href="https://tpcad.github.io/posts/rust_smart_pointer/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Hugo &#43; Github Action，搭建个人博客
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>创建 Github 仓库 创建博客源仓库 博客源仓库用于对 Hugo 的配置文件以及 Markdown 源文件进行备份和管理，并配合 Github Action 自动将生成的静态网页推送到 Github Pages 仓库。
+创建 Github Pages 仓库 以 username.github.io 形式命名的特殊仓库，使用 Github Pages 实现部署网站。
+创建博客 hugo new site Blog Hugo 生成的目录结构。
+Blog ├── archetypes │ └── default.md ├── assets ├── content ├── data ├── hugo.toml ├── i18n ├── layouts ├── static └── themes 关联博客源仓库 cd Blog git init git remote add origin git@github.com:TPCAD/tpcad-blog.git 配置 Hugo 主题 为了方便对主题进行自定义和版本控制，我们将 Hugo 主题 fork 到自己的 Github 账户，并以 submodule 的方式将主题添加到我们的博客源仓库。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-06-29 10:59:27 +0800 +0800'>June 29, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Hugo &#43; Github Action，搭建个人博客" href="https://tpcad.github.io/posts/build_blog_with_hugo_and_github_action/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://tpcad.github.io/">
+      «&nbsp;Prev&nbsp;
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
