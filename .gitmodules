@@ -1,6 +1,3 @@
 [submodule "themes/hugo-PaperMod"]
 	path = themes/hugo-PaperMod
 	url = git@github.com:TPCAD/hugo-PaperMod.git
-; [submodule "public"]
-; 	path = public
-; 	url = git@github.com:TPCAD/tpcad.github.io.git
