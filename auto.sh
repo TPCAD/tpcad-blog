@@ -10,10 +10,16 @@ printf_warn_msg() {
 
 check_posts() {
     find content/posts -maxdepth 2 -type f -name "*.md" | while read -r entry; do
+
+        # check windows format
         if file "$entry" | grep "CRLF" -q; then
             printf_warn_msg "Found Windows format file \"${entry#content/posts/}\""
         fi
 
+        # check heading 1
+        head -n 20 "$entry" | grep -E '^#\s+.*' -q && printf_warn_msg "Found heading 1 in \"${entry#content/posts/}\""
+
+        # check frontmatter
         head -n 20 "$entry" | awk '
             BEGIN { state = 0; quit = 1 }
             state == 0 && /^[[:space:]]*$/ { next }        # 跳过前言前的空行
@@ -22,6 +28,7 @@ check_posts() {
             state == 1 && $0 == "+++" { quit = 0; exit 0 } # 找到结束标记
             END { if (state == 1 && quit == 1) exit 1 }
     ' || printf_warn_msg "No frontmatter found in \"${entry#content/posts/}\""
+
     done
 }
 
