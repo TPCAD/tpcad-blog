@@ -8,6 +8,24 @@ printf_warn_msg() {
     printf "\e[33mWARN\e[0m: %s\n" "$1"
 }
 
+create_post() {
+    [ -z "$1" ] && {
+        printf_error_msg "Require post name"
+        exit 1
+    }
+
+    hugo new "posts/$1.md"
+}
+
+remove_post() {
+    [ -z "$1" ] && {
+        printf_error_msg "Require post name"
+        exit 1
+    }
+
+    rm "content/posts/$1.md"
+}
+
 check_posts() {
     find content/posts -maxdepth 2 -type f -name "*.md" | while read -r entry; do
 
@@ -44,4 +62,6 @@ check_posts() {
 
 case "$1" in
 check) check_posts ;;
+new) create_post "$2" ;;
+rm) remove_post "$2" ;;
 esac
