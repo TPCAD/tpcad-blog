@@ -42,7 +42,7 @@ pub struct Todo {
 实现 Iterator trait 的关键是记录当前的迭代状态。Todos 使用一个 Vec&lt;T&gt; 来进行存储，非常适合用索引来记录迭代状态。我们可以为 Todos 添加一个 index 字段来记录迭代状态。但很显然，这并不妥当。当你对 Todos 进行迭代时会修改 index 字段的值，如果想要再次进行迭代，就必须重置 index 字段，因为迭代器不会在迭代结束后重置状态。">
 <meta name="author" content="TPCAD">
 <link rel="canonical" href="https://tpcad.github.io/posts/rust_iterator/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.2e30b57bafed6e94d54f7201ae109ae389750633c8a6e2a525687239cdbf85db.css" integrity="sha256-LjC1e6/tbpTVT3IBrhCa44l1BjPIpuKlJWhyOc2/hds=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.3c132f4f67b09f372a89c30a4d21e19485556c392a7f8d0d6c7e95399bfc17b9.css" integrity="sha256-PBMvT2ewnzcqicMKTSHhlIVVbDkqf40NbH6VOZv8F7k=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://tpcad.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
