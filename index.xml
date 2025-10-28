@@ -6,8 +6,48 @@
     <description>Recent content on Eulamber</description>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 08 Jul 2025 17:20:30 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 Oct 2025 10:06:35 +0800</lastBuildDate>
     <atom:link href="https://tpcad.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neovim Options</title>
+      <link>https://tpcad.github.io/posts/nvim_options/</link>
+      <pubDate>Mon, 27 Oct 2025 10:06:35 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/nvim_options/</guid>
+      <description>&lt;p&gt;选项（Options）是用于配置 Vim/Neovim 行为和外观的各种内置变量。选项可以是「数字」、「布尔」或「字符串」三种类型之一。&lt;/p&gt;
+&lt;h2 id=&#34;设置选项&#34;&gt;设置选项&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;:set&lt;/code&gt; 可以用于设置 option，比如 &lt;code&gt;:set number&lt;/code&gt; 开启行号显示。&lt;/p&gt;
+&lt;p&gt;一些常用的 &lt;code&gt;:set&lt;/code&gt; 命令：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;:set&lt;/code&gt;：列出所有与默认值不同的选项&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set!&lt;/code&gt;：列出所有与默认值不同的选项，每个选项单独一行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set all&lt;/code&gt;：列出所有选项&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set! all&lt;/code&gt;：列出所有选项，每个选项单独一行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set {option}?&lt;/code&gt;：查看指定选项的值&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set {option}&lt;/code&gt;：
+&lt;ul&gt;
+&lt;li&gt;布尔类型：true&lt;/li&gt;
+&lt;li&gt;数字类型：查看选项的值&lt;/li&gt;
+&lt;li&gt;字符串类型：查看选项的值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;`:set no{option}：将布尔类型的选项设为 false&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set inv{option}&lt;/code&gt; 或 &lt;code&gt;:set {option}!&lt;/code&gt;：反转布尔类型 option&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set {option}&amp;amp;&lt;/code&gt;：设置选项为默认值&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set all&amp;amp;&lt;/code&gt;：设置所有选项为默认值&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:set {option}={value}&lt;/code&gt; 或 &lt;code&gt;:set {option}:{value}&lt;/code&gt;：设置数字或字符串类型选项&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-vimscript&#34; data-lang=&#34;vimscript&#34;&gt;:set number                   &amp;#34; 布尔类型
+:set clipboard=unnamedplus    &amp;#34; 字符串类型
+:set cmdheight=2              &amp;#34; 数字类型
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;选项作用域&#34;&gt;选项作用域&lt;/h2&gt;
+&lt;p&gt;选项有三种作用域：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全局选项（global）&lt;/li&gt;
+&lt;li&gt;窗口局部选项（local to window）&lt;/li&gt;
+&lt;li&gt;缓存区局部选项（local to buffer）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用 &lt;code&gt;:setglobal&lt;/code&gt; 和 &lt;code&gt;:setlocal&lt;/code&gt; 可以分别设置选项的全局值和局部值，而 &lt;code&gt;:set&lt;/code&gt; 会同时设置选项的全局值和局部值。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Sed 参考手册</title>
       <link>https://tpcad.github.io/posts/sed/</link>
