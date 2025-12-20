@@ -4,7 +4,7 @@
     <title>Rust on Eulamber</title>
     <link>https://tpcad.github.io/tags/rust/</link>
     <description>Recent content in Rust on Eulamber</description>
-    <generator>Hugo -- 0.152.2</generator>
+    <generator>Hugo -- 0.153.0</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 04 Jul 2024 15:00:42 +0800</lastBuildDate>
     <atom:link href="https://tpcad.github.io/tags/rust/index.xml" rel="self" type="application/rss+xml" />
@@ -41,7 +41,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 因为有默认实现，所以可以指定一个空 impl 块
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;impl&lt;/span&gt; Summary &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; Tweet {}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;impl&lt;/span&gt; Summary &lt;span style=&#34;color:#ca9ee6&#34;&gt;for&lt;/span&gt; Tweet {}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;trait-作为参数&#34;&gt;trait 作为参数&lt;/h2&gt;
 &lt;p&gt;通过将 trait 作为函数参数，可以使该参数支持任何实现了指定 trait 的类型。&lt;/p&gt;</description>
     </item>
@@ -84,7 +84,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;});
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 对 spawn 的返回值调用 join 方法
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;handle.join().unwrap();
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;handle.join().unwrap();
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
 &lt;li&gt;move 闭包与线程&lt;/li&gt;
 &lt;/ul&gt;
@@ -94,7 +94,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; v &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;vec!&lt;/span&gt;[&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;];
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 使用 move 获取所有权
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; handle &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; thread::spawn(&lt;span style=&#34;color:#ca9ee6&#34;&gt;move&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;||&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;let&lt;/span&gt; handle &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; thread::spawn(&lt;span style=&#34;color:#ca9ee6&#34;&gt;move&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;||&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#8caaee&#34;&gt;println!&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;Here&amp;#39;s a vector: &lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;{v:?}&lt;/span&gt;&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&lt;/span&gt;);
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    });
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
@@ -127,7 +127,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// address of box(on stack): 0x7ffd34540f10
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Box 只提供了间接存储和堆分配，除此之外没有其他特殊功能。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 利用 Box 实现递归类型
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;List&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;List&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Cons(&lt;span style=&#34;color:#e78284&#34;&gt;i32&lt;/span&gt;, &lt;span style=&#34;color:#99d1db&#34;&gt;Box&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;),
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Nil,
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}

@@ -4,7 +4,7 @@
     <title>Cpp on Eulamber</title>
     <link>https://tpcad.github.io/tags/cpp/</link>
     <description>Recent content in Cpp on Eulamber</description>
-    <generator>Hugo -- 0.152.2</generator>
+    <generator>Hugo -- 0.153.0</generator>
     <language>zh-CN</language>
     <lastBuildDate>Mon, 12 Aug 2024 17:46:57 +0800</lastBuildDate>
     <atom:link href="https://tpcad.github.io/tags/cpp/index.xml" rel="self" type="application/rss+xml" />
@@ -24,7 +24,7 @@
 &lt;p&gt;在下面的代码中，函数 &lt;code&gt;pass&lt;/code&gt; 接受一个右值引用，并将该参数传递给函数 &lt;code&gt;reference&lt;/code&gt;。当向 &lt;code&gt;pass&lt;/code&gt; 传入字面量 &lt;code&gt;1&lt;/code&gt; 时，最终的输出结果是 &lt;code&gt;lvalue&lt;/code&gt;。这是因为虽然向 &lt;code&gt;pass&lt;/code&gt; 传入了右值，但在函数体内，变量 &lt;code&gt;x&lt;/code&gt; 的值类别变成了&lt;strong&gt;左值&lt;/strong&gt;，即 &lt;code&gt;x&lt;/code&gt; 的类型是右值引用，值类别是左值，所以最终会调用 &lt;code&gt;reference(int &amp;amp;y)&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;这就是普通转发存在的问题，在转发过程中可能会改变参数某些属性。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#737994;font-weight:bold;font-style:italic&#34;&gt;&amp;lt;fmt/core.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;reference&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;y) { fmt&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;println&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;rvalue&amp;#34;&lt;/span&gt;); }
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;reference&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;y) { fmt&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;println&lt;/span&gt;(&lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;lvalue&amp;#34;&lt;/span&gt;); }
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;pass&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;x) {
@@ -45,7 +45,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; a &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;);
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// foo(a); 无法编译
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;但在模板函数中，若 &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; 与模板参数结合，即 &lt;code&gt;T&amp;amp;&amp;amp;&lt;/code&gt;，那么它将不再代表右值引用，而是&lt;strong&gt;万能引用&lt;/strong&gt;。它既能接受左值，又能接受右值。&lt;/p&gt;</description>
     </item>
     <item>
@@ -60,7 +60,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;){}
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;foo(&lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;); &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 调用 foo(int)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;foo(&lt;span style=&#34;color:#99d1db&#34;&gt;NULL&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;foo(&lt;span style=&#34;color:#99d1db&#34;&gt;NULL&lt;/span&gt;);
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;为了解决这个问题，C++ 11 引入了 &lt;code&gt;nullptr&lt;/code&gt; 关键字，用于区分空指针和 &lt;code&gt;0&lt;/code&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;使用-nullptr&#34;&gt;使用 nullptr&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;nullptr&lt;/code&gt; 是一个纯右值，无法被 &lt;code&gt;&amp;amp;&lt;/code&gt; 取地址，可以被隐式转换为任意的指针或成员指针类型。&lt;/p&gt;
@@ -68,7 +68,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;){}
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;foo(&lt;span style=&#34;color:#ef9f76&#34;&gt;0&lt;/span&gt;); &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 调用 foo(int)
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;&lt;/span&gt;foo(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;); &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 隐式转换到 int*，调用 foo(int*)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;foo(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;); &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 隐式转换到 int*，调用 foo(int*)
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;nullptr&lt;/code&gt; 可以取代 &lt;code&gt;NULL&lt;/code&gt; 的所有场景。&lt;/p&gt;</description>
     </item>
   </channel>
