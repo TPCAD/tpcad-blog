@@ -1,5 +1,5 @@
 +++
-title = 'Algorithm_avltree'
+title = '二叉平衡树'
 date = 2024-11-22T08:24:44+08:00
 tags = ['Algorithm', 'Tree', 'Data Structure']
 +++
