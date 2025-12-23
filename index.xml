@@ -206,7 +206,7 @@
 &lt;p&gt;因为增加了 &lt;code&gt;parent&lt;/code&gt; 字段用于指向当前节点的父节点，因此旋转操作也需要更新 &lt;code&gt;parent&lt;/code&gt; 字段。&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Algorithm_avltree</title>
+      <title>二叉平衡树</title>
       <link>https://tpcad.github.io/posts/algorithm_avltree/</link>
       <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
       <guid>https://tpcad.github.io/posts/algorithm_avltree/</guid>

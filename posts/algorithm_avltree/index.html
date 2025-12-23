@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Algorithm_avltree | Eulamber</title>
+<title>二叉平衡树 | Eulamber</title>
 <meta name="keywords" content="Algorithm, Tree, Data Structure">
 <meta name="description" content="平衡二叉树是一种平衡的二叉搜索树。
 
@@ -99,7 +99,7 @@ struct avl_tree {
     </style>
 </noscript><meta property="og:url" content="https://tpcad.github.io/posts/algorithm_avltree/">
   <meta property="og:site_name" content="Eulamber">
-  <meta property="og:title" content="Algorithm_avltree">
+  <meta property="og:title" content="二叉平衡树">
   <meta property="og:description" content="平衡二叉树是一种平衡的二叉搜索树。
 空树是平衡二叉树 左右子树的高度差的绝对值不超过 1 左右子树也是平衡二叉树 AVL 树是一种平衡二叉树，它会在插入或删除节点时调整二叉树使每个节点的左右子树的高度差的绝对值不超过 1。通常把左右子树的差叫做 平衡因子。即
 $$ 平衡因子 = 左子树的高度 - 右子树的高度 $$
@@ -114,7 +114,7 @@ struct avl_tree { private: struct avl_node { public: T key; unsigned size; unsig
     <meta property="article:tag" content="Tree">
     <meta property="article:tag" content="Data Structure">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Algorithm_avltree">
+<meta name="twitter:title" content="二叉平衡树">
 <meta name="twitter:description" content="平衡二叉树是一种平衡的二叉搜索树。
 
 空树是平衡二叉树
@@ -174,7 +174,7 @@ struct avl_tree {
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "Algorithm_avltree",
+      "name": "二叉平衡树",
       "item": "https://tpcad.github.io/posts/algorithm_avltree/"
     }
   ]
@@ -184,8 +184,8 @@ struct avl_tree {
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Algorithm_avltree",
-  "name": "Algorithm_avltree",
+  "headline": "二叉平衡树",
+  "name": "二叉平衡树",
   "description": "平衡二叉树是一种平衡的二叉搜索树。\n空树是平衡二叉树 左右子树的高度差的绝对值不超过 1 左右子树也是平衡二叉树 AVL 树是一种平衡二叉树，它会在插入或删除节点时调整二叉树使每个节点的左右子树的高度差的绝对值不超过 1。通常把左右子树的差叫做 平衡因子。即\n$$ 平衡因子 = 左子树的高度 - 右子树的高度 $$\n节点定义 AVL 树的节点与二叉搜索树类似，但多了一个 height 字段，用于保存当前节点的高度。规定空树的高度为 0，非空树的高度等于它的最大层次（其根节点的层次为 1，依次类推）。\nstruct avl_tree { private: struct avl_node { public: T key; unsigned size; unsigned count; unsigned height; avl_node *left; avl_node *right; avl_node(const T \u0026amp;value) : key(value), size(1), count(1), height(1), left(nullptr), right(nullptr) {} }; avl_node *root; public: avl_tree() : root(nullptr) {} avl_tree(const T \u0026amp;value) : root(nullptr) { root = new avl_node(value); } avl_tree(std::initializer_list\u0026lt;T\u0026gt; list) : root(nullptr) { root = new avl_node(*list.begin()); std::for_each(list.begin() + 1, list.end(), [this](auto \u0026amp;\u0026amp;x) { this-\u0026gt;insert(x); }); } } 平衡 旋转 旋转 是一种将节点变成它的子节点的节点的操作，可以分为 左旋 和 右旋。关于旋转方向的定义有很多，甚至有些相互矛盾。这里规定，\n",
   "keywords": [
     "Algorithm", "Tree", "Data Structure"
@@ -279,7 +279,7 @@ struct avl_tree {
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
-      Algorithm_avltree
+      二叉平衡树
     </h1>
     <div class="post-meta"><span title='2024-11-22 08:24:44 +0800 +0800'>November 22, 2024</span>&nbsp;·&nbsp;TPCAD
 
