@@ -1,4 +1,4 @@
-baseURL = 'https://tpcad.github.io/'
+baseURL = 'https://tpcad.github.io/tpcad-blog'
 languageCode = 'zh-CN'
 title = 'Eulamber'
 theme = "hugo-PaperMod"
@@ -32,7 +32,7 @@ location = 0
 distance = 1_000
 threshold = 0.4
 minMatchCharLength = 0
-keys = [ "title", "permalink", "summary", "content" ]
+keys = ["title", "permalink", "summary", "content"]
 
 [[menu.main]]
 name = "Archive"
