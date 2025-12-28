@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Operating System on Eulamber</title>
-    <link>https://tpcad.github.io/tags/operating-system/</link>
+    <link>https://tpcad.github.io/tpcad-blog/tags/operating-system/</link>
     <description>Recent content in Operating System on Eulamber</description>
     <generator>Hugo -- 0.153.3</generator>
     <language>zh-CN</language>
     <lastBuildDate>Mon, 21 Oct 2024 08:25:27 +0800</lastBuildDate>
-    <atom:link href="https://tpcad.github.io/tags/operating-system/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tpcad.github.io/tpcad-blog/tags/operating-system/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>进程基础</title>
-      <link>https://tpcad.github.io/posts/os_process_basic/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/os_process_basic/</link>
       <pubDate>Mon, 21 Oct 2024 08:25:27 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/os_process_basic/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/os_process_basic/</guid>
       <description>&lt;h2 id=&#34;进程&#34;&gt;进程&lt;/h2&gt;
 &lt;h3 id=&#34;进程的状态&#34;&gt;进程的状态&lt;/h3&gt;
 &lt;p&gt;一个进程至少有三种基本状态，即就绪、运行、阻塞状态。&lt;/p&gt;
@@ -76,9 +76,9 @@
     </item>
     <item>
       <title>虚拟内存</title>
-      <link>https://tpcad.github.io/posts/os_virtual_memory/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/os_virtual_memory/</link>
       <pubDate>Sun, 20 Oct 2024 09:59:27 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/os_virtual_memory/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/os_virtual_memory/</guid>
       <description>&lt;p&gt;为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 &lt;strong&gt;虚拟地址&lt;/strong&gt;。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 &lt;code&gt;4 GB（2^32）&lt;/code&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;分页&#34;&gt;分页&lt;/h2&gt;
 &lt;p&gt;分页机制将虚拟内存分为一个个大小固定的单元，称为 &lt;strong&gt;页（Page）&lt;/strong&gt;。同样的，也将物理内存分为一个个 &lt;strong&gt;页框（Page Frame）&lt;/strong&gt;。页和页框的大小相等，通常为 &lt;strong&gt;4 KB&lt;/strong&gt;。&lt;/p&gt;

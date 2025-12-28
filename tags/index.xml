@@ -2,59 +2,59 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Eulamber</title>
-    <link>https://tpcad.github.io/tags/</link>
+    <link>https://tpcad.github.io/tpcad-blog/tags/</link>
     <description>Recent content in Tags on Eulamber</description>
     <generator>Hugo -- 0.153.3</generator>
     <language>zh-CN</language>
     <lastBuildDate>Tue, 08 Jul 2025 17:20:30 +0800</lastBuildDate>
-    <atom:link href="https://tpcad.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tpcad.github.io/tpcad-blog/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux</title>
-      <link>https://tpcad.github.io/tags/linux/</link>
+      <link>https://tpcad.github.io/tpcad-blog/tags/linux/</link>
       <pubDate>Tue, 08 Jul 2025 17:20:30 +0800</pubDate>
-      <guid>https://tpcad.github.io/tags/linux/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Algorithm</title>
-      <link>https://tpcad.github.io/tags/algorithm/</link>
+      <link>https://tpcad.github.io/tpcad-blog/tags/algorithm/</link>
       <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
-      <guid>https://tpcad.github.io/tags/algorithm/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/tags/algorithm/</guid>
       <description></description>
     </item>
     <item>
       <title>Data Structure</title>
-      <link>https://tpcad.github.io/tags/data-structure/</link>
+      <link>https://tpcad.github.io/tpcad-blog/tags/data-structure/</link>
       <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
-      <guid>https://tpcad.github.io/tags/data-structure/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/tags/data-structure/</guid>
       <description></description>
     </item>
     <item>
       <title>Tree</title>
-      <link>https://tpcad.github.io/tags/tree/</link>
+      <link>https://tpcad.github.io/tpcad-blog/tags/tree/</link>
       <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
-      <guid>https://tpcad.github.io/tags/tree/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/tags/tree/</guid>
       <description></description>
     </item>
     <item>
       <title>Operating System</title>
-      <link>https://tpcad.github.io/tags/operating-system/</link>
+      <link>https://tpcad.github.io/tpcad-blog/tags/operating-system/</link>
       <pubDate>Mon, 21 Oct 2024 08:25:27 +0800</pubDate>
-      <guid>https://tpcad.github.io/tags/operating-system/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/tags/operating-system/</guid>
       <description></description>
     </item>
     <item>
       <title>Cpp</title>
-      <link>https://tpcad.github.io/tags/cpp/</link>
+      <link>https://tpcad.github.io/tpcad-blog/tags/cpp/</link>
       <pubDate>Mon, 12 Aug 2024 17:46:57 +0800</pubDate>
-      <guid>https://tpcad.github.io/tags/cpp/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/tags/cpp/</guid>
       <description></description>
     </item>
     <item>
       <title>Rust</title>
-      <link>https://tpcad.github.io/tags/rust/</link>
+      <link>https://tpcad.github.io/tpcad-blog/tags/rust/</link>
       <pubDate>Thu, 04 Jul 2024 15:00:42 +0800</pubDate>
-      <guid>https://tpcad.github.io/tags/rust/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/tags/rust/</guid>
       <description></description>
     </item>
   </channel>

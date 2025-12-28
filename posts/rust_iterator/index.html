@@ -41,16 +41,16 @@ pub struct Todo {
 }
 实现 Iterator trait 的关键是记录当前的迭代状态。Todos 使用一个 Vec&lt;T&gt; 来进行存储，非常适合用索引来记录迭代状态。我们可以为 Todos 添加一个 index 字段来记录迭代状态。但很显然，这并不妥当。当你对 Todos 进行迭代时会修改 index 字段的值，如果想要再次进行迭代，就必须重置 index 字段，因为迭代器不会在迭代结束后重置状态。">
 <meta name="author" content="TPCAD">
-<link rel="canonical" href="https://tpcad.github.io/posts/rust_iterator/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.3c132f4f67b09f372a89c30a4d21e19485556c392a7f8d0d6c7e95399bfc17b9.css" integrity="sha256-PBMvT2ewnzcqicMKTSHhlIVVbDkqf40NbH6VOZv8F7k=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://tpcad.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://tpcad.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://tpcad.github.io/safari-pinned-tab.svg">
+<link rel="canonical" href="https://tpcad.github.io/tpcad-blog/posts/rust_iterator/">
+<link crossorigin="anonymous" href="/tpcad-blog/assets/css/stylesheet.3c132f4f67b09f372a89c30a4d21e19485556c392a7f8d0d6c7e95399bfc17b9.css" integrity="sha256-PBMvT2ewnzcqicMKTSHhlIVVbDkqf40NbH6VOZv8F7k=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/tpcad-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/tpcad-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/tpcad-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/tpcad-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/tpcad-blog/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://tpcad.github.io/posts/rust_iterator/">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/tpcad-blog/posts/rust_iterator/">
 <noscript>
     <style>
         #theme-toggle,
@@ -87,7 +87,7 @@ pub struct Todo {
         }
 
     </style>
-</noscript><meta property="og:url" content="https://tpcad.github.io/posts/rust_iterator/">
+</noscript><meta property="og:url" content="https://tpcad.github.io/tpcad-blog/posts/rust_iterator/">
   <meta property="og:site_name" content="Eulamber">
   <meta property="og:title" content="Rust Iterator">
   <meta property="og:description" content="Rust Iterator 可迭代对象与迭代器（Iterable and Iterator） 迭代器（Iterator）是一种可以让你方便地遍历序列中每一个元素的工具。迭代器有两个重要的功能：
@@ -148,13 +148,13 @@ pub struct Todo {
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "https://tpcad.github.io/posts/"
+      "item": "https://tpcad.github.io/tpcad-blog/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "Rust Iterator",
-      "item": "https://tpcad.github.io/posts/rust_iterator/"
+      "item": "https://tpcad.github.io/tpcad-blog/posts/rust_iterator/"
     }
   ]
 }
@@ -180,14 +180,14 @@ pub struct Todo {
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://tpcad.github.io/posts/rust_iterator/"
+    "@id": "https://tpcad.github.io/tpcad-blog/posts/rust_iterator/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Eulamber",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://tpcad.github.io/favicon.ico"
+      "url": "https://tpcad.github.io/tpcad-blog/favicon.ico"
     }
   }
 }
@@ -209,7 +209,7 @@ pub struct Todo {
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://tpcad.github.io/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <a href="https://tpcad.github.io/tpcad-blog/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -235,17 +235,17 @@ pub struct Todo {
         </div>
         <ul id="menu">
             <li>
-                <a href="https://tpcad.github.io/archives" title="Archive">
+                <a href="https://tpcad.github.io/tpcad-blog/archives" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
             <li>
-                <a href="https://tpcad.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="https://tpcad.github.io/tpcad-blog/search/" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
             <li>
-                <a href="https://tpcad.github.io/tags/" title="Tags">
+                <a href="https://tpcad.github.io/tpcad-blog/tags/" title="Tags">
                     <span>Tags</span>
                 </a>
             </li>
@@ -256,7 +256,7 @@ pub struct Todo {
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://tpcad.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/tpcad-blog/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/tpcad-blog/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
       Rust Iterator
     </h1>
@@ -630,7 +630,7 @@ pub struct Todo {
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://tpcad.github.io/">Eulamber</a></span> · 
+        <span>&copy; 2025 <a href="https://tpcad.github.io/tpcad-blog/">Eulamber</a></span> · 
 
     <span>
         Powered by

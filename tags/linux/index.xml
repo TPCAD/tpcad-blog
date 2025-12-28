@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Linux on Eulamber</title>
-    <link>https://tpcad.github.io/tags/linux/</link>
+    <link>https://tpcad.github.io/tpcad-blog/tags/linux/</link>
     <description>Recent content in Linux on Eulamber</description>
     <generator>Hugo -- 0.153.3</generator>
     <language>zh-CN</language>
     <lastBuildDate>Tue, 08 Jul 2025 17:20:30 +0800</lastBuildDate>
-    <atom:link href="https://tpcad.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tpcad.github.io/tpcad-blog/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Sed 参考手册</title>
-      <link>https://tpcad.github.io/posts/sed/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/sed/</link>
       <pubDate>Tue, 08 Jul 2025 17:20:30 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/sed/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/sed/</guid>
       <description>&lt;p&gt;Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。&lt;/p&gt;
 &lt;h2 id=&#34;模式空间与保持空间&#34;&gt;模式空间与保持空间&lt;/h2&gt;
 &lt;p&gt;Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。&lt;/p&gt;

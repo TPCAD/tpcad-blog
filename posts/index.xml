@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Eulamber</title>
-    <link>https://tpcad.github.io/posts/</link>
+    <link>https://tpcad.github.io/tpcad-blog/posts/</link>
     <description>Recent content in Posts on Eulamber</description>
     <generator>Hugo -- 0.153.3</generator>
     <language>zh-CN</language>
     <lastBuildDate>Fri, 26 Dec 2025 21:17:29 +0800</lastBuildDate>
-    <atom:link href="https://tpcad.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tpcad.github.io/tpcad-blog/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Shell 引用</title>
-      <link>https://tpcad.github.io/posts/shell_quoting/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/shell_quoting/</link>
       <pubDate>Fri, 26 Dec 2025 21:17:29 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/shell_quoting/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/shell_quoting/</guid>
       <description>&lt;p&gt;这里的「引用」是「Quoting」而非 C++ 等语言中的「Reference」，Shell 中的引用更像是一种「转义」。&lt;/p&gt;
 &lt;h2 id=&#34;shell-引用&#34;&gt;Shell 引用&lt;/h2&gt;
 &lt;p&gt;引用（Quoting）是 Shell 中一种用于消除字符或词的特殊意义的机制。Shell 有四种引用机制：&lt;/p&gt;
@@ -45,9 +45,9 @@
     </item>
     <item>
       <title>Neovim Options</title>
-      <link>https://tpcad.github.io/posts/nvim_options/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/nvim_options/</link>
       <pubDate>Mon, 27 Oct 2025 10:06:35 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/nvim_options/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/nvim_options/</guid>
       <description>&lt;p&gt;选项（Options）是用于配置 Vim/Neovim 行为和外观的各种内置变量。选项可以是「数字」、「布尔」或「字符串」三种类型之一。&lt;/p&gt;
 &lt;h2 id=&#34;设置选项&#34;&gt;设置选项&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;:set&lt;/code&gt; 可以用于设置 option，比如 &lt;code&gt;:set number&lt;/code&gt; 开启行号显示。&lt;/p&gt;
@@ -85,9 +85,9 @@
     </item>
     <item>
       <title>Sed 参考手册</title>
-      <link>https://tpcad.github.io/posts/sed/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/sed/</link>
       <pubDate>Tue, 08 Jul 2025 17:20:30 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/sed/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/sed/</guid>
       <description>&lt;p&gt;Sed 是一个流编辑器，按行处理输入的文本。Sed 默认不会修改文件，只会将修改的内容输出到标准输出。&lt;/p&gt;
 &lt;h2 id=&#34;模式空间与保持空间&#34;&gt;模式空间与保持空间&lt;/h2&gt;
 &lt;p&gt;Sed 有两个用于处理输入行的临时缓冲区，模式空间（Pattern Space）和保持空间（Holding Space）。&lt;/p&gt;
@@ -117,9 +117,9 @@
     </item>
     <item>
       <title>C&#43;&#43; 初始化</title>
-      <link>https://tpcad.github.io/posts/cpp_initialization/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/cpp_initialization/</link>
       <pubDate>Sun, 08 Dec 2024 09:54:47 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/cpp_initialization/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/cpp_initialization/</guid>
       <description>&lt;p&gt;变量的初始化会在构造时提供变量的初始值。&lt;/p&gt;
 &lt;p&gt;初始值可以由声明符或 new 表达式的 &lt;strong&gt;初始化器&lt;/strong&gt; 部分提供。在函数调用时也会发生：函数形参及函数返回值也会被初始化。&lt;/p&gt;
 &lt;p&gt;初始化器（如果存在）必须是下列之一：&lt;/p&gt;
@@ -176,9 +176,9 @@
     </item>
     <item>
       <title>红黑树</title>
-      <link>https://tpcad.github.io/posts/algorithm_rbtree/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/algorithm_rbtree/</link>
       <pubDate>Tue, 26 Nov 2024 10:43:39 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/algorithm_rbtree/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/algorithm_rbtree/</guid>
       <description>&lt;p&gt;红黑树是一种平衡的二叉搜索树，满足如下性质：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;节点要么是 &lt;strong&gt;黑色&lt;/strong&gt;，要么是 &lt;strong&gt;红色&lt;/strong&gt;&lt;/li&gt;
@@ -242,9 +242,9 @@
     </item>
     <item>
       <title>二叉平衡树</title>
-      <link>https://tpcad.github.io/posts/algorithm_avltree/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/algorithm_avltree/</link>
       <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/algorithm_avltree/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/algorithm_avltree/</guid>
       <description>&lt;p&gt;平衡二叉树是一种平衡的二叉搜索树。&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;空树是平衡二叉树&lt;/li&gt;
@@ -291,9 +291,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>二叉搜索树</title>
-      <link>https://tpcad.github.io/posts/algorithm_bstree/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/algorithm_bstree/</link>
       <pubDate>Wed, 13 Nov 2024 16:22:15 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/algorithm_bstree/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/algorithm_bstree/</guid>
       <description>&lt;p&gt;二叉搜索树（Binary Search Tree），又叫二叉排序树，二叉查找树，是一种高效的数据结构。&lt;/p&gt;
 &lt;h2 id=&#34;二叉搜索树定义&#34;&gt;二叉搜索树定义&lt;/h2&gt;
 &lt;ol&gt;
@@ -336,9 +336,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>进程基础</title>
-      <link>https://tpcad.github.io/posts/os_process_basic/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/os_process_basic/</link>
       <pubDate>Mon, 21 Oct 2024 08:25:27 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/os_process_basic/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/os_process_basic/</guid>
       <description>&lt;h2 id=&#34;进程&#34;&gt;进程&lt;/h2&gt;
 &lt;h3 id=&#34;进程的状态&#34;&gt;进程的状态&lt;/h3&gt;
 &lt;p&gt;一个进程至少有三种基本状态，即就绪、运行、阻塞状态。&lt;/p&gt;
@@ -402,9 +402,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>虚拟内存</title>
-      <link>https://tpcad.github.io/posts/os_virtual_memory/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/os_virtual_memory/</link>
       <pubDate>Sun, 20 Oct 2024 09:59:27 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/os_virtual_memory/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/os_virtual_memory/</guid>
       <description>&lt;p&gt;为了隔离不同进程所使用的地址，操作系统为每个进程分配了一套 &lt;strong&gt;虚拟地址&lt;/strong&gt;。各个进程的虚拟内存互相独立，互不干扰，同时，进程也不允许直接访问物理地址。虚拟内存可以让程序访问超出物理内存大小的地址。在 32 位处理器中，虚拟内存的大小为 &lt;code&gt;4 GB（2^32）&lt;/code&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;分页&#34;&gt;分页&lt;/h2&gt;
 &lt;p&gt;分页机制将虚拟内存分为一个个大小固定的单元，称为 &lt;strong&gt;页（Page）&lt;/strong&gt;。同样的，也将物理内存分为一个个 &lt;strong&gt;页框（Page Frame）&lt;/strong&gt;。页和页框的大小相等，通常为 &lt;strong&gt;4 KB&lt;/strong&gt;。&lt;/p&gt;
@@ -432,9 +432,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>How Perfect Forwarding Works</title>
-      <link>https://tpcad.github.io/posts/cpp_perfect_forwarding.md/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/cpp_perfect_forwarding.md/</link>
       <pubDate>Mon, 12 Aug 2024 17:46:57 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/cpp_perfect_forwarding.md/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/cpp_perfect_forwarding.md/</guid>
       <description>&lt;p&gt;&lt;strong&gt;转发&lt;/strong&gt; 指的是函数之间的参数传递。比如下面的代码，函数 &lt;code&gt;foo&lt;/code&gt; 向函数 &lt;code&gt;bar&lt;/code&gt; 传递了参数 &lt;code&gt;a&lt;/code&gt;。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#8caaee&#34;&gt;foo&lt;/span&gt;(&lt;span style=&#34;color:#e78284&#34;&gt;int&lt;/span&gt; a) {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#8caaee&#34;&gt;bar&lt;/span&gt;(a)
@@ -472,9 +472,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>How Nullptr Works</title>
-      <link>https://tpcad.github.io/posts/cpp_nullptr/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/cpp_nullptr/</link>
       <pubDate>Tue, 06 Aug 2024 17:46:57 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/cpp_nullptr/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/cpp_nullptr/</guid>
       <description>&lt;h2 id=&#34;为什么需要-nullptr&#34;&gt;为什么需要 nullptr&lt;/h2&gt;
 &lt;p&gt;在 C 中，&lt;code&gt;NULL&lt;/code&gt; 被定义为 &lt;code&gt;(void*)0&lt;/code&gt; 或 &lt;code&gt;0&lt;/code&gt;。而 C++ 因为不允许直接将 &lt;code&gt;void*&lt;/code&gt; 隐式转换到其他类型，所以在没有 &lt;code&gt;nullptr&lt;/code&gt; 之前，C++ 的 &lt;code&gt;NULL&lt;/code&gt; 就是 0（也可能是 &lt;code&gt;0L&lt;/code&gt;）。这导致 0 的二义性。&lt;/p&gt;
 &lt;p&gt;0 的二义性给函数重载带来了混乱。考虑下面的代码，如果 &lt;code&gt;NULL&lt;/code&gt; 被定义为 &lt;code&gt;0&lt;/code&gt;，那么 &lt;code&gt;foo(NULL)&lt;/code&gt; 会严格匹配 &lt;code&gt;foo(int)&lt;/code&gt;，但如果 &lt;code&gt;NULL&lt;/code&gt; 被定义为 &lt;code&gt;0&lt;/code&gt;，那么将不存在严格匹配，而 &lt;code&gt;0L&lt;/code&gt; 可以同时转换为 &lt;code&gt;int&lt;/code&gt; 和 &lt;code&gt;int*&lt;/code&gt;，编译器无法知道应该调用哪个函数。&lt;/p&gt;
@@ -495,9 +495,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>Rust Iterator</title>
-      <link>https://tpcad.github.io/posts/rust_iterator/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/rust_iterator/</link>
       <pubDate>Wed, 10 Jul 2024 20:54:19 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/rust_iterator/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/rust_iterator/</guid>
       <description>&lt;h1 id=&#34;rust-iterator&#34;&gt;Rust Iterator&lt;/h1&gt;
 &lt;h2 id=&#34;可迭代对象与迭代器iterable-and-iterator&#34;&gt;可迭代对象与迭代器（Iterable and Iterator）&lt;/h2&gt;
 &lt;p&gt;迭代器（Iterator）是一种可以让你方便地遍历序列中每一个元素的工具。迭代器有两个重要的功能：&lt;/p&gt;
@@ -534,9 +534,9 @@ $$&lt;/p&gt;
     </item>
     <item>
       <title>TCP 基础</title>
-      <link>https://tpcad.github.io/posts/net_tcp/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/net_tcp/</link>
       <pubDate>Sun, 07 Jul 2024 09:03:08 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/net_tcp/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/net_tcp/</guid>
       <description>&lt;h2 id=&#34;tcp-首部&#34;&gt;TCP 首部&lt;/h2&gt;
 &lt;pre class=&#34;mermaid&#34;&gt;---
 title: &amp;#34;TCP Packet&amp;#34;
@@ -576,9 +576,9 @@ packet-beta
     </item>
     <item>
       <title>Rust Traits</title>
-      <link>https://tpcad.github.io/posts/rust_trait/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/rust_trait/</link>
       <pubDate>Thu, 04 Jul 2024 15:00:42 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/rust_trait/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/rust_trait/</guid>
       <description>&lt;p&gt;trait 定义了某个特定类型拥有可能与其他类型共享的功能。&lt;/p&gt;
 &lt;h2 id=&#34;定义与实现-trait&#34;&gt;定义与实现 trait&lt;/h2&gt;
 &lt;h3 id=&#34;定义-trait&#34;&gt;定义 trait&lt;/h3&gt;
@@ -613,9 +613,9 @@ packet-beta
     </item>
     <item>
       <title>Thread in Rust</title>
-      <link>https://tpcad.github.io/posts/rust_thread/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/rust_thread/</link>
       <pubDate>Wed, 03 Jul 2024 11:47:33 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/rust_thread/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/rust_thread/</guid>
       <description>&lt;h2 id=&#34;线程基础&#34;&gt;线程基础&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;创建线程&lt;/li&gt;
@@ -671,9 +671,9 @@ packet-beta
     </item>
     <item>
       <title>Classic Sort Algorithm</title>
-      <link>https://tpcad.github.io/posts/algorithm_sort/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/algorithm_sort/</link>
       <pubDate>Tue, 02 Jul 2024 20:48:29 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/algorithm_sort/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/algorithm_sort/</guid>
       <description>&lt;h2 id=&#34;selection-sort&#34;&gt;Selection Sort&lt;/h2&gt;
 &lt;p&gt;以升序为例，选择排序的思想是遍历未排序元素，选择其中最小的元素，将其移动到未排序元素开始位置。&lt;/p&gt;
 &lt;h3 id=&#34;性质&#34;&gt;性质&lt;/h3&gt;
@@ -714,9 +714,9 @@ packet-beta
     </item>
     <item>
       <title>Rust Smart Pointer</title>
-      <link>https://tpcad.github.io/posts/rust_smart_pointer/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/rust_smart_pointer/</link>
       <pubDate>Tue, 02 Jul 2024 15:57:07 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/rust_smart_pointer/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/rust_smart_pointer/</guid>
       <description>&lt;h2 id=&#34;boxt&#34;&gt;&lt;code&gt;Box&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;Box 是最简单的智能指针，它允许你将一个值放在堆上而不是栈上。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;main&lt;/span&gt;() {
@@ -751,9 +751,9 @@ packet-beta
     </item>
     <item>
       <title>Hugo &#43; Github Action，搭建个人博客</title>
-      <link>https://tpcad.github.io/posts/build_blog_with_hugo_and_github_action/</link>
+      <link>https://tpcad.github.io/tpcad-blog/posts/build_blog_with_hugo_and_github_action/</link>
       <pubDate>Sat, 29 Jun 2024 10:59:27 +0800</pubDate>
-      <guid>https://tpcad.github.io/posts/build_blog_with_hugo_and_github_action/</guid>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/build_blog_with_hugo_and_github_action/</guid>
       <description>&lt;h2 id=&#34;创建-github-仓库&#34;&gt;创建 Github 仓库&lt;/h2&gt;
 &lt;h3 id=&#34;创建博客源仓库&#34;&gt;创建博客源仓库&lt;/h3&gt;
 &lt;p&gt;博客源仓库用于对 Hugo 的配置文件以及 Markdown 源文件进行备份和管理，并配合 Github Action 自动将生成的静态网页推送到 Github Pages 仓库。&lt;/p&gt;
