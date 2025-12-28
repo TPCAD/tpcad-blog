@@ -6,8 +6,43 @@
     <description>Recent content in Posts on Eulamber</description>
     <generator>Hugo -- 0.153.3</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 27 Oct 2025 10:06:35 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 26 Dec 2025 21:17:29 +0800</lastBuildDate>
     <atom:link href="https://tpcad.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Shell 引用</title>
+      <link>https://tpcad.github.io/posts/shell_quoting/</link>
+      <pubDate>Fri, 26 Dec 2025 21:17:29 +0800</pubDate>
+      <guid>https://tpcad.github.io/posts/shell_quoting/</guid>
+      <description>&lt;p&gt;这里的「引用」是「Quoting」而非 C++ 等语言中的「Reference」，Shell 中的引用更像是一种「转义」。&lt;/p&gt;
+&lt;h2 id=&#34;shell-引用&#34;&gt;Shell 引用&lt;/h2&gt;
+&lt;p&gt;引用（Quoting）是 Shell 中一种用于消除字符或词的特殊意义的机制。Shell 有四种引用机制：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;转义字符&lt;/li&gt;
+&lt;li&gt;单引号&lt;/li&gt;
+&lt;li&gt;双引号&lt;/li&gt;
+&lt;li&gt;美元单引号&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;转义字符&#34;&gt;转义字符&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;\&lt;/code&gt; 是一个转义字符（escape character），它会保留其后一个字符的字面意义，除非是 &lt;code&gt;&amp;lt;newline&amp;gt;&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;转义字符常用于输出「元字符（metacharacter）」。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;\$&lt;/span&gt;n &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# $n&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;\;&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# ; echo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; ; &lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# tow blank lines&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当 &lt;code&gt;\&lt;/code&gt; 和 &lt;code&gt;&amp;lt;newline&amp;gt;&lt;/code&gt; 成对出现，且 &lt;code&gt;\&lt;/code&gt; 没有被引用，即 &lt;code&gt;\&amp;lt;newline&amp;gt;&lt;/code&gt;，则表示续行，常用于多行命令。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; hello &lt;span style=&#34;color:#8caaee&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;world
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# hello world&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;若要输出 &lt;code&gt;\&lt;/code&gt; 自身，引用自身即可。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;\\&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# \&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;单引号&#34;&gt;单引号&lt;/h3&gt;
+&lt;p&gt;「单引号引用」将保留其中所有字符的字面意义。单引号不能包含单引号，哪怕前面加上了转义字符。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;\$;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# \$;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;$PATH&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# $PATH&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&amp;#39;&amp;#39;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# &amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;双引号&#34;&gt;双引号&lt;/h3&gt;
+&lt;p&gt;「双引号引用」会保留其中所有字符的字面意义，除了 &lt;code&gt;$&lt;/code&gt;，&lt;code&gt;`&lt;/code&gt;, &lt;code&gt;\&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$&lt;/code&gt; 表示「参数扩展」。&lt;code&gt;$*&lt;/code&gt; 和 &lt;code&gt;$@&lt;/code&gt; 在双引号中有特殊含义。&lt;code&gt;$*&lt;/code&gt; 会被扩展为「一个」词，值为各个参数，以 IFS 的第一个字符分隔；&lt;code&gt;$@&lt;/code&gt; 则是每个参数扩展为一个词。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Neovim Options</title>
       <link>https://tpcad.github.io/posts/nvim_options/</link>

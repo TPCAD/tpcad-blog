@@ -150,6 +150,23 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">How Nullptr Works
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>为什么需要 nullptr 在 C 中，NULL 被定义为 (void*)0 或 0。而 C&#43;&#43; 因为不允许直接将 void* 隐式转换到其他类型，所以在没有 nullptr 之前，C&#43;&#43; 的 NULL 就是 0（也可能是 0L）。这导致 0 的二义性。
+0 的二义性给函数重载带来了混乱。考虑下面的代码，如果 NULL 被定义为 0，那么 foo(NULL) 会严格匹配 foo(int)，但如果 NULL 被定义为 0，那么将不存在严格匹配，而 0L 可以同时转换为 int 和 int*，编译器无法知道应该调用哪个函数。
+void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(NULL); 为了解决这个问题，C&#43;&#43; 11 引入了 nullptr 关键字，用于区分空指针和 0。
+使用 nullptr nullptr 是一个纯右值，无法被 &amp; 取地址，可以被隐式转换为任意的指针或成员指针类型。
+void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(nullptr); // 隐式转换到 int*，调用 foo(int*) nullptr 可以取代 NULL 的所有场景。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-06 17:46:57 +0800 +0800'>August 6, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to How Nullptr Works" href="https://tpcad.github.io/posts/cpp_nullptr/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Rust Iterator
     </h2>
   </header>
