@@ -638,7 +638,7 @@ $$</p>
 <li>窗口大小大于或等于 <code>MSS</code> 并且数据大小大于或等于 <code>MSS</code></li>
 <li>收到之前发送数据的确认报文</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#ca9ee6">if</span> <span style="color:#e78284">有数据要发送</span> {
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#ca9ee6">if</span> <span style="color:#e78284">有数据要发送</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">if</span> <span style="color:#e78284">可用窗口大小</span> <span style="color:#99d1db;font-weight:bold">&gt;=</span> MSS <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> <span style="color:#e78284">可发送的数据</span> <span style="color:#99d1db;font-weight:bold">&gt;=</span> MSS {
 </span></span><span style="display:flex;"><span>        <span style="color:#e78284">立刻发送</span>MSS大小的数据
 </span></span><span style="display:flex;"><span>    } <span style="color:#ca9ee6">else</span> {

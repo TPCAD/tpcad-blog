@@ -454,7 +454,7 @@ struct rb_tree {
     / \    /  \
  null  9  null 20
 </code></pre><h2 id="节点定义">节点定义<a hidden class="anchor" aria-hidden="true" href="#节点定义">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#ca9ee6">template</span> <span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">typename</span> T<span style="color:#99d1db;font-weight:bold">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#ca9ee6">template</span> <span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">typename</span> T<span style="color:#99d1db;font-weight:bold">&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">requires</span> std<span style="color:#99d1db;font-weight:bold">::</span>equality_comparable<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> std<span style="color:#99d1db;font-weight:bold">::</span>totally_ordered<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">rb_tree</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#ca9ee6">private</span><span style="color:#99d1db;font-weight:bold">:</span>
@@ -500,7 +500,7 @@ struct rb_tree {
 </span></span></code></pre></div><h2 id="旋转">旋转<a hidden class="anchor" aria-hidden="true" href="#旋转">#</a></h2>
 <p>因为增加了 <code>parent</code> 字段用于指向当前节点的父节点，因此旋转操作也需要更新 <code>parent</code> 字段。</p>
 <p>右旋操作：</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @brief  LL 型旋转
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @param  root  节点
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     */</span>
@@ -536,7 +536,7 @@ struct rb_tree {
 </span></span><span style="display:flex;"><span>                      (child<span style="color:#99d1db;font-weight:bold">-&gt;</span>right <span style="color:#99d1db;font-weight:bold">?</span> child<span style="color:#99d1db;font-weight:bold">-&gt;</span>right<span style="color:#99d1db;font-weight:bold">-&gt;</span><span style="color:#99d1db">size</span> : <span style="color:#ef9f76">0</span>);
 </span></span><span style="display:flex;"><span>    }
 </span></span></code></pre></div><p>左旋操作：</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @brief  RR 型旋转
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @param  root  节点
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     */</span>
@@ -573,7 +573,7 @@ struct rb_tree {
 </span></span><span style="display:flex;"><span>    }
 </span></span></code></pre></div><h2 id="插入">插入<a hidden class="anchor" aria-hidden="true" href="#插入">#</a></h2>
 <p>红黑树的插入操作与二叉搜索树相似，重点在于插入后需要根据插入节点及相关节点的颜色对树进行调整以满足红黑树的性质。根据性质 5，如果插入的节点是黑色，那么必定会破坏性质 5，所以规定插入节点的颜色为红色。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @brief  插入节点
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @param  root  根节点
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @param  value  权值
@@ -637,7 +637,7 @@ N: new node, P: parent node, G: grandparent node, U: uncle node
 &lt;X&gt;: RED node, [X]: BLACK node, {X}: either RED or BLACK node
 </code></pre><p>该情况还有一种对称的变形，即插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点是 <strong>左子结点</strong>，父节点是 <strong>右子节点</strong>。调整方法也类似，只需要对父节点 <strong>右旋</strong> 就会变成 case  4 的另一种变形。</p>
 <h3 id="示例代码">示例代码<a hidden class="anchor" aria-hidden="true" href="#示例代码">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @brief  调整插入后红黑树
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @param  root  插入节点
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     */</span>
@@ -704,7 +704,7 @@ N: new node, P: parent node, G: grandparent node, U: uncle node
 <h3 id="case-4-1">case 4<a hidden class="anchor" aria-hidden="true" href="#case-4-1">#</a></h3>
 <p>待删除节点不存在子节点且该节点为黑色。删除后会破坏性质 5，需要进行调整。若此节点为根节点，直接删除即可。</p>
 <h3 id="示例代码-1">示例代码<a hidden class="anchor" aria-hidden="true" href="#示例代码-1">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">remove_aux</span>(rb_node <span style="color:#99d1db;font-weight:bold">*</span>root, <span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) {
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#e78284">void</span> <span style="color:#8caaee">remove_aux</span>(rb_node <span style="color:#99d1db;font-weight:bold">*</span>root, <span style="color:#ca9ee6">const</span> T <span style="color:#99d1db;font-weight:bold">&amp;</span>value) {
 </span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">if</span> (root <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ca9ee6">nullptr</span>) {
 </span></span><span style="display:flex;"><span>            <span style="color:#ca9ee6">return</span>;
 </span></span><span style="display:flex;"><span>        }
@@ -831,7 +831,7 @@ N: delete node, P: parent node, S: sibling node, C: close nephew, D: distant nep
 N: delete node, P: parent node, S: sibling node, C: close nephew, D: distant nephew
 &lt;X&gt;: RED node, [X]: BLACK node, {X}: either RED or BLACK node
 </code></pre><h4 id="示例代码-2">示例代码<a hidden class="anchor" aria-hidden="true" href="#示例代码-2">#</a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @brief  调整红黑树
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *  @param  root  待删除的节点
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">     *

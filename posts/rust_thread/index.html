@@ -387,7 +387,7 @@ Rust 通过**信道（channel）**实现消息传递。">
 <li>创建线程</li>
 </ul>
 <p>使用 <code>thread::spawn</code> 创建线程，它接受一个 <code>FnOnce</code> 闭包。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{thread, time::Duration};
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{thread, time::Duration};
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> handle <span style="color:#99d1db;font-weight:bold">=</span> thread::spawn(<span style="color:#99d1db;font-weight:bold">||</span> {
@@ -408,7 +408,7 @@ Rust 通过**信道（channel）**实现消息传递。">
 <li>等待线程结束</li>
 </ul>
 <p>使用 <code>join</code> 方法等待线程结束。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#e78284">let</span> handle <span style="color:#99d1db;font-weight:bold">=</span> thread::spawn(<span style="color:#99d1db;font-weight:bold">||</span> {
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#e78284">let</span> handle <span style="color:#99d1db;font-weight:bold">=</span> thread::spawn(<span style="color:#99d1db;font-weight:bold">||</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">for</span> i <span style="color:#ca9ee6">in</span> <span style="color:#ef9f76">0</span><span style="color:#99d1db;font-weight:bold">..</span><span style="color:#ef9f76">10</span> {
 </span></span><span style="display:flex;"><span>        <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;</span><span style="color:#a6d189">{i}</span><span style="color:#a6d189">: spawned thread echo&#34;</span>);
 </span></span><span style="display:flex;"><span>        thread::sleep(Duration::from_millis(<span style="color:#ef9f76">10</span>));
@@ -420,7 +420,7 @@ Rust 通过**信道（channel）**实现消息传递。">
 </span></span></code></pre></div><ul>
 <li>move 闭包与线程</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::thread;
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::thread;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> v <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#8caaee">vec!</span>[<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>];
@@ -441,7 +441,7 @@ Rust 通过**信道（channel）**实现消息传递。">
 <p>注意，<code>send</code> 方法会获取参数的所有权。</p>
 <p>接受者调用 <code>recv</code> 方法接收消息。该方法会阻塞线程执行直到从信道中获取一个值。若信道已经被关闭，则会返回一个错误。</p>
 <p>另外还有 <code>try_recv</code> 方法可以接收信息。这个方法不会阻塞线程，而是立刻返回一个 Result。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{sync::mpsc, thread};
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{sync::mpsc, thread};
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// mpsc:;channel 创建一个信道。
 </span></span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> (tx, rx) <span style="color:#99d1db;font-weight:bold">=</span> mpsc::channel();
@@ -458,7 +458,7 @@ Rust 通过**信道（channel）**实现消息传递。">
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="创建多个发送者">创建多个发送者<a hidden class="anchor" aria-hidden="true" href="#创建多个发送者">#</a></h3>
 <p>可以使用 <code>clone</code> 方法创建多个发送者。同时，将接收者当作一个迭代器不断从信道中获取消息。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{sync::mpsc, thread};
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{sync::mpsc, thread};
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> (tx, rx) <span style="color:#99d1db;font-weight:bold">=</span> mpsc::channel();
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> tx1 <span style="color:#99d1db;font-weight:bold">=</span> tx.clone();
@@ -481,7 +481,7 @@ Rust 通过**信道（channel）**实现消息传递。">
 <p><strong>互斥器</strong>保证在任意时刻，只有一个线程访问某些数据。</p>
 <p>在 Rust 中通过 <code>Mutex&lt;T&gt;</code> 创建一个互斥锁。访问互斥器的数据前需要获取锁。<code>lock</code> 方法返回一个类型为 <code>MutexGuard</code> 的智能指针。在 <code>MutexGuard</code> 离开作用域时，会调用 <code>Drop</code>
 trait 释放锁。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::sync::Mutex;
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::sync::Mutex;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">fn</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">let</span> m <span style="color:#99d1db;font-weight:bold">=</span> Mutex::new(<span style="color:#ef9f76">5</span>);
@@ -494,7 +494,7 @@ trait 释放锁。</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#8caaee">println!</span>(<span style="color:#a6d189">&#34;m = </span><span style="color:#a6d189">{m:?}</span><span style="color:#a6d189">&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p><code>Mutex&lt;T&gt;</code> 并不能直接用于多线程。<code>Arc&lt;T&gt;</code> 是一个类似 <code>Rc&lt;T&gt;</code> 但可用于多线程的智能指针。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ca9ee6">use</span> std::{
 </span></span><span style="display:flex;"><span>    sync::{Arc, Mutex},
 </span></span><span style="display:flex;"><span>    thread,
 </span></span><span style="display:flex;"><span>};

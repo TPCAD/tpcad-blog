@@ -354,7 +354,7 @@ int main() {
 </script>
 
   <div class="post-content"><p><strong>转发</strong> 指的是函数之间的参数传递。比如下面的代码，函数 <code>foo</code> 向函数 <code>bar</code> 传递了参数 <code>a</code>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#8caaee">foo</span>(<span style="color:#e78284">int</span> a) {
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#8caaee">foo</span>(<span style="color:#e78284">int</span> a) {
 </span></span><span style="display:flex;"><span>    <span style="color:#8caaee">bar</span>(a)
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
@@ -363,7 +363,7 @@ int main() {
 <h2 id="普通转发的问题">普通转发的问题<a hidden class="anchor" aria-hidden="true" href="#普通转发的问题">#</a></h2>
 <p>在下面的代码中，函数 <code>pass</code> 接受一个右值引用，并将该参数传递给函数 <code>reference</code>。当向 <code>pass</code> 传入字面量 <code>1</code> 时，最终的输出结果是 <code>lvalue</code>。这是因为虽然向 <code>pass</code> 传入了右值，但在函数体内，变量 <code>x</code> 的值类别变成了<strong>左值</strong>，即 <code>x</code> 的类型是右值引用，值类别是左值，所以最终会调用 <code>reference(int &amp;y)</code>。</p>
 <p>这就是普通转发存在的问题，在转发过程中可能会改变参数某些属性。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;fmt/core.h&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;fmt/core.h&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">void</span> <span style="color:#8caaee">reference</span>(<span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span>y) { fmt<span style="color:#99d1db;font-weight:bold">::</span><span style="color:#8caaee">println</span>(<span style="color:#a6d189">&#34;rvalue&#34;</span>); }
 </span></span><span style="display:flex;"><span><span style="color:#e78284">void</span> <span style="color:#8caaee">reference</span>(<span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">&amp;</span>y) { fmt<span style="color:#99d1db;font-weight:bold">::</span><span style="color:#8caaee">println</span>(<span style="color:#a6d189">&#34;lvalue&#34;</span>); }
@@ -379,7 +379,7 @@ int main() {
 </span></span></code></pre></div><h2 id="实现完美转发">实现完美转发<a hidden class="anchor" aria-hidden="true" href="#实现完美转发">#</a></h2>
 <h3 id="万能引用">万能引用<a hidden class="anchor" aria-hidden="true" href="#万能引用">#</a></h3>
 <p>在普通函数中，若参数类型为 <code>&amp;&amp;</code>，则函数只能接受右值。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#e78284">void</span> <span style="color:#8caaee">foo</span>(<span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span>x) {}
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#e78284">void</span> <span style="color:#8caaee">foo</span>(<span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span>x) {}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> a <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">1</span>;
@@ -387,7 +387,7 @@ int main() {
 </span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// foo(a); 无法编译
 </span></span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>但在模板函数中，若 <code>&amp;&amp;</code> 与模板参数结合，即 <code>T&amp;&amp;</code>，那么它将不再代表右值引用，而是<strong>万能引用</strong>。它既能接受左值，又能接受右值。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>template <span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">typename</span> T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#e78284">void</span> <span style="color:#8caaee">foo</span>(T <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span>x) {
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>template <span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ca9ee6">typename</span> T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#e78284">void</span> <span style="color:#8caaee">foo</span>(T <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span>x) {
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
@@ -432,7 +432,7 @@ int main() {
 <p>简而言之，<strong>当且仅当模板函数的形参与实参都是右引用时，形参才会被推导为右引用</strong>。</p>
 <h3 id="stdforward">std::forward<a hidden class="anchor" aria-hidden="true" href="#stdforward">#</a></h3>
 <p>C++ 使用 <code>std::forward</code> 进行完美转发。<code>std::forward</code> 的实现如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">/**
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"> *  @brief  Forward an lvalue.
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"> *  @return The parameter cast to the specified type.
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"> *
@@ -458,12 +458,12 @@ int main() {
 </span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">return</span> static_cast<span style="color:#99d1db;font-weight:bold">&lt;</span>_Tp<span style="color:#99d1db;font-weight:bold">&amp;&amp;&gt;</span>(__t);
 </span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><p>其中 <code>std::remove_reference</code> 是一个模板类，它的实现如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>template<span style="color:#99d1db;font-weight:bold">&lt;</span>class T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ca9ee6">struct</span> remove_reference { <span style="color:#ca9ee6">typedef</span> T type; };
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>template<span style="color:#99d1db;font-weight:bold">&lt;</span>class T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ca9ee6">struct</span> remove_reference { <span style="color:#ca9ee6">typedef</span> T type; };
 </span></span><span style="display:flex;"><span>template<span style="color:#99d1db;font-weight:bold">&lt;</span>class T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ca9ee6">struct</span> remove_reference<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&amp;&gt;</span> { <span style="color:#ca9ee6">typedef</span> T type; };
 </span></span><span style="display:flex;"><span>template<span style="color:#99d1db;font-weight:bold">&lt;</span>class T<span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ca9ee6">struct</span> remove_reference<span style="color:#99d1db;font-weight:bold">&lt;</span>T<span style="color:#99d1db;font-weight:bold">&amp;&amp;&gt;</span> { <span style="color:#ca9ee6">typedef</span> T type; };
 </span></span></code></pre></div><p>通过 <code>std::remove_reference</code> 将类型的引用去除，得到值类型。<code>std::forward</code> 有两个重载，分别匹配左值引用和右值引用，当匹配左值引用时，根据引用折叠规则，<code>static_cast&lt;_Tp&amp;&amp;&gt;(__t)</code> 返回左值引用，当匹配右值引用时，根据引用折叠规则，<code>static_cast&lt;_Tp&amp;&amp;&gt;(__t)</code> 返回右值引用。</p>
 <h2 id="使用-stdforward">使用 std::forward<a hidden class="anchor" aria-hidden="true" href="#使用-stdforward">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;fmt/core.h&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;fmt/core.h&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;utility&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">void</span> <span style="color:#8caaee">reference</span>(<span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span>x) { fmt<span style="color:#99d1db;font-weight:bold">::</span><span style="color:#8caaee">println</span>(<span style="color:#a6d189">&#34;rvalue&#34;</span>); }

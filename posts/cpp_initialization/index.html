@@ -484,7 +484,7 @@ case 2
   <div class="post-content"><p>变量的初始化会在构造时提供变量的初始值。</p>
 <p>初始值可以由声明符或 new 表达式的 <strong>初始化器</strong> 部分提供。在函数调用时也会发生：函数形参及函数返回值也会被初始化。</p>
 <p>初始化器（如果存在）必须是下列之一：</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> = expression
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> = expression
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">2.</span> = {}
 </span></span><span style="display:flex;"><span>   = { initializer-list }
 </span></span><span style="display:flex;"><span>   = { designated-initializer-list }
@@ -494,7 +494,7 @@ case 2
 </span></span><span style="display:flex;"><span>   { initializer-list }
 </span></span><span style="display:flex;"><span>   { designated-initializer-list }
 </span></span></code></pre></div><h2 id="默认初始化">默认初始化<a hidden class="anchor" aria-hidden="true" href="#默认初始化">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T object;
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T object;
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">2.</span> new T;
 </span></span></code></pre></div><p>当没有为对象指定初始化器时，该对象会默认初始化。具体有以下三种情况：</p>
 <ol>
@@ -514,7 +514,7 @@ case 2
 <h3 id="示例">示例<a hidden class="anchor" aria-hidden="true" href="#示例">#</a></h3>
 <h4 id="case-1">case 1<a hidden class="anchor" aria-hidden="true" href="#case-1">#</a></h4>
 <p>不带初始化器声明具有自动、静态或线程局部存储器的变量。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 静态全局非类，两次初始化
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 1) 零初始化将 si1 初始化为 0
@@ -534,7 +534,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-2">case 2<a hidden class="anchor" aria-hidden="true" href="#case-2">#</a></h4>
 <p>不带初始化器使用 new 表达式创建一个对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// 动态全局非类，默认初始化不做任何事，不确定值
 </span></span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">*</span>pi1 <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">new</span> <span style="color:#e78284">int</span>;
@@ -547,7 +547,7 @@ case 2
 </span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">0</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>多次执行上方代码可能得到的都是相同的结果，<code>*pi1</code> 和 <code>*pi2</code> 的值都是 0。不能就此认为默认初始化是的值就是 0。如果多次销毁并分配 <strong>同一块内存</strong> 可以发现其初始化值是不确定值。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">*</span>p <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">new</span> <span style="color:#e78284">int</span>;
@@ -563,7 +563,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-3">case 3<a hidden class="anchor" aria-hidden="true" href="#case-3">#</a></h4>
 <p>构造函数的成员初始化器列表没有提及某个基类或非静态数据成员，且调用了该构造函数。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> mem;
@@ -586,7 +586,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>对于具有动态存储期的类类型变量，同样会出现第一次分配内存时，值被初始化为 0，但在销毁并再次分配后是不确定值的现象。</p>
 <h2 id="值初始化">值初始化<a hidden class="anchor" aria-hidden="true" href="#值初始化">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T()
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T()
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">2.</span> new T()
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">3.</span> Class::Class(...) : member() {...}
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">4.</span> T object {};
@@ -616,7 +616,7 @@ case 2
 <h3 id="示例-1">示例<a hidden class="anchor" aria-hidden="true" href="#示例-1">#</a></h3>
 <h4 id="case-1-1">case 1<a hidden class="anchor" aria-hidden="true" href="#case-1-1">#</a></h4>
 <p>以空的 <code>()</code> 或 <code>{}</code> 组成的初始化器创建临时对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> i1 <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#e78284">int</span>();       <span style="color:#737994;font-style:italic">// 非类，空 () 创建临时对象，零初始化
@@ -630,7 +630,7 @@ case 2
 </span></span></code></pre></div><p>注意，进行值初始化的其实是 <code>int()</code> 和 <code>int{}</code>，而 <code>i1</code>、<code>i2</code> 则进行 <strong>复制初始化</strong>。</p>
 <h4 id="case-2-1">case 2<a hidden class="anchor" aria-hidden="true" href="#case-2-1">#</a></h4>
 <p>new 表达式以空的 <code>()</code> 或 <code>{}</code> 组成的初始化器创建动态存储期对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">*</span>ip1 <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">new</span> <span style="color:#e78284">int</span>(); <span style="color:#737994;font-style:italic">// 非类，空 () 创建动态对象，零初始化
@@ -642,7 +642,7 @@ case 2
 </span></span></code></pre></div><p>注意，进行值初始化的其实是 <code>new int()</code> 和 <code>new int{}</code>，而 <code>ip1</code>、<code>ip2</code> 则进行 <strong>复制初始化</strong>。</p>
 <h4 id="case-3-1">case 3<a hidden class="anchor" aria-hidden="true" href="#case-3-1">#</a></h4>
 <p>以空的 <code>()</code> 或 <code>{}</code> 组成的成员初始化器初始化非静态数据成员或基类。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> mem; <span style="color:#737994;font-style:italic">// 隐式构造函数，不由用户提供
@@ -667,7 +667,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-4">case 4<a hidden class="anchor" aria-hidden="true" href="#case-4">#</a></h4>
 <p>以空的 <code>{}</code> 对声明 <strong>具名对象</strong>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#8caaee">foo</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> mem;
@@ -682,7 +682,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>注意，<code>T object()</code> 不初始化对象，而是声明一个无参且返回 <code>T</code> 的函数。</p>
 <h2 id="直接初始化">直接初始化<a hidden class="anchor" aria-hidden="true" href="#直接初始化">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T object(arg);
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T object(arg);
 </span></span><span style="display:flex;"><span>   T object(arg1, arg2, ...);
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">2.</span> T object{arg};
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">3.</span> T(other object)
@@ -717,7 +717,7 @@ case 2
 <h3 id="触发示例">触发示例<a hidden class="anchor" aria-hidden="true" href="#触发示例">#</a></h3>
 <h4 id="case-1-2">case 1<a hidden class="anchor" aria-hidden="true" href="#case-1-2">#</a></h4>
 <p>以表达式的非空带括号列表初始化对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> i(<span style="color:#ef9f76">3</span>);
@@ -730,7 +730,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-2-2">case 2<a hidden class="anchor" aria-hidden="true" href="#case-2-2">#</a></h4>
 <p>以 <code>{}</code> 环绕的单个初始化器初始化一个 <strong>非类类型</strong> 对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> i{<span style="color:#ef9f76">3</span>};
@@ -740,7 +740,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-3-2">case 3<a hidden class="anchor" aria-hidden="true" href="#case-3-2">#</a></h4>
 <p>以函数风格转换或以带括号的表达式列表初始化 <strong>纯右值的结果对象</strong>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
 </span></span><span style="display:flex;"><span>    <span style="color:#737994;font-style:italic">// 函数风格转换
@@ -756,7 +756,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-4-1">case 4<a hidden class="anchor" aria-hidden="true" href="#case-4-1">#</a></h4>
 <p>以 <code>static_cast</code> 表达式初始化 <strong>纯右值的结果对象</strong>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
 </span></span><span style="display:flex;"><span>    std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;{}&#34;</span>, <span style="color:#ca9ee6">static_cast</span><span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#e78284">double</span><span style="color:#99d1db;font-weight:bold">&gt;</span>(<span style="color:#ef9f76">3</span>));
@@ -771,7 +771,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-5">case 5<a hidden class="anchor" aria-hidden="true" href="#case-5">#</a></h4>
 <p>以带有非空初始化器的 new 表达式初始化具有动态存储期的对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
 </span></span><span style="display:flex;"><span>    std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;{}&#34;</span>, <span style="color:#99d1db;font-weight:bold">*</span>(<span style="color:#ca9ee6">new</span> <span style="color:#e78284">int</span>(<span style="color:#ef9f76">3</span>)));
@@ -785,7 +785,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-6">case 6<a hidden class="anchor" aria-hidden="true" href="#case-6">#</a></h4>
 <p>用构造函数初始化器列表初始化基类或非静态成员。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> mema;
@@ -803,7 +803,7 @@ case 2
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-7">case 7<a hidden class="anchor" aria-hidden="true" href="#case-7">#</a></h4>
 <p>在 lambda 表达式中从按复制捕获的变量初始化闭包对象的成员。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> mema;
@@ -826,7 +826,7 @@ case 2
 </span></span></code></pre></div><h3 id="效果示例">效果示例<a hidden class="anchor" aria-hidden="true" href="#效果示例">#</a></h3>
 <h4 id="case-1-3">case 1<a hidden class="anchor" aria-hidden="true" href="#case-1-3">#</a></h4>
 <p>T 是类类型，初始化器是纯右值表达式且类型与 T 为相同的类，则用初始化器表达式自身，而非从它实质化的临时量，初始化目标对象（参考复制消除）。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;iostream&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;iostream&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#e78284">int</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>cout <span style="color:#99d1db;font-weight:bold">&lt;&lt;</span> <span style="color:#a6d189">&#34;foo ctor&#34;</span> <span style="color:#99d1db;font-weight:bold">&lt;&lt;</span> std<span style="color:#99d1db;font-weight:bold">::</span>endl; }
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#ca9ee6">const</span> foo <span style="color:#99d1db;font-weight:bold">&amp;</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>cout <span style="color:#99d1db;font-weight:bold">&lt;&lt;</span> <span style="color:#a6d189">&#34;foo copy ctor&#34;</span> <span style="color:#99d1db;font-weight:bold">&lt;&lt;</span> std<span style="color:#99d1db;font-weight:bold">::</span>endl; }
@@ -844,7 +844,7 @@ case 2
 foo copy ctor
 </code></pre><h4 id="case-2-3">case 2<a hidden class="anchor" aria-hidden="true" href="#case-2-3">#</a></h4>
 <p>T 是类类型，检验 T 的构造函数并由重载决议选取最佳匹配，然后调用该构造函数以初始化对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#e78284">int</span>, <span style="color:#e78284">double</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;ctor 0&#34;</span>); }
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#e78284">int</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;ctor 1&#34;</span>); }
@@ -859,7 +859,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-3-3">case 3<a hidden class="anchor" aria-hidden="true" href="#case-3-3">#</a></h4>
 <p>如果 T 是非类类型但源类型是类类型，则检验源类型及其各基类的转换函数，并由重载决议选取最佳匹配，然后用选取的转换函数，将初始化器表达式转换为所初始化的对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">operator</span> <span style="color:#8caaee">int</span>() { <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">42</span>; }
@@ -888,7 +888,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-4-2">case 4<a hidden class="anchor" aria-hidden="true" href="#case-4-2">#</a></h4>
 <p>如果 T 是 <code>bool</code> 而原类型是 <code>std::nullptr_t</code>，则被初始化对象的值为 <code>false</code>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> <span style="color:#99d1db;font-weight:bold">*</span>p <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ca9ee6">nullptr</span>;
@@ -899,7 +899,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-5-1">case 5<a hidden class="anchor" aria-hidden="true" href="#case-5-1">#</a></h4>
 <p>在必要时使用标准转换，转换 <em>其他对象</em> 的值为 T 的无 cv 限定版本，而所初始化的对象的初值为（可能为转换后的）该值。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#e78284">int</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
@@ -926,7 +926,7 @@ foo copy ctor
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// bar convertion
 </span></span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">// foo ctor
 </span></span></span></code></pre></div><h2 id="复制初始化">复制初始化<a hidden class="anchor" aria-hidden="true" href="#复制初始化">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T object = other;
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#ca9ee6">1.</span> T object = other;
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">2.</span> f(other)
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">3.</span> return other;
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">4.</span> throw object;
@@ -950,7 +950,7 @@ foo copy ctor
 </ol>
 <p>注意，explicit 构造函数不是转换构造函数，不会被复制初始化考虑。另外，如果 <em>其他对象</em> 是右值表达式，那么重载决议会选择 <strong>移动构造函数</strong> 并在复制初始化期间调用它。</p>
 <p>复制初始化中的隐式转换必须从初始化器直接生成 T，而直接初始化则允许从初始化器到 T 的某个构造函数实参的隐式转换。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#e78284">int</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo int ctor&#34;</span>); }
@@ -968,7 +968,7 @@ foo copy ctor
 </span></span></code></pre></div><h3 id="触发示例-1">触发示例<a hidden class="anchor" aria-hidden="true" href="#触发示例-1">#</a></h3>
 <h4 id="case-1-4">case 1<a hidden class="anchor" aria-hidden="true" href="#case-1-4">#</a></h4>
 <p>当非引用类型 T 的具名变量（自动、静态或线程局部），声明时带有以等号后随一个表达式所构成的初始化器时。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
@@ -983,7 +983,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-2-4">case 2<a hidden class="anchor" aria-hidden="true" href="#case-2-4">#</a></h4>
 <p>当按值传递实参到函数时。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
@@ -999,7 +999,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-3-4">case 3<a hidden class="anchor" aria-hidden="true" href="#case-3-4">#</a></h4>
 <p>当从按值返回的函数中返回时。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
@@ -1020,7 +1020,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-4-3">case 4<a hidden class="anchor" aria-hidden="true" href="#case-4-3">#</a></h4>
 <p>当按值抛出或捕获异常时。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
@@ -1043,7 +1043,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-5-2">case 5<a hidden class="anchor" aria-hidden="true" href="#case-5-2">#</a></h4>
 <p>作为聚合初始化的一部分，用以初始化每个提供了初始化器的元素。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
@@ -1064,7 +1064,7 @@ foo copy ctor
 </span></span></code></pre></div><h3 id="效果示例-1">效果示例<a hidden class="anchor" aria-hidden="true" href="#效果示例-1">#</a></h3>
 <h4 id="case-1-5">case 1<a hidden class="anchor" aria-hidden="true" href="#case-1-5">#</a></h4>
 <p>如果 T 是类类型，且初始化器是纯右值表达式，类型与 T 为相同的类（忽略 cv 限定），则用初始化器表达式自身，而非从它实质化的临时量，初始化目标对象（参考复制消除）。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#ca9ee6">const</span> foo <span style="color:#99d1db;font-weight:bold">&amp;</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo copy ctor&#34;</span>); }
@@ -1076,7 +1076,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-2-5">case 2<a hidden class="anchor" aria-hidden="true" href="#case-2-5">#</a></h4>
 <p>如果 T 是类类型，且 <em>其他对象</em> 的类型是 T 或从 T 派生的类（忽略 cv 限定），那么调用合适的 <strong>非显示构造函数</strong>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#ca9ee6">const</span> foo <span style="color:#99d1db;font-weight:bold">&amp;</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo copy ctor&#34;</span>); }
@@ -1100,7 +1100,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-3-5">case 3<a hidden class="anchor" aria-hidden="true" href="#case-3-5">#</a></h4>
 <p>如果 T 是类类型，且 <em>其他对象</em> 的类型 <strong>不是</strong> T 或从 T 派生的类（忽略 cv 限定），那么调用合适的转换函数将 <em>其他对象</em> 转换到 T。该转换的结果会被用于直接初始化该对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">bar</span> {
 </span></span><span style="display:flex;"><span>    bar() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;bar ctor&#34;</span>); }
 </span></span><span style="display:flex;"><span>};
@@ -1119,7 +1119,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-4-4">case 4<a hidden class="anchor" aria-hidden="true" href="#case-4-4">#</a></h4>
 <p>如果 T <strong>不是</strong> 类类型，且 <em>其他对象</em> 的类型是类类型，同 case 3。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span><span style="color:#ca9ee6">struct</span> <span style="color:#e5c890">foo</span> {
 </span></span><span style="display:flex;"><span>    foo() { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo ctor&#34;</span>); }
 </span></span><span style="display:flex;"><span>    foo(<span style="color:#ca9ee6">const</span> foo <span style="color:#99d1db;font-weight:bold">&amp;</span>) { std<span style="color:#99d1db;font-weight:bold">::</span>println(<span style="color:#a6d189">&#34;foo copy ctor&#34;</span>); }
@@ -1134,7 +1134,7 @@ foo copy ctor
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="case-5-3">case 5<a hidden class="anchor" aria-hidden="true" href="#case-5-3">#</a></h4>
 <p>如果 T 和 <em>其他对象</em> 都不是类类型，在需要时用标准转换将 <em>其他对象</em> 的值转换成 T 的无 cv 限定版本。</p>
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#include</span> <span style="color:#737994;font-weight:bold;font-style:italic">&lt;print&gt;</span><span style="color:#737994;font-style:italic">
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#e78284">int</span> <span style="color:#8caaee">main</span>(<span style="color:#e78284">int</span> argc, <span style="color:#e78284">char</span> <span style="color:#99d1db;font-weight:bold">*</span>argv[]) {
 </span></span><span style="display:flex;"><span>    <span style="color:#e78284">int</span> i <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">3.14</span>;

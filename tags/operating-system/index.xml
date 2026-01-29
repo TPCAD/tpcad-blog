@@ -4,7 +4,7 @@
     <title>Operating System on Eulamber</title>
     <link>https://tpcad.github.io/tpcad-blog/tags/operating-system/</link>
     <description>Recent content in Operating System on Eulamber</description>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.155.0</generator>
     <language>zh-CN</language>
     <lastBuildDate>Mon, 21 Oct 2024 08:25:27 +0800</lastBuildDate>
     <atom:link href="https://tpcad.github.io/tpcad-blog/tags/operating-system/index.xml" rel="self" type="application/rss+xml" />
@@ -87,7 +87,7 @@
 &lt;p&gt;每一个进程都有自己的页表，页表也存储在内存中，是一个由页表项组成的数组。&lt;/p&gt;
 &lt;h4 id=&#34;页表项&#34;&gt;页表项&lt;/h4&gt;
 &lt;p&gt;在 32 位操作系统中，一个页表项的大小为 4 字节。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;typedef&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e78284&#34;&gt;page_entry_t&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;typedef&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e78284&#34;&gt;page_entry_t&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;present&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;  &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 在内存中
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    u8 &lt;span style=&#34;color:#99d1db&#34;&gt;write&lt;/span&gt; : &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;;    &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 0 只读，1 可读可写
