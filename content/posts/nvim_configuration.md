@@ -4,12 +4,12 @@ date = 2024-11-30T15:12:16+08:00
 draft = true
 +++
 
-本文所用的 Neovim 版本为 `0.11.0-dev-851+g4f9311b75`。
+本文所用的 Neovim 版本为 `0.11.4`。
 
 ```bash
-NVIM v0.11.0-dev-851+g4f9311b75
+NVIM v0.11.4
 Build type: RelWithDebInfo
-LuaJIT 2.1.1724512491
+LuaJIT 2.1.1753364724
 Run "nvim -V1 -v" for more info
 ```
 
@@ -23,11 +23,10 @@ Neovim 的配置文件位于 `~/.config/nvim/init.lua`。虽然可以将所有�
 nvim/
 ├── ftplugin/
 ├── lua/
-│   ├── config/
-│   │   ├── autocmd.lua
-│   │   ├── basic.lua
-│   │   ├── keymaps.lua
-│   │   ├── plugins.lua
+│   ├── autocmd.lua
+│   ├── options.lua
+│   ├── keymaps.lua
+│   ├── pluginmanager.lua
 │   ├── plugins/
 │   └── utils/
 ├── snippets/
@@ -36,11 +35,14 @@ nvim/
 └── stylua.toml
 ```
 
-- `ftplugin` 用于为不同文件类型进行不同配置
-- `lua/config` Neovim 的具体配置，包括基础配置，按键映射，插件等
-- `lua/plugins` 插件的具体配置
-- `lua/utils` 自定义的功能配置
-- `snippets` 代码片段
+- `ftplugin/` 用于为不同文件类型进行不同配置
+- `lua/autocmd.lua` 自动命令
+- `lua/options.lua` Vim options
+- `lua/keymaps.lua` 快捷键
+- `lua/pluginmanager.lua` 插件管理器
+- `lua/plugins/` 插件的具体配置
+- `lua/utils/` 自定义的功能配置
+- `snippets/` 代码片段
 - `init.lua` 配置入口
 - `stylua.toml` lua 文件格式化配置文件，非必需
 
@@ -60,51 +62,75 @@ Neovim 会读取 `~/.config/foo/init.lua` 的配置，如果不存在则会打�
 
 ```lua
 require("config.autocmd")
-require("config.basic")
+require("config.options")
 require("config.keymaps")
 require("config.plugins")
 require("utils.colorscheme")
 ```
 
-## 基础配置
+## Vim options
 
-在 Vim 中可以使用 `set` 来设置 options，比如 `set number` 开启行号显示。在 Neovim 中可以使用 `vim.opt` 替代 `set`。
-
-```lua
-vim.opt.number = true -- line number
-vim.opt.relativenumber = true -- relative line number
-```
-
-关于 Neovim 的更多 options 可以查阅 [option-list](https://neovim.io/doc/user/quickref.html#option-list)。
+选项（Options）是用于配置 Vim/Neovim 行为和外观的各种内置变量。Neovim 提供了一系列 Lua 式的 API 来访问 Vim 选项。
 
 ### vim.o
 
-`vim.o` 也可以替代 `set`，使用起来也与 `set` 更加相似。
+`vim.o` 类似 `:set {option}={value}`，同时设置全局值和局部值。
 
 ```lua
--- set number
-vim.o.number = true
-
--- set wildignore '*.o,*.a,__pycache__'
-vim.o.wildignore = '*.o,*.a,__pycache__'
+vim.o.number = true                         -- 布尔类型
+vim.o.wildignore = '*.o,*.a,__pycache__'    -- 字符串类型
+vim.o.cmdheight = 4                         -- 数字类型
 ```
 
-同时也可以直接获取 options。
+同时也可以直接获取 option 的值。
 
 ```lua
-vim.o.cmdheight = 4
-print(vim.o.cmdheight) -- 4
+local cmdheight = vim.o.cmdheight
+```
+
+#### vim.go
+
+`vim.go` 类似 `:setglobal`，用于设置全局选项或局部选项的全局值。
+
+```lua
+vim.go.number=true    -- 相当于 :setglobal number
+```
+
+#### vim.wo 和 vim.bo
+
+`vim.wo[{winid}][{bufnr}]` 和 `vim.bo[{bufnr}]` 分别用于设置窗口局部选项和缓冲区局部选项。
+
+`vim.wo[{winid}][{bufnr}]` 只有在设置「全局-窗口局部选项」或给出 `bufnr`（`bufnr` 只能为 0，表示当前缓冲区）时才相当于 `:setlocal`。其他情况相当于 `:set`。
+
+```lua
+vim.wo.number=false              -- 相当于 :set number
+vim.wo.scrolloff=10              -- 相当于 :setlocal scrolloff=10
+local winid = vim.api.nvim_get_current_win()
+vim.wo[winid].number=false       -- 相当于 :set number
+vim.wo[winid][0].number=false    -- 相当于 :setlocal number
+```
+
+`vim.bo[{bufnr}]` 的 `bufnr` 可以省略，表示当前缓冲区。
+
+```lua
+local bufnr = vim.api.nvim_get_current_buf()
+vim.bo[bufnr].buflisted = true    -- 相当于 vim.bo.buflisted = true
 ```
 
 ### vim.opt
 
-与 `vim.o` 相比，`vim.opt` 显得更加 Lua。`vim.opt` 允许用户像操作 list 和 map 一样配置 options，而且还提供了面向对象的增加和删除方法。
+与 `vim.o` 相比，`vim.opt` 显得更加 Lua。`vim.opt` 允许用户更分便地操作 list 和 map 形式的选项，而且还提供了面向对象的增加和删除方法。
 
-虽然 `set` 只有三种参数类型，但实际上一些字符串类型的参数会以列表（list）或字典（dictionary/map）的方式存储。
+同时，还有 `vim.opt_local` 和 `vim.opt_global` 分别设置全局值和局部值。
 
-例如 `set listchars=space:_,tab:>~` 中的 `space:_,tab:>~` 是一个 **以逗号分隔的 map**，它会以字典的方式存储。例如 `set wildignore=*.pyc,*.o` 中的 `*.pyc,*.o` 是一个 **以逗号分隔的 list**，它会以列表的方式存储。
+虽然选项只有三种类型（数字，布尔，字符串），但实际上一些字符串类型的参数会以列表（list）或字典（dictionary/map）的方式解析。
+
+例如 `:set listchars=space:_,tab:>~` 中的 `space:_,tab:>~` 是一个**以逗号分隔的 map**，它会以字典的方式解析。例如 `:set wildignore=*.pyc,*.o` 中的 `*.pyc,*.o` 是一个**以逗号分隔的 list**，它会以列表的方式解析。
 
 ```lua
+vim.opt.number = true            -- :set number
+vim.opt.relativenumber = true    -- :set relativenumber
+
 -- set listchars=space:_,tab:>~
 vim.opt.listchars = { space = '_', tab = '>~' }
 
@@ -112,40 +138,9 @@ vim.opt.listchars = { space = '_', tab = '>~' }
 vim.opt.wildignore = { '*.o', '*.a', '__pycache__' }
 ```
 
-#### prepend
-
-在字符串类型（list，map） options 的头部附加值。
-
-```lua
---  Option:prepend({value})
---  @param  value  Value to prepend
---  like :set^=
-
--- list-like
-vim.opt.wildignore:prepend('*.o')
-vim.opt.wildignore = vim.opt.wildignore ^ '*.o'
-
--- map-like
-vim.opt.listchars:prepend({trail = '-'})
-```
-
-#### append
-
-在字符串类型（list，map） options 的头部附加值。
-
-```lua
---  Option:append({value})
---  @param  value  Value to append
---  like :set+=
-vim.opt.wildignore:append('*.o')
-vim.opt.wildignore = vim.opt.wildignore + '*.o'
-
-vim.opt.listchars:append({trail = '-'})
-```
-
 #### get
 
-返回 option 的值。`vim.opt` 返回一个 `Option` 对象，并不是对应 option 的值，需要通过 `get` 方法访问。对于布尔、数字和一般的字符串类型会返回它们对应的值，而对于特殊的字符串类型（list，map）则会返回对应的 table。对于标志列表，会返回以标志为键，`true` 为值的 table。
+`vim.opt` 返回一个 `Option` 对象，并不是对应选项的值，需要通过 `get` 方法访问。对于布尔、数字和一般的字符串类型会返回它们对应的值，而对于特殊的字符串类型（list，map）则会返回对应的 table。对于标志列表，会返回以标志为键，`true` 为值的 table。
 
 ```lua
 -- boolean
@@ -174,9 +169,40 @@ vim.print(vim.opt.listchars:get())
 -- }
 ```
 
+#### prepend
+
+在字符串类型（list，map）选项的头部附加值。
+
+```lua
+--  Option:prepend({value})
+--  @param  value  Value to prepend
+--  like :set^=
+
+-- list-like
+vim.opt.wildignore:prepend('*.o')
+vim.opt.wildignore = vim.opt.wildignore ^ '*.o'
+
+-- map-like
+vim.opt.listchars:prepend({trail = '-'})
+```
+
+#### append
+
+在字符串类型（list，map）选项的尾部附加值。
+
+```lua
+--  Option:append({value})
+--  @param  value  Value to append
+--  like :set+=
+vim.opt.wildignore:append('*.o')
+vim.opt.wildignore = vim.opt.wildignore + '*.o'
+
+vim.opt.listchars:append({trail = '-'})
+```
+
 #### remove
 
-删除字符串类型（list，map） options 的某个值。
+删除字符串类型（list，map）选项的某个值。
 
 ```lua
 --  Option:remove({value})
@@ -198,11 +224,19 @@ vim.g.mapleader = ";"
 
 ### vim.keymap.set()
 
+```lua
+---@param mode string|string[] Mode "short-name" or a list of thereof
+---@param lhs string Left-hand side of mapping
+---@param rhs string|function Right-hand side of mapping
+---@param opts? table Table of map-arguments
+vim.keymaps.set(mode, lhs, rhs, opts?)
+```
+
 可以使用 `vim.keymaps.set()` 创建按键映射。这个函数有三个强制参数：
 
-- **mode** 指定按键映射在什么模式下生效，可以是字符串或字符串数组
-- **lhs** 触发该映射的按键序列
-- **rhs** 触发该映射后的动作，可以是 Vim 命令（字符串）或 Lua 函数，空字符串表示禁用该按键
+- **mode**：按键映射生效模式，可以是字符串或字符串数组
+- **lhs**：触发该映射的按键序列
+- **rhs**：触发该映射后的动作，可以是 Vim 命令（字符串）或 Lua 函数，空字符串表示禁用该按键
 
 ```lua
 -- Normal mode mapping for Vim command
@@ -218,7 +252,7 @@ vim.keymap.set('n', '<Leader>ex3', vim.treesitter.start)
 vim.keymap.set('n', '<Leader>ex4', function() print('Example 4') end)
 ```
 
-`vim.keymaps.set()` 的第四个参数是可选参数，是一个控制映射行为 table。以下是一些常用的功能：
+`opts` 是可选参数，是一个控制映射行为 table。有以下常用的字段：
 
 - **buffer**：控制映射是否只在指定 buffer 生效，0 或 true 表示当前 buffer。
 
@@ -230,13 +264,14 @@ vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { buffer = true })
 vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { buffer = 4 })
 ```
 
-- **silent**：`true` 表示不输出错误信息。
+- **silent**：静默执行，不在命令行输出执行命令，默认 `false`。
 
 ```lua
-vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { silent = true })
+vim.keymap.set('n', '<tab>', ':bnext<cr>', { silent = true }) -- same as below
+-- vim.keymap.set('n', '<tab>', '<cmd>bnext<cr>')
 ```
 
-- **expr**：`true` 表示触发映射后的动作不是执行函数，而是使用函数返回值作为动作。
+- **expr**：以 `rhs` 返回的字符串作为触发后动作，默认 `false`。
 
 ```lua
 vim.keymap.set('c', '<down>', function()
@@ -245,14 +280,14 @@ vim.keymap.set('c', '<down>', function()
 end, { expr = true })
 ```
 
-- **desc**：表述按键映射的字符串。
+- **desc**：描述按键映射的字符串。
 
 ```lua
 vim.keymap.set('n', '<Leader>pl1', require('plugin').action,
   { desc = 'Execute action from plugin' })
 ```
 
-- **remap**：递归执行映射。
+- **remap**：递归映射，默认 `false`。
 
 ```lua
 vim.keymap.set('n', '<Leader>ex1', '<cmd>echo "Example 1"<cr>')
@@ -261,9 +296,18 @@ vim.keymap.set('n', '<Leader>ex1', '<cmd>echo "Example 1"<cr>')
 vim.keymap.set('n', 'e', '<Leader>ex1', { remap = true })
 ```
 
+- **noremap**：禁止递归映射，默认 `true`。
+
 ### vim.keymap.del()
 
-`vim.keymap.del()` 可以删除指定映射。
+```lua
+---@param mode string|string[] Mode "short-name" or a list of thereof
+---@param lhs string Left-hand side of mapping
+---@param rhs string|function Right-hand side of mapping
+vim.keymaps.del(mode, lhs, rhs)
+```
+
+删除指定映射。
 
 ```lua
 vim.keymap.del('n', '<Leader>ex1', '<cmd>echo "Example 1"<cr>')

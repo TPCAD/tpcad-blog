@@ -1,17 +1,18 @@
 +++
 title = '红黑树'
 date = 2024-11-26T10:43:39+08:00
+draft = true
 +++
 
 红黑树是一种平衡的二叉搜索树，满足如下性质：
 
-1. 节点要么是 **黑色**，要么是 **红色**
-2. 根节点必须是黑色
-3. 所有叶子节点都是黑色
-4. 红色节点的子节点必须是黑色
-5. 从任一节点到叶子节点的所有简单路径都包含相同数量的黑色节点
+1. 节点要么是**黑色**，要么是**红色**
+2. 所有叶子节点都是黑色
+3. 红色节点的子节点必须是黑色
+4. 从任一节点到叶子节点的所有简单路径都包含相同数量的黑色节点
+5. 根节点必须是黑色
 
-其中叶子节点指的是为空的节点。如下图所示，`null` 是叶子节点，而节点 9 和节点 20 不是叶子节点（它们的子结点也是叶子节点，图中没有画出）。
+其中叶子节点指的是空节点。如下图所示，`null` 是叶子节点，而节点 9 和节点 20 不是叶子节点（它们的子结点也是叶子节点，图中没有画出）。
 
 ```language
         10
@@ -23,175 +24,205 @@ date = 2024-11-26T10:43:39+08:00
 
 ## 节点定义
 
-```cpp
-template <typename T>
-    requires std::equality_comparable<T> && std::totally_ordered<T>
-struct rb_tree {
-  private:
-    enum rb_color { red, black }; // 节点颜色
+```rust
+/// 节点颜色
+#[derive(Clone, Copy)]
+enum Color {
+    Red,
+    Black,
+}
 
-    struct rb_node {
-        T key;
+/// 红黑树节点
+pub struct RBNode<K: Ord, V> {
+    key: K,
+    value: V,
+    color: Color,
+    parent: *mut RBNode<K, V>,
+    left: *mut RBNode<K, V>,
+    right: *mut RBNode<K, V>,
+}
 
-        rb_color color; // 颜色字段
+impl<K: Ord, V> RBNode<K, V> {
+    /// 默认创建红色节点
+    fn new(key: K, value: V) -> RBNode<K, V> {
+        RBNode {
+            key,
+            value,
+            color: Color::Red,
+            parent: null_mut(),
+            left: null_mut(),
+            right: null_mut(),
+        }
+    }
+}
 
-        unsigned size;
-        unsigned count;
-        rb_node *left;
-        rb_node *right;
-        rb_node *parent; // 父节点
+/// 红黑树
+#[derive(Debug)]
+pub struct RBTree<K: Ord, V> {
+    root: *mut RBNode<K, V>,
+}
 
-        rb_node(const T &value)
-            : key(value), color(rb_color::red), size(1), count(1),
-              left(nullptr), right(nullptr), parent(nullptr) {}
+impl<K: Ord, V> Default for RBTree<K, V> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
-        void print_key() {
-            std::cout << key;
-            if (color == rb_color::black) {
-                std::cout << "b";
+impl<K: Ord, V> RBTree<K, V> {
+    pub fn new() -> RBTree<K, V> {
+        RBTree::<K, V> { root: null_mut() }
+    }
+}
+```
+## 旋转
+
+**左旋**指的是将一个节点变成它的右子节点的左子节点的操作，即该节点向左下方旋转，其子节点向左上方旋转，整体呈逆时针旋转。
+
+**右旋**指的是将一个节点变成它的左子节点的右子节点的操作，即该节点向右下方旋转，其子节点向右上方旋转，整体呈顺时针旋转。
+
+```rust
+impl<K: Ord, V> RBTree<K, V> {
+    /// 左旋节点 `node`。
+    /*
+     *         p              p
+     *        / \            / \
+     *          n   ------>    c
+     *         / \            / \
+     *            c          n
+     *           / \        / \
+     *         cl             cl
+     */
+    fn left_rotate(&mut self, node: *mut RBNode<K, V>) {
+        unsafe {
+            let parent = (*node).parent;
+            let right_child = (*node).right;
+            let left_gchild = (*right_child).left; // 右子节点的左子节点
+
+            // 调整子节点
+            (*right_child).left = node;
+            (*right_child).parent = parent;
+
+            // 调整左旋节点
+            (*node).parent = right_child;
+            (*node).right = left_gchild;
+
+            // 调整孙子节点
+            if !left_gchild.is_null() {
+                (*left_gchild).parent = node;
+            }
+
+            // 调整父节点
+            if parent.is_null() {
+                self.root = right_child;
+            } else if (*parent).left == node {
+                (*parent).left = right_child;
             } else {
-                std::cout << "r";
+                (*parent).right = right_child;
             }
         }
-    };
+    }
 
-    rb_node *root;
+    /// 右旋节点 `node`。
+    /*
+     *         p              p
+     *        / \            / \
+     *          n   ------>    c
+     *         / \            / \
+     *        c                 n
+     *       / \               / \
+     *         cl             cl
+     */
+    fn right_rotate(&mut self, node: *mut RBNode<K, V>) {
+        unsafe {
+            let parent = (*node).parent;
+            let left_child = (*node).left;
+            let right_gchild = (*left_child).right;
 
-  public:
-    rb_tree() : root(nullptr) {}
-    rb_tree(const T &value) : root(nullptr) { root = new rb_node(value); }
+            // 调整子节点
+            (*left_child).right = node;
+            (*left_child).parent = parent;
 
-    rb_tree(std::initializer_list<T> list) : root(nullptr) {
-        this->insert_aux(this->root, *list.begin());
-        std::for_each(list.begin() + 1, list.end(),
-                      [this](auto &&x) { this->insert(x); });
+            // 调整右旋节点
+            (*node).parent = left_child;
+            (*node).left = right_gchild;
+
+            // 调整孙子节点
+            if !right_gchild.is_null() {
+                (*right_gchild).parent = node;
+            }
+
+            // 调整父节点
+            if parent.is_null() {
+                self.root = left_child;
+            } else if (*parent).left == node {
+                (*parent).left = left_child;
+            } else {
+                (*parent).right = left_child;
+            }
+        }
     }
 }
 ```
 
-## 旋转
-
-因为增加了 `parent` 字段用于指向当前节点的父节点，因此旋转操作也需要更新 `parent` 字段。
-
-右旋操作：
-
-```cpp
-    /**
-     *  @brief  LL 型旋转
-     *  @param  root  节点
-     */
-    void left_left_rotation(rb_node *root) {
-        rb_node *parent = root->parent;
-        rb_node *child = root->left;
-
-        root->left = child->right;
-        if (child->right) {
-            child->right->parent = root;
-        }
-
-        child->right = root;
-        root->parent = child;
-
-        if (root == this->root) {
-            this->root = child;
-        }
-        child->parent = parent;
-
-        if (parent) {
-            if (parent->left == root) {
-                parent->left = child;
-            } else {
-                parent->right = child;
-            }
-        }
-
-        // 更新 size
-        root->size = root->count + (root->left ? root->left->size : 0) +
-                     (root->right ? root->right->size : 0);
-        child->size = child->count + (child->left ? child->left->size : 0) +
-                      (child->right ? child->right->size : 0);
-    }
-```
-
-左旋操作：
-
-```cpp
-    /**
-     *  @brief  RR 型旋转
-     *  @param  root  节点
-     */
-    void right_right_rotation(rb_node *root) {
-        rb_node *parent = root->parent;
-        rb_node *child = root->right;
-
-        root->right = child->left;
-        if (child->left) {
-            child->left->parent = root;
-        }
-
-        child->left = root;
-        root->parent = child;
-
-        if (root == this->root) {
-            this->root = child;
-        }
-        child->parent = parent;
-
-        if (parent) {
-            if (parent->left == root) {
-                parent->left = child;
-            } else {
-                parent->right = child;
-            }
-        }
-
-        // 更新 size
-        root->size = root->count + (root->left ? root->left->size : 0) +
-                     (root->right ? root->right->size : 0);
-        child->size = child->count + (child->left ? child->left->size : 0) +
-                      (child->right ? child->right->size : 0);
-    }
-```
-
 ## 插入
 
-红黑树的插入操作与二叉搜索树相似，重点在于插入后需要根据插入节点及相关节点的颜色对树进行调整以满足红黑树的性质。根据性质 5，如果插入的节点是黑色，那么必定会破坏性质 5，所以规定插入节点的颜色为红色。
+红黑树的插入操作与二叉搜索树相似，重点在于插入后需要根据插入节点及相关节点的颜色对树进行调整以满足红黑树的性质。根据性质 4，如果插入的节点是黑色，那么必定会破坏性质 4，所以规定插入节点的颜色为红色。
 
-```cpp
-    /**
-     *  @brief  插入节点
-     *  @param  root  根节点
-     *  @param  value  权值
-     */
-    void insert_aux(rb_node *root, const T &value) {
-        if (root == nullptr && root == this->root) {
-            this->root = new rb_node(value);
-            root = this->root;
-        } else {
-            if (root->key == value) {
-                root->count++;
-                root->size++;
-                return;
+```rust
+impl<K: Ord, V> RBTree<K, V> {
+    /// 插入键值对 (key, value)
+    pub fn insert(&mut self, key: K, value: V) {
+        unsafe {
+            let mut node = self.root;
+            let mut parent = null_mut();
+
+            // 定位插入位置 parent
+            while !node.is_null() {
+                parent = node;
+                node = match (*node).key.cmp(&key) {
+                    Ordering::Less => (*node).right,
+                    Ordering::Equal => {
+                        (*node).value = value;
+                        return;
+                    }
+                    Ordering::Greater => (*node).left,
+                }
             }
 
-            auto &child = root->key > value ? root->left : root->right;
-            if (child == nullptr) {
-                child = new rb_node(value, root);
-                root->size = root->count + (root->left ? root->left->size : 0) +
-                             (root->right ? root->right->size : 0);
-                root = child;
+            // 创建新节点
+            node = Box::into_raw(Box::new(RBNode::new(key, value)));
+            // 插入节点
+            if !parent.is_null() {
+                if (*node).key < (*parent).key {
+                    (*parent).left = node;
+                } else {
+                    (*parent).right = node;
+                }
             } else {
-                insert_aux(child, value);
+                self.root = node;
             }
-        }
+            (*node).parent = parent;
 
-        fix_after_insertion(root); // 调整红黑树
-        root->size = root->count + (root->left ? root->left->size : 0) +
-                     (root->right ? root->right->size : 0);
+            // 调整红黑树
+            self.insert_fixup(node);
+        }
     }
+}
 ```
 
 插入后的情况可以分成以下 5 种：
+
+```mermaid
+flowchart LR
+    A["是根节点"] -- N --> B["父节点是黑色"]
+    A -- Y --> C1["case 1"]
+    B -- N --> C["叔父节点是红色"]
+    B -- Y --> C2["case 2"]
+    C -- N --> D["插入节点和父节点同向"]
+    C -- Y --> C3["case 3"]
+    D -- N --> C5["case 5"]
+    D -- Y --> C4["case 4"]
+```
 
 ### case 1
 
@@ -205,37 +236,37 @@ struct rb_tree {
 
 插入节点的父节点是红色，叔父节点也是红色。
 
-此时违反了性质 4，将父节点与叔父节点染黑，祖父节点染红即可局部满足性质 4，然后视祖父节点为插入节点，继续调整红黑树。
+此时违反了性质 3，将父节点与叔父节点染黑，祖父节点染红即可局部满足性质 4，然后视祖父节点为插入节点，继续调整红黑树。
 
 ### case 4
 
-插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点与父节点都是 **左子节点**。
+插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点与父节点都是**左子节点**。
 
-此时违反了性质 4，先对祖父节点进行一次右旋，然后将父节点染黑，原祖父节点（现在是兄弟节点）染红。
+此时违反了性质 3，先将父节点染黑，祖父节点染红，然后右旋祖父节点。
 
 ```language
-        [G]                        <P>                       [P]
-       /   \   Right Rorate G     /   \      repaint        /   \
-     <P>  [U]  -------------->  <N>   [G]  ----------->  <N>   <G>
-     /                                  \                         \
-    <N>                                 [U]                       [U]
+        [G]                         [P]                           <P>     
+       /   \       Repaint         /   \      Right Rotate G     /   \    
+     <P>   [U]  -------------->  <N>   <G>    -------------->  <N>   [G]  
+     /                                   \                        \       
+   <N>                                   [U]                      [U]     
 
 N: new node, P: parent node, G: grandparent node, U: uncle node
 <X>: RED node, [X]: BLACK node, {X}: either RED or BLACK node
 ```
 
-该情况还有一种对称的变形，即插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点与父节点都是 **右子节点**。调整方法也类似，只需要对祖父节点 **左旋** 再染色即可。
+该情况还有一种对称的变形，即插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点与父节点都是**右子节点**。调整方法也类似，不同的是需要**左旋**祖父节点 。
 
 ### case 5
 
-插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点是 **右子结点**，父节点是 **左子节点**。
+插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点是**右子结点**，父节点是**左子节点**。
 
-此时对父节点进行一次 **左旋** 就变成了 case 4，将父节点视为插入节点继续调整红黑树即可。
+此时**左旋**父节点就变成了 case 4，将父节点视为插入节点继续调整红黑树即可。
 
 ```language
         [G]                        [G]   
-       /   \    Left Rorate P     /   \  
-     <P>  [U]  -------------->  <N>   [U]
+       /   \     Left Rotate P    /   \  
+     <P>   [U]  --------------> <N>   [U]
        \                        /        
        <N>                    <P>        
 
@@ -243,67 +274,88 @@ N: new node, P: parent node, G: grandparent node, U: uncle node
 <X>: RED node, [X]: BLACK node, {X}: either RED or BLACK node
 ```
 
-该情况还有一种对称的变形，即插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点是 **左子结点**，父节点是 **右子节点**。调整方法也类似，只需要对父节点 **右旋** 就会变成 case  4 的另一种变形。
+该情况还有一种对称的变形，即插入节点的父节点是红色，叔父节点是黑色（或是叶子结点），且插入节点是**左子结点**，父节点是**右子节点**。调整方法也类似，只需要**右旋**父节点就会变成 case  4 的另一种变形。
 
 ### 示例代码
 
-```cpp
-    /**
-     *  @brief  调整插入后红黑树
-     *  @param  root  插入节点
-     */
-    void fix_after_insertion(rb_node *root) {
-        // case 1: 根节点
-        if (root == this->root) {
-            root->color = rb_color::black;
-            return;
-        }
+```rust
+impl<K: Ord, V> RBTree<K, V> {
+    /// 插入后调整红黑树
+    #[inline]
+    fn insert_fixup(&mut self, mut node: *mut RBNode<K, V>) {
+        unsafe {
+            let mut parent: *mut RBNode<K, V> = (*node).parent;
+            let mut gparent: *mut RBNode<K, V>;
+            let mut tmp: *mut RBNode<K, V>;
 
-        // case 2: 父节点是黑色
-        if (root->parent->color == rb_color::black) {
-            return;
-        }
+            loop {
+                // case1 根节点
+                if parent.is_null() {
+                    (*node).color = Color::Black;
+                    break;
+                }
 
-        rb_node *uncle_node = uncle(root);
+                // case 2 父节点是黑色节点
+                if matches!((*parent).color, Color::Black) {
+                    break;
+                }
 
-        // case 3: 父节点与叔父节点都是红色
-        if (is_red(root->parent) && is_red(uncle_node)) {
-            root->parent->color = rb_color::black;
-            uncle_node->color = rb_color::black;
-            grandparent(root)->color = rb_color::red;
-            fix_after_insertion(grandparent(root));
-        }
+                gparent = (*parent).parent;
+                tmp = (*gparent).right;
 
-        // case 4,5: 父节点是红色，叔父节点是黑色或空
-        if (is_red(root->parent) && !is_red(uncle_node)) {
-            if (is_left_child(root) && is_left_child(root->parent)) {
-                // case 4:
-                // 父节点是红色，叔父节点是黑色或空，
-                // 当前节点是左子节点，父节点是左子节点
-                root->parent->color = rb_color::black;
-                grandparent(root)->color = rb_color::red;
-                left_left_rotation(grandparent(root));
-            } else if (!is_left_child(root) && !is_left_child(root->parent)) {
-                // case 4: 对称
-                root->parent->color = rb_color::black;
-                grandparent(root)->color = rb_color::red;
-                right_right_rotation(grandparent(root));
-            } else if (!is_left_child(root) && is_left_child(root->parent)) {
-                // case 5:
-                // 父节点是红色，叔父节点是黑色或空，
-                // 当前节点是右子节点，父节点是左子节点
-                right_right_rotation(root->parent);
-                root = root->left;
-                fix_after_insertion(root);
-            } else {
-                // case 5: 对称
-                left_left_rotation(root->parent);
-                root = root->right;
-                fix_after_insertion(root);
+                if parent != tmp {
+                    // 父节点是左子节点
+                    // case 3 父节点和叔父节点都是红色节点
+                    if !tmp.is_null() && matches!((*tmp).color, Color::Red) {
+                        (*parent).color = Color::Black;
+                        (*tmp).color = Color::Black;
+                        (*gparent).color = Color::Red;
+                        // 视祖父节点为插入节点继续调整红黑树
+                        node = gparent;
+                        parent = (*gparent).parent;
+                        continue;
+                    }
+
+                    // case 5
+                    tmp = (*parent).right;
+                    if node == tmp {
+                        self.left_rotate(parent);
+                        parent = node;
+                    }
+
+                    // case 4
+                    (*parent).color = Color::Black;
+                    (*gparent).color = Color::Red;
+                    self.right_rotate(gparent);
+                } else {
+                    // 父节点是右子节点
+                    // case 3 父节点和叔父节点都是红色节点
+                    if !tmp.is_null() && matches!((*tmp).color, Color::Red) {
+                        (*parent).color = Color::Black;
+                        (*tmp).color = Color::Black;
+                        (*gparent).color = Color::Red;
+                        node = gparent;
+                        parent = (*gparent).parent;
+                        continue;
+                    }
+
+                    // case 5
+                    tmp = (*parent).left;
+                    if node == tmp {
+                        self.right_rotate(parent);
+                        parent = node;
+                    }
+
+                    // case 4
+                    (*parent).color = Color::Black;
+                    (*gparent).color = Color::Red;
+                    self.left_rotate(gparent);
+                }
+                break;
             }
-            return;
         }
     }
+}
 ```
 
 ## 删除
