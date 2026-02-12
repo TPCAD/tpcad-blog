@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>NumPy Reference | Eulamber</title>
+<meta name="keywords" content="Python, NumPy">
+<meta name="description" content="NumPy CheatSheet
+Ndarray
+Create Array
+array()
+import numpy as np
+a = np.array([1, 2, 3])
+zeros()
+np.zeros(2)
+# array([0., 0.])
+ones()
+np.ones(2)
+# array([1., 1.])
+empty()
+元素的值是随即的，由内存当前存储的数据决定。empty() 比 zeros() 要快，但在使用前一定要初始化。
+np.empty(2)
+arange()
+np.arange(4)
+# array([0, 1, 2, 3])
+np.arange(4, 10, 2)
+# array([4, 6, 8])
+linspace()
+# [4, 10] 之间线性分布的 10 个数
+np.linspace(4, 10, num=10)
+# array([ 4.          4.66666667  5.33333333  6.          6.66666667  7.33333333
+#         8.          8.66666667  9.33333333 10.        ])
+Specify Data Type
+默认的数据类型是 np.float64。
+以上创建数组的函数均可以通过参数 dtype 来指定数据类型。
+np.ones(2, dtype=np.int64)
+np.zeros(2, dtype=np.int64)
+Sorting Elements
+sort()
+sort() 会返回一个新的数组。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/tpcad-blog/posts/numpy/">
+<link crossorigin="anonymous" href="/tpcad-blog/assets/css/stylesheet.3c132f4f67b09f372a89c30a4d21e19485556c392a7f8d0d6c7e95399bfc17b9.css" integrity="sha256-PBMvT2ewnzcqicMKTSHhlIVVbDkqf40NbH6VOZv8F7k=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/tpcad-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/tpcad-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/tpcad-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/tpcad-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/tpcad-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/tpcad-blog/posts/numpy/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/tpcad-blog/posts/numpy/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="NumPy Reference">
+  <meta property="og:description" content="NumPy CheatSheet Ndarray Create Array array() import numpy as np a = np.array([1, 2, 3]) zeros() np.zeros(2) # array([0., 0.]) ones() np.ones(2) # array([1., 1.]) empty() 元素的值是随即的，由内存当前存储的数据决定。empty() 比 zeros() 要快，但在使用前一定要初始化。
+np.empty(2) arange() np.arange(4) # array([0, 1, 2, 3]) np.arange(4, 10, 2) # array([4, 6, 8]) linspace() # [4, 10] 之间线性分布的 10 个数 np.linspace(4, 10, num=10) # array([ 4. 4.66666667 5.33333333 6. 6.66666667 7.33333333 # 8. 8.66666667 9.33333333 10. ]) Specify Data Type 默认的数据类型是 np.float64。
+以上创建数组的函数均可以通过参数 dtype 来指定数据类型。
+np.ones(2, dtype=np.int64) np.zeros(2, dtype=np.int64) Sorting Elements sort() sort() 会返回一个新的数组。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-22T08:24:44+08:00">
+    <meta property="article:modified_time" content="2024-11-22T08:24:44+08:00">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="NumPy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NumPy Reference">
+<meta name="twitter:description" content="NumPy CheatSheet
+Ndarray
+Create Array
+array()
+import numpy as np
+a = np.array([1, 2, 3])
+zeros()
+np.zeros(2)
+# array([0., 0.])
+ones()
+np.ones(2)
+# array([1., 1.])
+empty()
+元素的值是随即的，由内存当前存储的数据决定。empty() 比 zeros() 要快，但在使用前一定要初始化。
+np.empty(2)
+arange()
+np.arange(4)
+# array([0, 1, 2, 3])
+np.arange(4, 10, 2)
+# array([4, 6, 8])
+linspace()
+# [4, 10] 之间线性分布的 10 个数
+np.linspace(4, 10, num=10)
+# array([ 4.          4.66666667  5.33333333  6.          6.66666667  7.33333333
+#         8.          8.66666667  9.33333333 10.        ])
+Specify Data Type
+默认的数据类型是 np.float64。
+以上创建数组的函数均可以通过参数 dtype 来指定数据类型。
+np.ones(2, dtype=np.int64)
+np.zeros(2, dtype=np.int64)
+Sorting Elements
+sort()
+sort() 会返回一个新的数组。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/tpcad-blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "NumPy Reference",
+      "item": "https://tpcad.github.io/tpcad-blog/posts/numpy/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "NumPy Reference",
+  "name": "NumPy Reference",
+  "description": "NumPy CheatSheet Ndarray Create Array array() import numpy as np a = np.array([1, 2, 3]) zeros() np.zeros(2) # array([0., 0.]) ones() np.ones(2) # array([1., 1.]) empty() 元素的值是随即的，由内存当前存储的数据决定。empty() 比 zeros() 要快，但在使用前一定要初始化。\nnp.empty(2) arange() np.arange(4) # array([0, 1, 2, 3]) np.arange(4, 10, 2) # array([4, 6, 8]) linspace() # [4, 10] 之间线性分布的 10 个数 np.linspace(4, 10, num=10) # array([ 4. 4.66666667 5.33333333 6. 6.66666667 7.33333333 # 8. 8.66666667 9.33333333 10. ]) Specify Data Type 默认的数据类型是 np.float64。\n以上创建数组的函数均可以通过参数 dtype 来指定数据类型。\nnp.ones(2, dtype=np.int64) np.zeros(2, dtype=np.int64) Sorting Elements sort() sort() 会返回一个新的数组。\n",
+  "keywords": [
+    "Python", "NumPy"
+  ],
+  "articleBody": "NumPy CheatSheet Ndarray Create Array array() import numpy as np a = np.array([1, 2, 3]) zeros() np.zeros(2) # array([0., 0.]) ones() np.ones(2) # array([1., 1.]) empty() 元素的值是随即的，由内存当前存储的数据决定。empty() 比 zeros() 要快，但在使用前一定要初始化。\nnp.empty(2) arange() np.arange(4) # array([0, 1, 2, 3]) np.arange(4, 10, 2) # array([4, 6, 8]) linspace() # [4, 10] 之间线性分布的 10 个数 np.linspace(4, 10, num=10) # array([ 4. 4.66666667 5.33333333 6. 6.66666667 7.33333333 # 8. 8.66666667 9.33333333 10. ]) Specify Data Type 默认的数据类型是 np.float64。\n以上创建数组的函数均可以通过参数 dtype 来指定数据类型。\nnp.ones(2, dtype=np.int64) np.zeros(2, dtype=np.int64) Sorting Elements sort() sort() 会返回一个新的数组。\na = np.array([2, 4, 12, 1, 22, 11, 5, 3]) print(np.sort(a)) Array’s Property arr = np.array([[1, 2, 3], [4, 5, 6]]) print(arr.ndim) # 2，数组的维数 print(arr.size) # 6，数组的元素个数 print(arr.shape) # (2,3)，数组的形状 Reshape Array reshape() array_example = np.array([[[0, 1, 2, 3], [4, 5, 6, 7]], [[0, 1, 2, 3], [4, 5, 6, 7]], [[0 ,1 ,2, 3], [4, 5, 6, 7]]]) print(np.reshape(array_example, (2, 3, 4))) # [[[0 1 2 3] # [4 5 6 7] # [0 1 2 3]] # # [[4 5 6 7] # [0 1 2 3] # [4 5 6 7]]] Add New Axis newaxis arr = np.array([[1, 2, 3], [4, 5, 6]]) arr = arr[np.newaxis,:,:] # the same as arr[np.newaxis] print(arr.shape) # (1, 2, 3) arr = arr[:,np.newaxis,:] # (2, 1, 3) expand_dims() arr = np.expand_dims(arr, axis=0) # (1, 2, 3) arr = np.expand_dims(arr, axis=1) # (2, 1, 3) arr = np.expand_dims(arr, axis=2) # (2, 3, 1) arr = np.expand_dims(arr, axis=3) # error! Slicing of NumPy 所有由切片产生的新数组都是通过浅拷贝得到的，它们与原数组共享数据（数据指的是数组元素，不包括维度，大小，形状）。\nNumPy 支持 Python 的切片方式，还提供了许多更方便的切片方式。\nInteger Array Indexing array[rowIndexArray, columnIndexArray]。将两个数组的对应元素组合起来得到一个索引从而得到原数组中的元素。高维数组同理。\n# 获得索引为 (0,0), (1,1), (2,0) 的元素。 x = np.array([[1, 2], [3, 4], [5, 6]]) y = x[[0,1,2], [0,1,0]] print(y) # [1,3,5] Slicing Indexing array[columnSlicing, rowSlicing]。\nx = np.array([[1,2,3], [4,5,6],[7,8,9]]) y = x[1:3,:] print (y) # [[4 5 6] # [7 8 9]] y = x[...,:] # 整个数组 切片索引可以和整数数组索引配合使用。\nx[1:2, [1,2]] Boolean Indexing NumPy 支持通过逻辑表达式的方式进行切片。\na = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]) print(a[a \u003e 5]) # [6, 7, 8, 9, 10, 11, 12] print(a[a%5==0]) # [5, 10] print(a[(a\u003e2)\u0026(a\u003c10)]) # [3, 4, 5, 6, 7, 8, 9] # 不能使用 and 和 or，而应使用 \u0026 和 | Fancy Indexing x=np.arange(32).reshape((8,4)) print(x) # 二维数组读取指定下标对应的行 print(\"-------读取下标对应的行-------\") print (x[[4,2,1,7]]) # [[16 17 18 19] 第 4 行 # [ 8 9 10 11] 第 2 行 # [ 4 5 6 7] 第 1 行 # [28 29 30 31]] 第 7 行 nonzero() nonzero() 会返回一个数组元组，其代表元素的索引。\nb = np.nonzero((a\u003e2)\u0026(a\u003c10)) # (array([0, 0, 1, 1, 1, 1, 2]), # array([2, 3, 0, 1, 2, 3, 0])) # 两个数组对应的元素组合起来就是原数组中符合条件的元素的索引 print(a[b]) # [3, 4, 5, 6, 7, 8, 9] c = list(zip(b[0], b[1])) # [(0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0)] Create Array From Existing Data vstack() a1 = np.array([[1, 1], [2, 2]]) a2 = np.array([[3, 3], [4, 4]]) print(np.vstack((a1, a2))) # [[1 1] # [2 2] # [3 3] # [4 4]] hstack() print(np.hstack((a1, a2))) # [[1 1 3 3] # [2 2 4 4]] hsplit() x = np.arange(1, 25).reshape(3, 8) print(np.hsplit(x,3)) # [array([[ 1, 2, 3, 4],[13, 14, 15, 16]]), # array([[ 5, 6, 7, 8],[17, 18, 19, 20]]), # array([[ 9, 10, 11, 12],[21, 22, 23, 24]])] Basic Array Operations Arithmetic 只有形状相同的数组才能进行四则运算。\na = np.array(([1,3,4],[2,5,6])) b = np.ones((2,3)) print(a+b) # [[2. 4. 5.] # [3. 6. 7.]] print(a-b) # [[0. 2. 3.] # [1. 4. 5.]] print(a*b) # [[1. 3. 4.] # [2. 5. 6.]] print(a/b) # [[1. 3. 4.] # [2. 5. 6.]] print(a.sum()) # 21 print(a.sum(axis=0)) # [ 3 8 10] print(a.sum(axis=1)) # [ 8 13] unique() unique() 可以去除数组中的重复元素。\n# 去除重复 rng = np.random.default_rng() x = rng.integers(5, size=(3,4)) print(np.unique(x)) # [0, 1, 2, 3, 4] # 返回数组元组，第一个数组是去重后的元素， # 第二个数组是每个元素在原数组中第一次出现的位置（一维展开）, # 顺序与第一个数组对应 # (array([0, 1, 2, 3, 4]), array([4, 9, 8, 0, 1])) print(np.unique(x, return_index=True)) # 返回的数组元组中有一个对应每个元素的出现次数的数组。 print(np.unique(x, return_counts=True)) unique() 可以指定 axis 参数。表示某行/列出现多少次。\nTranspose Matrix rng = np.random.default_rng() x = rng.integers(5, size=(3,4)) print(x) print(x.transpose()) print(x.T) Reverse Array 一维数组。\nx = np.arange(6) print(np.flip(x)) 二维数组。\nrng = np.random.default_rng() x = rng.integers(5, size=(3,4)) print(x) print(np.flip(x)) # [[1 4 3 4] # [3 2 0 1] # [3 0 1 4]] # [[4 1 0 3] # [1 0 2 3] # [4 3 4 1]] 指定 axis 可以翻转行/列。\nrng = np.random.default_rng() x = rng.integers(5, size=(3,4)) print(x) print(np.flip(x, axis=0)) # [[2 4 1 1] # [4 1 3 3] # [1 3 0 1]] # [[1 1 4 2] # [3 3 1 4] # [1 0 3 1]] 也可以只翻转某一列/行。\nrng = np.random.default_rng() x = rng.integers(5, size=(3,4)) print(x) x[:,1] = np.flip(x[:,1]) print(x) # [[1 1 1 4] # [2 4 0 0] # [0 2 1 4]] # [[1 2 1 4] # [2 4 0 0] # [0 1 1 4]] Flatten Multidimensional Array flatten() 和 ravel() 都可以将多维数组展开。但 flatten() 会产生一个新的数组，而 ravel() 则产生一个引用。\nprint(x.ravel()) print(x.flatten()) # [[4 2 2 3] # [0 1 4 0] # [3 4 3 3]] # [4 2 2 3 0 1 4 0 3 4 3 3] # [4 2 2 3 0 1 4 0 3 4 3 3] Other x = np.arange(10) print(x.max()) print(x.min()) print(x.mean()) # 平均值 print(x.prod()) # 所有元素的积 print(x.std()) # 标准差 # 以上各方法都可指定 axis 参数 x = np.arange(12).reshape(2, 6) print(x.mean(axis=0)) # [3. 4. 5. 6. 7. 8.] 各列的平均值 print(x.mean(axis=1)) # [2.5 8.5] 各行的平均值 Broadcasting Random Number ",
+  "wordCount" : "876",
+  "inLanguage": "en",
+  "datePublished": "2024-11-22T08:24:44+08:00",
+  "dateModified": "2024-11-22T08:24:44+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/tpcad-blog/posts/numpy/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/tpcad-blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/tpcad-blog/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/tpcad-blog/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tpcad-blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tpcad-blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/tpcad-blog/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/tpcad-blog/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      NumPy Reference
+    </h1>
+    <div class="post-meta"><span title='2024-11-22 08:24:44 +0800 +0800'>November 22, 2024</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#numpy-cheatsheet" aria-label="NumPy CheatSheet">NumPy CheatSheet</a><ul>
+                            
+                    <li>
+                        <a href="#ndarray" aria-label="Ndarray">Ndarray</a><ul>
+                            
+                    <li>
+                        <a href="#create-array" aria-label="Create Array">Create Array</a><ul>
+                            
+                    <li>
+                        <a href="#array" aria-label="array()">array()</a></li>
+                    <li>
+                        <a href="#zeros" aria-label="zeros()">zeros()</a></li>
+                    <li>
+                        <a href="#ones" aria-label="ones()">ones()</a></li>
+                    <li>
+                        <a href="#empty" aria-label="empty()">empty()</a></li>
+                    <li>
+                        <a href="#arange" aria-label="arange()">arange()</a></li>
+                    <li>
+                        <a href="#linspace" aria-label="linspace()">linspace()</a></li>
+                    <li>
+                        <a href="#specify-data-type" aria-label="Specify Data Type">Specify Data Type</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#sorting-elements" aria-label="Sorting Elements">Sorting Elements</a><ul>
+                            
+                    <li>
+                        <a href="#sort" aria-label="sort()">sort()</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#arrays-property" aria-label="Array&rsquo;s Property">Array&rsquo;s Property</a></li>
+                    <li>
+                        <a href="#reshape-array" aria-label="Reshape Array">Reshape Array</a><ul>
+                            
+                    <li>
+                        <a href="#reshape" aria-label="reshape()">reshape()</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#add-new-axis" aria-label="Add New Axis">Add New Axis</a><ul>
+                            
+                    <li>
+                        <a href="#newaxis" aria-label="newaxis">newaxis</a></li>
+                    <li>
+                        <a href="#expand_dims" aria-label="expand_dims()">expand_dims()</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#slicing-of-numpy" aria-label="Slicing of NumPy">Slicing of NumPy</a><ul>
+                            
+                    <li>
+                        <a href="#integer-array-indexing" aria-label="Integer Array Indexing">Integer Array Indexing</a></li>
+                    <li>
+                        <a href="#slicing-indexing" aria-label="Slicing Indexing">Slicing Indexing</a></li>
+                    <li>
+                        <a href="#boolean-indexing" aria-label="Boolean Indexing">Boolean Indexing</a></li>
+                    <li>
+                        <a href="#fancy-indexing" aria-label="Fancy Indexing">Fancy Indexing</a></li>
+                    <li>
+                        <a href="#nonzero" aria-label="nonzero()">nonzero()</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#create-array-from-existing-data" aria-label="Create Array From Existing Data">Create Array From Existing Data</a><ul>
+                            
+                    <li>
+                        <a href="#vstack" aria-label="vstack()">vstack()</a></li>
+                    <li>
+                        <a href="#hstack" aria-label="hstack()">hstack()</a></li>
+                    <li>
+                        <a href="#hsplit" aria-label="hsplit()">hsplit()</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#basic-array-operations" aria-label="Basic Array Operations">Basic Array Operations</a><ul>
+                            
+                    <li>
+                        <a href="#arithmetic" aria-label="Arithmetic">Arithmetic</a></li>
+                    <li>
+                        <a href="#unique" aria-label="unique()">unique()</a></li>
+                    <li>
+                        <a href="#transpose-matrix" aria-label="Transpose Matrix">Transpose Matrix</a></li>
+                    <li>
+                        <a href="#reverse-array" aria-label="Reverse Array">Reverse Array</a></li>
+                    <li>
+                        <a href="#flatten-multidimensional-array" aria-label="Flatten Multidimensional Array">Flatten Multidimensional Array</a></li>
+                    <li>
+                        <a href="#other" aria-label="Other">Other</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#broadcasting" aria-label="Broadcasting">Broadcasting</a></li>
+                    <li>
+                        <a href="#random-number" aria-label="Random Number">Random Number</a>
+                    </li>
+                </ul>
+                </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><h1 id="numpy-cheatsheet">NumPy CheatSheet<a hidden class="anchor" aria-hidden="true" href="#numpy-cheatsheet">#</a></h1>
+<h2 id="ndarray">Ndarray<a hidden class="anchor" aria-hidden="true" href="#ndarray">#</a></h2>
+<h3 id="create-array">Create Array<a hidden class="anchor" aria-hidden="true" href="#create-array">#</a></h3>
+<h4 id="array">array()<a hidden class="anchor" aria-hidden="true" href="#array">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81c8be">import</span> <span style="color:#ef9f76">numpy</span> <span style="color:#ca9ee6">as</span> <span style="color:#ef9f76">np</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>])
+</span></span></code></pre></div><h4 id="zeros">zeros()<a hidden class="anchor" aria-hidden="true" href="#zeros">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>zeros(<span style="color:#ef9f76">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># array([0., 0.])</span>
+</span></span></code></pre></div><h4 id="ones">ones()<a hidden class="anchor" aria-hidden="true" href="#ones">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>ones(<span style="color:#ef9f76">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># array([1., 1.])</span>
+</span></span></code></pre></div><h4 id="empty">empty()<a hidden class="anchor" aria-hidden="true" href="#empty">#</a></h4>
+<p>元素的值是随即的，由内存当前存储的数据决定。<code>empty()</code> 比 <code>zeros()</code> 要快，但在使用前一定要初始化。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>empty(<span style="color:#ef9f76">2</span>)
+</span></span></code></pre></div><h4 id="arange">arange()<a hidden class="anchor" aria-hidden="true" href="#arange">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>arange(<span style="color:#ef9f76">4</span>)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># array([0, 1, 2, 3])</span>
+</span></span><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>arange(<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">10</span>, <span style="color:#ef9f76">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># array([4, 6, 8])</span>
+</span></span></code></pre></div><h4 id="linspace">linspace()<a hidden class="anchor" aria-hidden="true" href="#linspace">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [4, 10] 之间线性分布的 10 个数</span>
+</span></span><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>linspace(<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">10</span>, num<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">10</span>)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># array([ 4.          4.66666667  5.33333333  6.          6.66666667  7.33333333</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#         8.          8.66666667  9.33333333 10.        ])</span>
+</span></span></code></pre></div><h4 id="specify-data-type">Specify Data Type<a hidden class="anchor" aria-hidden="true" href="#specify-data-type">#</a></h4>
+<p>默认的数据类型是 <code>np.float64</code>。</p>
+<p>以上创建数组的函数均可以通过参数 <code>dtype</code> 来指定数据类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>ones(<span style="color:#ef9f76">2</span>, dtype<span style="color:#99d1db;font-weight:bold">=</span>np<span style="color:#99d1db;font-weight:bold">.</span>int64)
+</span></span><span style="display:flex;"><span>np<span style="color:#99d1db;font-weight:bold">.</span>zeros(<span style="color:#ef9f76">2</span>, dtype<span style="color:#99d1db;font-weight:bold">=</span>np<span style="color:#99d1db;font-weight:bold">.</span>int64)
+</span></span></code></pre></div><h2 id="sorting-elements">Sorting Elements<a hidden class="anchor" aria-hidden="true" href="#sorting-elements">#</a></h2>
+<h3 id="sort">sort()<a hidden class="anchor" aria-hidden="true" href="#sort">#</a></h3>
+<p><code>sort()</code> 会返回一个新的数组。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([<span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">12</span>, <span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">22</span>, <span style="color:#ef9f76">11</span>, <span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">3</span>])
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>sort(a))
+</span></span></code></pre></div><h2 id="arrays-property">Array&rsquo;s Property<a hidden class="anchor" aria-hidden="true" href="#arrays-property">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>], [<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>]])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(arr<span style="color:#99d1db;font-weight:bold">.</span>ndim) <span style="color:#737994;font-style:italic"># 2，数组的维数</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(arr<span style="color:#99d1db;font-weight:bold">.</span>size) <span style="color:#737994;font-style:italic"># 6，数组的元素个数</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(arr<span style="color:#99d1db;font-weight:bold">.</span>shape) <span style="color:#737994;font-style:italic"># (2,3)，数组的形状</span>
+</span></span></code></pre></div><h2 id="reshape-array">Reshape Array<a hidden class="anchor" aria-hidden="true" href="#reshape-array">#</a></h2>
+<h3 id="reshape">reshape()<a hidden class="anchor" aria-hidden="true" href="#reshape">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>array_example <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[[<span style="color:#ef9f76">0</span>, <span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>],
+</span></span><span style="display:flex;"><span>                           [<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>, <span style="color:#ef9f76">7</span>]],
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                          [[<span style="color:#ef9f76">0</span>, <span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>],
+</span></span><span style="display:flex;"><span>                           [<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>, <span style="color:#ef9f76">7</span>]],
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                          [[<span style="color:#ef9f76">0</span> ,<span style="color:#ef9f76">1</span> ,<span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>],
+</span></span><span style="display:flex;"><span>                           [<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>, <span style="color:#ef9f76">7</span>]]])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>reshape(array_example, (<span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">4</span>)))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[[0 1 2 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#   [4 5 6 7]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#   [0 1 2 3]]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [[4 5 6 7]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#   [0 1 2 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#   [4 5 6 7]]]</span>
+</span></span></code></pre></div><h2 id="add-new-axis">Add New Axis<a hidden class="anchor" aria-hidden="true" href="#add-new-axis">#</a></h2>
+<h3 id="newaxis">newaxis<a hidden class="anchor" aria-hidden="true" href="#newaxis">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>], [<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>]])
+</span></span><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> arr[np<span style="color:#99d1db;font-weight:bold">.</span>newaxis,:,:] <span style="color:#737994;font-style:italic"># the same as arr[np.newaxis]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(arr<span style="color:#99d1db;font-weight:bold">.</span>shape) <span style="color:#737994;font-style:italic"># (1, 2, 3)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> arr[:,np<span style="color:#99d1db;font-weight:bold">.</span>newaxis,:] <span style="color:#737994;font-style:italic"># (2, 1, 3)</span>
+</span></span></code></pre></div><h3 id="expand_dims">expand_dims()<a hidden class="anchor" aria-hidden="true" href="#expand_dims">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>expand_dims(arr, axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">0</span>) <span style="color:#737994;font-style:italic"># (1, 2, 3)</span>
+</span></span><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>expand_dims(arr, axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">1</span>) <span style="color:#737994;font-style:italic"># (2, 1, 3)</span>
+</span></span><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>expand_dims(arr, axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">2</span>) <span style="color:#737994;font-style:italic"># (2, 3, 1)</span>
+</span></span><span style="display:flex;"><span>arr <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>expand_dims(arr, axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">3</span>) <span style="color:#737994;font-style:italic"># error!</span>
+</span></span></code></pre></div><h2 id="slicing-of-numpy">Slicing of NumPy<a hidden class="anchor" aria-hidden="true" href="#slicing-of-numpy">#</a></h2>
+<p><strong>所有由切片产生的新数组都是通过浅拷贝得到的，它们与原数组共享数据（数据指的是数组元素，不包括维度，大小，形状）。</strong></p>
+<p>NumPy 支持 Python 的切片方式，还提供了许多更方便的切片方式。</p>
+<h3 id="integer-array-indexing">Integer Array Indexing<a hidden class="anchor" aria-hidden="true" href="#integer-array-indexing">#</a></h3>
+<p><code>array[rowIndexArray, columnIndexArray]</code>。将两个数组的对应元素组合起来得到一个索引从而得到原数组中的元素。高维数组同理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 获得索引为 (0,0), (1,1), (2,0) 的元素。</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>], [<span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">4</span>], [<span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>]])
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> x[[<span style="color:#ef9f76">0</span>,<span style="color:#ef9f76">1</span>,<span style="color:#ef9f76">2</span>], [<span style="color:#ef9f76">0</span>,<span style="color:#ef9f76">1</span>,<span style="color:#ef9f76">0</span>]]
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(y) <span style="color:#737994;font-style:italic"># [1,3,5]</span>
+</span></span></code></pre></div><h3 id="slicing-indexing">Slicing Indexing<a hidden class="anchor" aria-hidden="true" href="#slicing-indexing">#</a></h3>
+<p><code>array[columnSlicing, rowSlicing]</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[<span style="color:#ef9f76">1</span>,<span style="color:#ef9f76">2</span>,<span style="color:#ef9f76">3</span>], [<span style="color:#ef9f76">4</span>,<span style="color:#ef9f76">5</span>,<span style="color:#ef9f76">6</span>],[<span style="color:#ef9f76">7</span>,<span style="color:#ef9f76">8</span>,<span style="color:#ef9f76">9</span>]])
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> x[<span style="color:#ef9f76">1</span>:<span style="color:#ef9f76">3</span>,:]
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span> (y)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[4 5 6]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [7 8 9]]</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> x[<span style="color:#99d1db;font-weight:bold">...</span>,:] <span style="color:#737994;font-style:italic"># 整个数组</span>
+</span></span></code></pre></div><p>切片索引可以和整数数组索引配合使用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x[<span style="color:#ef9f76">1</span>:<span style="color:#ef9f76">2</span>, [<span style="color:#ef9f76">1</span>,<span style="color:#ef9f76">2</span>]]
+</span></span></code></pre></div><h3 id="boolean-indexing">Boolean Indexing<a hidden class="anchor" aria-hidden="true" href="#boolean-indexing">#</a></h3>
+<p>NumPy 支持通过逻辑表达式的方式进行切片。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">4</span>], [<span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>, <span style="color:#ef9f76">7</span>, <span style="color:#ef9f76">8</span>], [<span style="color:#ef9f76">9</span>, <span style="color:#ef9f76">10</span>, <span style="color:#ef9f76">11</span>, <span style="color:#ef9f76">12</span>]])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a[a <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">5</span>]) <span style="color:#737994;font-style:italic"># [6, 7, 8, 9, 10, 11, 12]</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a[a<span style="color:#99d1db;font-weight:bold">%</span><span style="color:#ef9f76">5</span><span style="color:#99d1db;font-weight:bold">==</span><span style="color:#ef9f76">0</span>]) <span style="color:#737994;font-style:italic"># [5, 10]</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a[(a<span style="color:#99d1db;font-weight:bold">&gt;</span><span style="color:#ef9f76">2</span>)<span style="color:#99d1db;font-weight:bold">&amp;</span>(a<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ef9f76">10</span>)]) <span style="color:#737994;font-style:italic"># [3, 4, 5, 6, 7, 8, 9]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 不能使用 and 和 or，而应使用 &amp; 和 |</span>
+</span></span></code></pre></div><h3 id="fancy-indexing">Fancy Indexing<a hidden class="anchor" aria-hidden="true" href="#fancy-indexing">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x<span style="color:#99d1db;font-weight:bold">=</span>np<span style="color:#99d1db;font-weight:bold">.</span>arange(<span style="color:#ef9f76">32</span>)<span style="color:#99d1db;font-weight:bold">.</span>reshape((<span style="color:#ef9f76">8</span>,<span style="color:#ef9f76">4</span>))
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 二维数组读取指定下标对应的行</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(<span style="color:#a6d189">&#34;-------读取下标对应的行-------&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span> (x[[<span style="color:#ef9f76">4</span>,<span style="color:#ef9f76">2</span>,<span style="color:#ef9f76">1</span>,<span style="color:#ef9f76">7</span>]])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[16 17 18 19] 第 4 行</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [ 8  9 10 11] 第 2 行</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [ 4  5  6  7] 第 1 行</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [28 29 30 31]] 第 7 行</span>
+</span></span></code></pre></div><h3 id="nonzero">nonzero()<a hidden class="anchor" aria-hidden="true" href="#nonzero">#</a></h3>
+<p><code>nonzero()</code> 会返回一个数组元组，其代表元素的索引。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>b <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>nonzero((a<span style="color:#99d1db;font-weight:bold">&gt;</span><span style="color:#ef9f76">2</span>)<span style="color:#99d1db;font-weight:bold">&amp;</span>(a<span style="color:#99d1db;font-weight:bold">&lt;</span><span style="color:#ef9f76">10</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># (array([0, 0, 1, 1, 1, 1, 2]),</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  array([2, 3, 0, 1, 2, 3, 0]))</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 两个数组对应的元素组合起来就是原数组中符合条件的元素的索引</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a[b]) <span style="color:#737994;font-style:italic"># [3, 4, 5, 6, 7, 8, 9]</span>
+</span></span><span style="display:flex;"><span>c <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">list</span>(<span style="color:#99d1db">zip</span>(b[<span style="color:#ef9f76">0</span>], b[<span style="color:#ef9f76">1</span>])) <span style="color:#737994;font-style:italic"># [(0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0)]</span>
+</span></span></code></pre></div><h2 id="create-array-from-existing-data">Create Array From Existing Data<a hidden class="anchor" aria-hidden="true" href="#create-array-from-existing-data">#</a></h2>
+<h3 id="vstack">vstack()<a hidden class="anchor" aria-hidden="true" href="#vstack">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a1 <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">1</span>],
+</span></span><span style="display:flex;"><span>               [<span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">2</span>]])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>a2 <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array([[<span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">3</span>],
+</span></span><span style="display:flex;"><span>               [<span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">4</span>]])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>vstack((a1, a2)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1 1]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [2 2]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [3 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [4 4]]</span>
+</span></span></code></pre></div><h3 id="hstack">hstack()<a hidden class="anchor" aria-hidden="true" href="#hstack">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>hstack((a1, a2)))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1 1 3 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [2 2 4 4]]</span>
+</span></span></code></pre></div><h3 id="hsplit">hsplit()<a hidden class="anchor" aria-hidden="true" href="#hsplit">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>arange(<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">25</span>)<span style="color:#99d1db;font-weight:bold">.</span>reshape(<span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">8</span>)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>hsplit(x,<span style="color:#ef9f76">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [array([[ 1,  2,  3,  4],[13, 14, 15, 16]]),</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  array([[ 5,  6,  7,  8],[17, 18, 19, 20]]),</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  array([[ 9, 10, 11, 12],[21, 22, 23, 24]])]</span>
+</span></span></code></pre></div><h2 id="basic-array-operations">Basic Array Operations<a hidden class="anchor" aria-hidden="true" href="#basic-array-operations">#</a></h2>
+<h3 id="arithmetic">Arithmetic<a hidden class="anchor" aria-hidden="true" href="#arithmetic">#</a></h3>
+<p>只有形状相同的数组才能进行四则运算。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>array(([<span style="color:#ef9f76">1</span>,<span style="color:#ef9f76">3</span>,<span style="color:#ef9f76">4</span>],[<span style="color:#ef9f76">2</span>,<span style="color:#ef9f76">5</span>,<span style="color:#ef9f76">6</span>]))
+</span></span><span style="display:flex;"><span>b <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>ones((<span style="color:#ef9f76">2</span>,<span style="color:#ef9f76">3</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a<span style="color:#99d1db;font-weight:bold">+</span>b)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[2. 4. 5.]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [3. 6. 7.]]</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a<span style="color:#99d1db;font-weight:bold">-</span>b)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[0. 2. 3.]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [1. 4. 5.]]</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a<span style="color:#99d1db;font-weight:bold">*</span>b)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1. 3. 4.]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [2. 5. 6.]]</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a<span style="color:#99d1db;font-weight:bold">/</span>b)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1. 3. 4.]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [2. 5. 6.]]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a<span style="color:#99d1db;font-weight:bold">.</span>sum())
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 21</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a<span style="color:#99d1db;font-weight:bold">.</span>sum(axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">0</span>))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [ 3  8 10]</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(a<span style="color:#99d1db;font-weight:bold">.</span>sum(axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">1</span>))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [ 8 13]</span>
+</span></span></code></pre></div><h3 id="unique">unique()<a hidden class="anchor" aria-hidden="true" href="#unique">#</a></h3>
+<p><code>unique()</code> 可以去除数组中的重复元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 去除重复</span>
+</span></span><span style="display:flex;"><span>rng <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>random<span style="color:#99d1db;font-weight:bold">.</span>default_rng()
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> rng<span style="color:#99d1db;font-weight:bold">.</span>integers(<span style="color:#ef9f76">5</span>, size<span style="color:#99d1db;font-weight:bold">=</span>(<span style="color:#ef9f76">3</span>,<span style="color:#ef9f76">4</span>))
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>unique(x)) <span style="color:#737994;font-style:italic"># [0, 1, 2, 3, 4]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 返回数组元组，第一个数组是去重后的元素，</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 第二个数组是每个元素在原数组中第一次出现的位置（一维展开）,</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 顺序与第一个数组对应</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># (array([0, 1, 2, 3, 4]), array([4, 9, 8, 0, 1]))</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>unique(x, return_index<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">True</span>))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 返回的数组元组中有一个对应每个元素的出现次数的数组。</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>unique(x, return_counts<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">True</span>))
+</span></span></code></pre></div><p><code>unique()</code> 可以指定 <code>axis</code> 参数。表示某行/列出现多少次。</p>
+<h3 id="transpose-matrix">Transpose Matrix<a hidden class="anchor" aria-hidden="true" href="#transpose-matrix">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rng <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>random<span style="color:#99d1db;font-weight:bold">.</span>default_rng()
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> rng<span style="color:#99d1db;font-weight:bold">.</span>integers(<span style="color:#ef9f76">5</span>, size<span style="color:#99d1db;font-weight:bold">=</span>(<span style="color:#ef9f76">3</span>,<span style="color:#ef9f76">4</span>))
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>transpose())
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>T)
+</span></span></code></pre></div><h3 id="reverse-array">Reverse Array<a hidden class="anchor" aria-hidden="true" href="#reverse-array">#</a></h3>
+<p>一维数组。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>arange(<span style="color:#ef9f76">6</span>)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>flip(x))
+</span></span></code></pre></div><p>二维数组。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rng <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>random<span style="color:#99d1db;font-weight:bold">.</span>default_rng()
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> rng<span style="color:#99d1db;font-weight:bold">.</span>integers(<span style="color:#ef9f76">5</span>, size<span style="color:#99d1db;font-weight:bold">=</span>(<span style="color:#ef9f76">3</span>,<span style="color:#ef9f76">4</span>))
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>flip(x))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1 4 3 4]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [3 2 0 1]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [3 0 1 4]]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[4 1 0 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [1 0 2 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [4 3 4 1]]</span>
+</span></span></code></pre></div><p>指定 <code>axis</code> 可以翻转行/列。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rng <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>random<span style="color:#99d1db;font-weight:bold">.</span>default_rng()
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> rng<span style="color:#99d1db;font-weight:bold">.</span>integers(<span style="color:#ef9f76">5</span>, size<span style="color:#99d1db;font-weight:bold">=</span>(<span style="color:#ef9f76">3</span>,<span style="color:#ef9f76">4</span>))
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(np<span style="color:#99d1db;font-weight:bold">.</span>flip(x, axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">0</span>))
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[2 4 1 1]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [4 1 3 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [1 3 0 1]]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1 1 4 2]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [3 3 1 4]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [1 0 3 1]]</span>
+</span></span></code></pre></div><p>也可以只翻转某一列/行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>rng <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>random<span style="color:#99d1db;font-weight:bold">.</span>default_rng()
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> rng<span style="color:#99d1db;font-weight:bold">.</span>integers(<span style="color:#ef9f76">5</span>, size<span style="color:#99d1db;font-weight:bold">=</span>(<span style="color:#ef9f76">3</span>,<span style="color:#ef9f76">4</span>))
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x)
+</span></span><span style="display:flex;"><span>x[:,<span style="color:#ef9f76">1</span>] <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>flip(x[:,<span style="color:#ef9f76">1</span>])
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1 1 1 4]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [2 4 0 0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [0 2 1 4]]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[1 2 1 4]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [2 4 0 0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [0 1 1 4]]</span>
+</span></span></code></pre></div><h3 id="flatten-multidimensional-array">Flatten Multidimensional Array<a hidden class="anchor" aria-hidden="true" href="#flatten-multidimensional-array">#</a></h3>
+<p><code>flatten()</code> 和 <code>ravel()</code> 都可以将多维数组展开。但 <code>flatten()</code> 会产生一个新的数组，而 <code>ravel()</code> 则产生一个引用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>ravel())
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>flatten())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [[4 2 2 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [0 1 4 0]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic">#  [3 4 3 3]]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [4 2 2 3 0 1 4 0 3 4 3 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># [4 2 2 3 0 1 4 0 3 4 3 3]</span>
+</span></span></code></pre></div><h3 id="other">Other<a hidden class="anchor" aria-hidden="true" href="#other">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>arange(<span style="color:#ef9f76">10</span>)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>max())
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>min())
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>mean()) <span style="color:#737994;font-style:italic"># 平均值</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>prod()) <span style="color:#737994;font-style:italic"># 所有元素的积</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>std()) <span style="color:#737994;font-style:italic"># 标准差</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 以上各方法都可指定 axis 参数</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> np<span style="color:#99d1db;font-weight:bold">.</span>arange(<span style="color:#ef9f76">12</span>)<span style="color:#99d1db;font-weight:bold">.</span>reshape(<span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">6</span>)
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>mean(axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">0</span>)) <span style="color:#737994;font-style:italic"># [3. 4. 5. 6. 7. 8.] 各列的平均值</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(x<span style="color:#99d1db;font-weight:bold">.</span>mean(axis<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">1</span>)) <span style="color:#737994;font-style:italic"># [2.5 8.5] 各行的平均值</span>
+</span></span></code></pre></div><h2 id="broadcasting">Broadcasting<a hidden class="anchor" aria-hidden="true" href="#broadcasting">#</a></h2>
+<h2 id="random-number">Random Number<a hidden class="anchor" aria-hidden="true" href="#random-number">#</a></h2>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://tpcad.github.io/tpcad-blog/tags/python/">Python</a></li>
+      <li><a href="https://tpcad.github.io/tpcad-blog/tags/numpy/">NumPy</a></li>
+    </ul>
+  </footer>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://tpcad.github.io/tpcad-blog/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

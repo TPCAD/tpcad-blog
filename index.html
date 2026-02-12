@@ -226,6 +226,36 @@ sed -e &#39;s/Tmux/Zellij/&#39; todo.md sed --expression=&#39;s/Tmux/Zellij/&#39
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">NumPy Reference
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>NumPy CheatSheet Ndarray Create Array array() import numpy as np a = np.array([1, 2, 3]) zeros() np.zeros(2) # array([0., 0.]) ones() np.ones(2) # array([1., 1.]) empty() 元素的值是随即的，由内存当前存储的数据决定。empty() 比 zeros() 要快，但在使用前一定要初始化。
+np.empty(2) arange() np.arange(4) # array([0, 1, 2, 3]) np.arange(4, 10, 2) # array([4, 6, 8]) linspace() # [4, 10] 之间线性分布的 10 个数 np.linspace(4, 10, num=10) # array([ 4. 4.66666667 5.33333333 6. 6.66666667 7.33333333 # 8. 8.66666667 9.33333333 10. ]) Specify Data Type 默认的数据类型是 np.float64。
+以上创建数组的函数均可以通过参数 dtype 来指定数据类型。
+np.ones(2, dtype=np.int64) np.zeros(2, dtype=np.int64) Sorting Elements sort() sort() 会返回一个新的数组。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-22 08:24:44 +0800 +0800'>November 22, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to NumPy Reference" href="https://tpcad.github.io/tpcad-blog/posts/numpy/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Python Reference
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Python CheatSheet Python Virtual Environment Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响
+Create Virtual Environment python -m venv venv_name Activate Virtual Environment source venv_name/bin/activate Deactivate Virtual Environment deactivate Pip Commands Install/Uninstall Packages pip install package_name pip uninstall package_name List Packages pip list Show Certain Package pip show package_name Data Type Number Integer Float Complex Operation 除法运算的结果为浮点数 35 / 5 # =&gt; 7.0 10 / 3 # =&gt; 3.3333333333333335 整除，向下取整 5 // 3 # =&gt; 1 乘方 2**3 # =&gt; 8 Boolean True # 真 False # 假 # 取非 not # 逻辑与 and # 逻辑或 or 布尔类型其实是整型的子集。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-22 08:24:44 +0800 +0800'>November 22, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
+  <a class="entry-link" aria-label="post link to Python Reference" href="https://tpcad.github.io/tpcad-blog/posts/python/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">二叉平衡树
     </h2>
   </header>
@@ -309,42 +339,6 @@ void foo(int &amp;&amp;x) {} int main() { int a = 1; foo(1); // foo(a); 无法�
   </div>
   <footer class="entry-footer"><span title='2024-08-12 17:46:57 +0800 +0800'>August 12, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
   <a class="entry-link" aria-label="post link to How Perfect Forwarding Works" href="https://tpcad.github.io/tpcad-blog/posts/cpp_perfect_forwarding.md/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">How Nullptr Works
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>为什么需要 nullptr 在 C 中，NULL 被定义为 (void*)0 或 0。而 C&#43;&#43; 因为不允许直接将 void* 隐式转换到其他类型，所以在没有 nullptr 之前，C&#43;&#43; 的 NULL 就是 0（也可能是 0L）。这导致 0 的二义性。
-0 的二义性给函数重载带来了混乱。考虑下面的代码，如果 NULL 被定义为 0，那么 foo(NULL) 会严格匹配 foo(int)，但如果 NULL 被定义为 0，那么将不存在严格匹配，而 0L 可以同时转换为 int 和 int*，编译器无法知道应该调用哪个函数。
-void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(NULL); 为了解决这个问题，C&#43;&#43; 11 引入了 nullptr 关键字，用于区分空指针和 0。
-使用 nullptr nullptr 是一个纯右值，无法被 &amp; 取地址，可以被隐式转换为任意的指针或成员指针类型。
-void foo(int){} void foo(int*){} foo(0); // 调用 foo(int) foo(nullptr); // 隐式转换到 int*，调用 foo(int*) nullptr 可以取代 NULL 的所有场景。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-08-06 17:46:57 +0800 +0800'>August 6, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
-  <a class="entry-link" aria-label="post link to How Nullptr Works" href="https://tpcad.github.io/tpcad-blog/posts/cpp_nullptr/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Rust Iterator
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Rust Iterator 可迭代对象与迭代器（Iterable and Iterator） 迭代器（Iterator）是一种可以让你方便地遍历序列中每一个元素的工具。迭代器有两个重要的功能：
-记录当前的迭代状态 产生可以访问下一个元素的迭代器 可迭代对象（Iterable）是一种可以产生迭代器的对象。比如 Vec&lt;T&gt; 可以通过 iter 方法获得一个迭代器，但 Vec&lt;T&gt; 本省不是一个迭代器。
-一个可迭代对象通常有三个方法，分别对应三种迭代类型。
-iter()，迭代 &amp;T iter_mut()，迭代 &amp;mut T into_iter()，迭代 T Iterator Trait Rust 迭代器的核心是 Iterator trait。Iterator trait 的核心代码看起来像下面这样：
-trait Iterator { type Item; fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;; } 关联类型 Item 表明迭代器返回的对象，next 方法表明迭代器如何返回该对象。
-实现 Iterator Trait 遍历 &amp;T 假设有以下结构体，现在需要为 Todos 实现 Iterator trait。
-pub struct Todos { pub list: Vec&lt;Todo&gt;, } #[derive(Debug)] pub struct Todo { pub message: String, pub done: bool, } 实现 Iterator trait 的关键是记录当前的迭代状态。Todos 使用一个 Vec&lt;T&gt; 来进行存储，非常适合用索引来记录迭代状态。我们可以为 Todos 添加一个 index 字段来记录迭代状态。但很显然，这并不妥当。当你对 Todos 进行迭代时会修改 index 字段的值，如果想要再次进行迭代，就必须重置 index 字段，因为迭代器不会在迭代结束后重置状态。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-07-10 20:54:19 +0800 +0800'>July 10, 2024</span>&nbsp;·&nbsp;TPCAD</footer>
-  <a class="entry-link" aria-label="post link to Rust Iterator" href="https://tpcad.github.io/tpcad-blog/posts/rust_iterator/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

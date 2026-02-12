@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Python on Eulamber</title>
+    <link>https://tpcad.github.io/tpcad-blog/tags/python/</link>
+    <description>Recent content in Python on Eulamber</description>
+    <generator>Hugo -- 0.155.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 22 Nov 2024 08:24:44 +0800</lastBuildDate>
+    <atom:link href="https://tpcad.github.io/tpcad-blog/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NumPy Reference</title>
+      <link>https://tpcad.github.io/tpcad-blog/posts/numpy/</link>
+      <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/numpy/</guid>
+      <description>&lt;h1 id=&#34;numpy-cheatsheet&#34;&gt;NumPy CheatSheet&lt;/h1&gt;
+&lt;h2 id=&#34;ndarray&#34;&gt;Ndarray&lt;/h2&gt;
+&lt;h3 id=&#34;create-array&#34;&gt;Create Array&lt;/h3&gt;
+&lt;h4 id=&#34;array&#34;&gt;array()&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#81c8be&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;numpy&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;as&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;np&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;a &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;array([&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;zeros&#34;&gt;zeros()&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;zeros(&lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# array([0., 0.])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;ones&#34;&gt;ones()&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;ones(&lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# array([1., 1.])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;empty&#34;&gt;empty()&lt;/h4&gt;
+&lt;p&gt;元素的值是随即的，由内存当前存储的数据决定。&lt;code&gt;empty()&lt;/code&gt; 比 &lt;code&gt;zeros()&lt;/code&gt; 要快，但在使用前一定要初始化。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;empty(&lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;arange&#34;&gt;arange()&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;arange(&lt;span style=&#34;color:#ef9f76&#34;&gt;4&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# array([0, 1, 2, 3])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;arange(&lt;span style=&#34;color:#ef9f76&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# array([4, 6, 8])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;linspace&#34;&gt;linspace()&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# [4, 10] 之间线性分布的 10 个数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;linspace(&lt;span style=&#34;color:#ef9f76&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt;, num&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# array([ 4.          4.66666667  5.33333333  6.          6.66666667  7.33333333&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;#         8.          8.66666667  9.33333333 10.        ])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;specify-data-type&#34;&gt;Specify Data Type&lt;/h4&gt;
+&lt;p&gt;默认的数据类型是 &lt;code&gt;np.float64&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;以上创建数组的函数均可以通过参数 &lt;code&gt;dtype&lt;/code&gt; 来指定数据类型。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;ones(&lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;, dtype&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;int64)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;zeros(&lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;, dtype&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;.&lt;/span&gt;int64)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;sorting-elements&#34;&gt;Sorting Elements&lt;/h2&gt;
+&lt;h3 id=&#34;sort&#34;&gt;sort()&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;sort()&lt;/code&gt; 会返回一个新的数组。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Python Reference</title>
+      <link>https://tpcad.github.io/tpcad-blog/posts/python/</link>
+      <pubDate>Fri, 22 Nov 2024 08:24:44 +0800</pubDate>
+      <guid>https://tpcad.github.io/tpcad-blog/posts/python/</guid>
+      <description>&lt;h1 id=&#34;python-cheatsheet&#34;&gt;Python CheatSheet&lt;/h1&gt;
+&lt;h2 id=&#34;python-virtual-environment&#34;&gt;Python Virtual Environment&lt;/h2&gt;
+&lt;p&gt;Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响&lt;/p&gt;
+&lt;h3 id=&#34;create-virtual-environment&#34;&gt;Create Virtual Environment&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;python -m venv venv_name
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;activate-virtual-environment&#34;&gt;Activate Virtual Environment&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;source&lt;/span&gt; venv_name/bin/activate
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;deactivate-virtual-environment&#34;&gt;Deactivate Virtual Environment&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;deactivate
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;pip-commands&#34;&gt;Pip Commands&lt;/h3&gt;
+&lt;h4 id=&#34;installuninstall-packages&#34;&gt;Install/Uninstall Packages&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install package_name
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip uninstall package_name
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;list-packages&#34;&gt;List Packages&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip list
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;show-certain-package&#34;&gt;Show Certain Package&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip show package_name
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;data-type&#34;&gt;Data Type&lt;/h2&gt;
+&lt;h3 id=&#34;number&#34;&gt;Number&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Integer&lt;/li&gt;
+&lt;li&gt;Float&lt;/li&gt;
+&lt;li&gt;Complex&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;operation&#34;&gt;Operation&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;除法运算的结果为浮点数&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;35&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;5&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# =&amp;gt; 7.0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;10&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# =&amp;gt; 3.3333333333333335&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;整除，向下取整&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;5&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# =&amp;gt; 1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;乘方&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;**&lt;/span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# =&amp;gt; 8&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;boolean&#34;&gt;Boolean&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;True&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# 真&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ef9f76&#34;&gt;False&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# 假&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# 取非&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;not&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# 逻辑与&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;and&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# 逻辑或&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;or&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;布尔类型其实是整型的子集。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

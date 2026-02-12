@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Python Reference | Eulamber</title>
+<meta name="keywords" content="Python">
+<meta name="description" content="Python CheatSheet
+Python Virtual Environment
+Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响
+Create Virtual Environment
+python -m venv venv_name
+Activate Virtual Environment
+source venv_name/bin/activate
+Deactivate Virtual Environment
+deactivate
+Pip Commands
+Install/Uninstall Packages
+pip install package_name
+
+pip uninstall package_name
+List Packages
+pip list
+Show Certain Package
+pip show package_name
+Data Type
+Number
+
+Integer
+Float
+Complex
+
+Operation
+
+除法运算的结果为浮点数
+
+35 / 5 # =&gt; 7.0
+10 / 3 # =&gt; 3.3333333333333335
+
+整除，向下取整
+
+5 // 3 # =&gt; 1
+
+乘方
+
+2**3 # =&gt; 8
+Boolean
+True # 真
+False # 假
+
+# 取非
+not
+# 逻辑与
+and
+# 逻辑或
+or
+布尔类型其实是整型的子集。">
+<meta name="author" content="TPCAD">
+<link rel="canonical" href="https://tpcad.github.io/tpcad-blog/posts/python/">
+<link crossorigin="anonymous" href="/tpcad-blog/assets/css/stylesheet.3c132f4f67b09f372a89c30a4d21e19485556c392a7f8d0d6c7e95399bfc17b9.css" integrity="sha256-PBMvT2ewnzcqicMKTSHhlIVVbDkqf40NbH6VOZv8F7k=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://tpcad.github.io/tpcad-blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://tpcad.github.io/tpcad-blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://tpcad.github.io/tpcad-blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://tpcad.github.io/tpcad-blog/apple-touch-icon.png">
+<link rel="mask-icon" href="https://tpcad.github.io/tpcad-blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://tpcad.github.io/tpcad-blog/posts/python/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://tpcad.github.io/tpcad-blog/posts/python/">
+  <meta property="og:site_name" content="Eulamber">
+  <meta property="og:title" content="Python Reference">
+  <meta property="og:description" content="Python CheatSheet Python Virtual Environment Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响
+Create Virtual Environment python -m venv venv_name Activate Virtual Environment source venv_name/bin/activate Deactivate Virtual Environment deactivate Pip Commands Install/Uninstall Packages pip install package_name pip uninstall package_name List Packages pip list Show Certain Package pip show package_name Data Type Number Integer Float Complex Operation 除法运算的结果为浮点数 35 / 5 # =&gt; 7.0 10 / 3 # =&gt; 3.3333333333333335 整除，向下取整 5 // 3 # =&gt; 1 乘方 2**3 # =&gt; 8 Boolean True # 真 False # 假 # 取非 not # 逻辑与 and # 逻辑或 or 布尔类型其实是整型的子集。">
+  <meta property="og:locale" content="zh-CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-22T08:24:44+08:00">
+    <meta property="article:modified_time" content="2024-11-22T08:24:44+08:00">
+    <meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python Reference">
+<meta name="twitter:description" content="Python CheatSheet
+Python Virtual Environment
+Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响
+Create Virtual Environment
+python -m venv venv_name
+Activate Virtual Environment
+source venv_name/bin/activate
+Deactivate Virtual Environment
+deactivate
+Pip Commands
+Install/Uninstall Packages
+pip install package_name
+
+pip uninstall package_name
+List Packages
+pip list
+Show Certain Package
+pip show package_name
+Data Type
+Number
+
+Integer
+Float
+Complex
+
+Operation
+
+除法运算的结果为浮点数
+
+35 / 5 # =&gt; 7.0
+10 / 3 # =&gt; 3.3333333333333335
+
+整除，向下取整
+
+5 // 3 # =&gt; 1
+
+乘方
+
+2**3 # =&gt; 8
+Boolean
+True # 真
+False # 假
+
+# 取非
+not
+# 逻辑与
+and
+# 逻辑或
+or
+布尔类型其实是整型的子集。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://tpcad.github.io/tpcad-blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Python Reference",
+      "item": "https://tpcad.github.io/tpcad-blog/posts/python/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Python Reference",
+  "name": "Python Reference",
+  "description": "Python CheatSheet Python Virtual Environment Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响\nCreate Virtual Environment python -m venv venv_name Activate Virtual Environment source venv_name/bin/activate Deactivate Virtual Environment deactivate Pip Commands Install/Uninstall Packages pip install package_name pip uninstall package_name List Packages pip list Show Certain Package pip show package_name Data Type Number Integer Float Complex Operation 除法运算的结果为浮点数 35 / 5 # =\u0026gt; 7.0 10 / 3 # =\u0026gt; 3.3333333333333335 整除，向下取整 5 // 3 # =\u0026gt; 1 乘方 2**3 # =\u0026gt; 8 Boolean True # 真 False # 假 # 取非 not # 逻辑与 and # 逻辑或 or 布尔类型其实是整型的子集。\n",
+  "keywords": [
+    "Python"
+  ],
+  "articleBody": "Python CheatSheet Python Virtual Environment Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响\nCreate Virtual Environment python -m venv venv_name Activate Virtual Environment source venv_name/bin/activate Deactivate Virtual Environment deactivate Pip Commands Install/Uninstall Packages pip install package_name pip uninstall package_name List Packages pip list Show Certain Package pip show package_name Data Type Number Integer Float Complex Operation 除法运算的结果为浮点数 35 / 5 # =\u003e 7.0 10 / 3 # =\u003e 3.3333333333333335 整除，向下取整 5 // 3 # =\u003e 1 乘方 2**3 # =\u003e 8 Boolean True # 真 False # 假 # 取非 not # 逻辑与 and # 逻辑或 or 布尔类型其实是整型的子集。\n0 == False 1 == True 23 == True # 所有非 0 数值皆为真 Type Conversion # 转换为浮点数 x = int(1) # 得到 1 y = int(2.8) # 得到 2 z = int(\"3\") # 得到 3 # 转换为浮点数 x = float(1) # 得到 1.0 y = float(2.8) # 得到 2.8 z = float(\"3\") # 得到 3.0 w = float(\"4.2\") # 得到 4.2 # 转换为字符串 x = str(\"s1\") # 得到 \"s1\" y = str(2) # 得到 \"2\" z = str(3.0) # 得到 \"3.0\" # 转换为布尔值 x = bool(23) # True y = bool('a') # True z = bool(\"hello\") # True o = bool(\"\") # False p = bool('') # False q = bool(0) # False Control Flow if statement num = 5 if num \u003e 10: print(\"num is totally bigger than 10.\") elif num \u003c 10: print(\"num is smaller than 10.\") else: print(\"num is indeed 10.\") if expression a = 330 b = 200 r = \"a\" if a \u003e b else \"b\" # 条件放在中间 # r is \"a\" for statement Python 的 for 循环可迭代列表或字符串等任意序列。\nanimals = ['cat', 'dog', 'mouse', 'duck'] for animal in animals: print(animal) # 带索引 for index, animal in enumerate(animals): print(index, animal) range() 若想遍历数字序列可以使用 range()。\nfor i in range(5): print(i) # 0 1 2 3 4 # 不包括 5 range() 可以不从 0 开始。\nfor i in range(5, 10): print(i) # 5 6 7 8 9 range() 支持步进。\n# 第三个参数为步进值 for i in range(0, 10, 2): print(i) # 0 2 4 6 8 break statement for i in range(0, 10, 2): print(i) if i \u003e 6: break else statement in for loop for 循环的 else 语句会在 break 语句未执行的情况下执行，即使没有 break 语句。\nfor i in range(0, 10, 2): if i \u003e 8: break print(i) else: print(\"else here\") continue statement for i in range(10) if i % 2 == 0: continue print(i) pass statement pass 语句不执行任何操作。语法上需要一个语句，但程序不实际执行任何动作时，可以使用该语句。\nwhile True: pass class example: pass def foo(): pass match statement match 语句类似 C 的 switch 语句。\nanimal = 'cat' match animal: case 'cat': print(animal) case 'dog': print(animal) case 'mouse': print(animal) case _: # like default in C print(\"No Animal\") while statement x = 0 while x \u003c 4: print(i) x += 1 List Generation Expression result = [x**2 for x in range(10) if x % 2 == 0] # result is [0, 4, 16, 36, 64] Function Basic Definition def foo(): print(\"foo\") def bar(x, y): return x + y Return Multiple Values def swap(x, y): return y, x x = 10 y = 20 x, y = swap(x, y) Default Arguments def foo(x = 10, y) print(x + y) Special Arguments def foo(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2): print(pos1) print(pos2) print(pos_or_kwd) print(kwd1) print(kwd2) # 两种传参方式是等价的 foo(1, 2, 3, kwd1=4, kwd2=5) foo(1, 2, pos_or_kwd=3, kwd1=4, kwd2=5) Positional-Only Arguments 仅位置参数，位于 / 前，传参时必须严格按照顺序。\ndef foo(*varargs): print(varargs) foo(\"hello\", \" \", \"world\") # ('hello', ' ', 'world') Positional-Or-Keyword Arguments 位于 / 前，* 后，这是默认的传参方式。\nKeyword-Only Arguments 仅关键字参数，位于 * 后，传参时必须指定参数名称。\ndef foo(**varargs): print(varargs) foo(kwd1=\"hello\", kwd2=\" \", kwd3=\"world\") # {'kwd1': 'hello', 'kwd2': ' ', 'kwd3': 'world',} Lambda Expression def foo(n): return lambda x: x + n f = foo(42) # 返回一个函数 print(f(2)) # 44 List 列表是 Python 中最常用的数据类型，它与数组十分类似。列表用 [] 声明。\nempty_list = [] type(empty_list) # ",
+  "wordCount" : "818",
+  "inLanguage": "en",
+  "datePublished": "2024-11-22T08:24:44+08:00",
+  "dateModified": "2024-11-22T08:24:44+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "TPCAD"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tpcad.github.io/tpcad-blog/posts/python/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eulamber",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tpcad.github.io/tpcad-blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://tpcad.github.io/tpcad-blog/" accesskey="h" title="Eulamber (Alt + H)">Eulamber</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://tpcad.github.io/tpcad-blog/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tpcad-blog/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://tpcad.github.io/tpcad-blog/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://tpcad.github.io/tpcad-blog/">Home</a>&nbsp;»&nbsp;<a href="https://tpcad.github.io/tpcad-blog/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Python Reference
+    </h1>
+    <div class="post-meta"><span title='2024-11-22 08:24:44 +0800 +0800'>November 22, 2024</span>&nbsp;·&nbsp;TPCAD
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details >
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#python-cheatsheet" aria-label="Python CheatSheet">Python CheatSheet</a><ul>
+                            
+                    <li>
+                        <a href="#python-virtual-environment" aria-label="Python Virtual Environment">Python Virtual Environment</a><ul>
+                            
+                    <li>
+                        <a href="#create-virtual-environment" aria-label="Create Virtual Environment">Create Virtual Environment</a></li>
+                    <li>
+                        <a href="#activate-virtual-environment" aria-label="Activate Virtual Environment">Activate Virtual Environment</a></li>
+                    <li>
+                        <a href="#deactivate-virtual-environment" aria-label="Deactivate Virtual Environment">Deactivate Virtual Environment</a></li>
+                    <li>
+                        <a href="#pip-commands" aria-label="Pip Commands">Pip Commands</a><ul>
+                            
+                    <li>
+                        <a href="#installuninstall-packages" aria-label="Install/Uninstall Packages">Install/Uninstall Packages</a></li>
+                    <li>
+                        <a href="#list-packages" aria-label="List Packages">List Packages</a></li>
+                    <li>
+                        <a href="#show-certain-package" aria-label="Show Certain Package">Show Certain Package</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#data-type" aria-label="Data Type">Data Type</a><ul>
+                            
+                    <li>
+                        <a href="#number" aria-label="Number">Number</a><ul>
+                            
+                    <li>
+                        <a href="#operation" aria-label="Operation">Operation</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#boolean" aria-label="Boolean">Boolean</a></li>
+                    <li>
+                        <a href="#type-conversion" aria-label="Type Conversion">Type Conversion</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#control-flow" aria-label="Control Flow">Control Flow</a><ul>
+                            
+                    <li>
+                        <a href="#if-statement" aria-label="if statement">if statement</a></li>
+                    <li>
+                        <a href="#if-expression" aria-label="if expression">if expression</a></li>
+                    <li>
+                        <a href="#for-statement" aria-label="for statement">for statement</a><ul>
+                            
+                    <li>
+                        <a href="#range" aria-label="range()">range()</a></li>
+                    <li>
+                        <a href="#break-statement" aria-label="break statement">break statement</a></li>
+                    <li>
+                        <a href="#else-statement-in-for-loop" aria-label="else statement in for loop">else statement in for loop</a></li>
+                    <li>
+                        <a href="#continue-statement" aria-label="continue statement">continue statement</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#pass-statement" aria-label="pass statement">pass statement</a></li>
+                    <li>
+                        <a href="#match-statement" aria-label="match statement">match statement</a></li>
+                    <li>
+                        <a href="#while-statement" aria-label="while statement">while statement</a></li>
+                    <li>
+                        <a href="#list-generation-expression" aria-label="List Generation Expression">List Generation Expression</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#function" aria-label="Function">Function</a><ul>
+                            
+                    <li>
+                        <a href="#basic-definition" aria-label="Basic Definition">Basic Definition</a></li>
+                    <li>
+                        <a href="#return-multiple-values" aria-label="Return Multiple Values">Return Multiple Values</a></li>
+                    <li>
+                        <a href="#default-arguments" aria-label="Default Arguments">Default Arguments</a></li>
+                    <li>
+                        <a href="#special-arguments" aria-label="Special Arguments">Special Arguments</a><ul>
+                            
+                    <li>
+                        <a href="#positional-only-arguments" aria-label="Positional-Only Arguments">Positional-Only Arguments</a></li>
+                    <li>
+                        <a href="#positional-or-keyword-arguments" aria-label="Positional-Or-Keyword Arguments">Positional-Or-Keyword Arguments</a></li>
+                    <li>
+                        <a href="#keyword-only-arguments" aria-label="Keyword-Only Arguments">Keyword-Only Arguments</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#lambda-expression" aria-label="Lambda Expression">Lambda Expression</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#list" aria-label="List">List</a><ul>
+                            
+                    <li>
+                        <a href="#definition" aria-label="Definition">Definition</a></li>
+                    <li>
+                        <a href="#index" aria-label="Index">Index</a></li>
+                    <li>
+                        <a href="#slice" aria-label="Slice">Slice</a></li>
+                    <li>
+                        <a href="#common-operations" aria-label="Common Operations">Common Operations</a><ul>
+                            
+                    <li>
+                        <a href="#append-element" aria-label="Append Element">Append Element</a></li>
+                    <li>
+                        <a href="#extend-list" aria-label="Extend List">Extend List</a></li>
+                    <li>
+                        <a href="#insert-element" aria-label="Insert Element">Insert Element</a></li>
+                    <li>
+                        <a href="#remove-element" aria-label="Remove Element">Remove Element</a></li>
+                    <li>
+                        <a href="#delete-list" aria-label="Delete List">Delete List</a></li>
+                    <li>
+                        <a href="#get-index-of-element" aria-label="Get Index of Element">Get Index of Element</a></li>
+                    <li>
+                        <a href="#count-element" aria-label="Count Element">Count Element</a></li>
+                    <li>
+                        <a href="#sort-list" aria-label="Sort List">Sort List</a></li>
+                    <li>
+                        <a href="#reverse-list" aria-label="Reverse List">Reverse List</a>
+                    </li>
+                </ul>
+                </li>
+                </ul>
+                </li>
+                </ul>
+                </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><h1 id="python-cheatsheet">Python CheatSheet<a hidden class="anchor" aria-hidden="true" href="#python-cheatsheet">#</a></h1>
+<h2 id="python-virtual-environment">Python Virtual Environment<a hidden class="anchor" aria-hidden="true" href="#python-virtual-environment">#</a></h2>
+<p>Python 虚拟环境可以为每个 Python 项目创建一个隔离的环境，每个项目可以拥有独立的依赖包环境，且互不影响</p>
+<h3 id="create-virtual-environment">Create Virtual Environment<a hidden class="anchor" aria-hidden="true" href="#create-virtual-environment">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python -m venv venv_name
+</span></span></code></pre></div><h3 id="activate-virtual-environment">Activate Virtual Environment<a hidden class="anchor" aria-hidden="true" href="#activate-virtual-environment">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#99d1db">source</span> venv_name/bin/activate
+</span></span></code></pre></div><h3 id="deactivate-virtual-environment">Deactivate Virtual Environment<a hidden class="anchor" aria-hidden="true" href="#deactivate-virtual-environment">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>deactivate
+</span></span></code></pre></div><h3 id="pip-commands">Pip Commands<a hidden class="anchor" aria-hidden="true" href="#pip-commands">#</a></h3>
+<h4 id="installuninstall-packages">Install/Uninstall Packages<a hidden class="anchor" aria-hidden="true" href="#installuninstall-packages">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install package_name
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pip uninstall package_name
+</span></span></code></pre></div><h4 id="list-packages">List Packages<a hidden class="anchor" aria-hidden="true" href="#list-packages">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip list
+</span></span></code></pre></div><h4 id="show-certain-package">Show Certain Package<a hidden class="anchor" aria-hidden="true" href="#show-certain-package">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip show package_name
+</span></span></code></pre></div><h2 id="data-type">Data Type<a hidden class="anchor" aria-hidden="true" href="#data-type">#</a></h2>
+<h3 id="number">Number<a hidden class="anchor" aria-hidden="true" href="#number">#</a></h3>
+<ul>
+<li>Integer</li>
+<li>Float</li>
+<li>Complex</li>
+</ul>
+<h4 id="operation">Operation<a hidden class="anchor" aria-hidden="true" href="#operation">#</a></h4>
+<ol>
+<li>除法运算的结果为浮点数</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ef9f76">35</span> <span style="color:#99d1db;font-weight:bold">/</span> <span style="color:#ef9f76">5</span> <span style="color:#737994;font-style:italic"># =&gt; 7.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ef9f76">10</span> <span style="color:#99d1db;font-weight:bold">/</span> <span style="color:#ef9f76">3</span> <span style="color:#737994;font-style:italic"># =&gt; 3.3333333333333335</span>
+</span></span></code></pre></div><ol start="2">
+<li>整除，向下取整</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ef9f76">5</span> <span style="color:#99d1db;font-weight:bold">//</span> <span style="color:#ef9f76">3</span> <span style="color:#737994;font-style:italic"># =&gt; 1</span>
+</span></span></code></pre></div><ol start="3">
+<li>乘方</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ef9f76">2</span><span style="color:#99d1db;font-weight:bold">**</span><span style="color:#ef9f76">3</span> <span style="color:#737994;font-style:italic"># =&gt; 8</span>
+</span></span></code></pre></div><h3 id="boolean">Boolean<a hidden class="anchor" aria-hidden="true" href="#boolean">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ef9f76">True</span> <span style="color:#737994;font-style:italic"># 真</span>
+</span></span><span style="display:flex;"><span><span style="color:#ef9f76">False</span> <span style="color:#737994;font-style:italic"># 假</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 取非</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db;font-weight:bold">not</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 逻辑与</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db;font-weight:bold">and</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 逻辑或</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db;font-weight:bold">or</span>
+</span></span></code></pre></div><p>布尔类型其实是整型的子集。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ef9f76">0</span> <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ef9f76">False</span>
+</span></span><span style="display:flex;"><span><span style="color:#ef9f76">1</span> <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ef9f76">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#ef9f76">23</span> <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ef9f76">True</span> <span style="color:#737994;font-style:italic"># 所有非 0 数值皆为真</span>
+</span></span></code></pre></div><h3 id="type-conversion">Type Conversion<a hidden class="anchor" aria-hidden="true" href="#type-conversion">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 转换为浮点数</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">int</span>(<span style="color:#ef9f76">1</span>)       <span style="color:#737994;font-style:italic"># 得到 1</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">int</span>(<span style="color:#ef9f76">2.8</span>)     <span style="color:#737994;font-style:italic"># 得到 2</span>
+</span></span><span style="display:flex;"><span>z <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">int</span>(<span style="color:#a6d189">&#34;3&#34;</span>)     <span style="color:#737994;font-style:italic"># 得到 3</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 转换为浮点数</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">float</span>(<span style="color:#ef9f76">1</span>)     <span style="color:#737994;font-style:italic"># 得到 1.0</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">float</span>(<span style="color:#ef9f76">2.8</span>)   <span style="color:#737994;font-style:italic"># 得到 2.8</span>
+</span></span><span style="display:flex;"><span>z <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">float</span>(<span style="color:#a6d189">&#34;3&#34;</span>)   <span style="color:#737994;font-style:italic"># 得到 3.0</span>
+</span></span><span style="display:flex;"><span>w <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">float</span>(<span style="color:#a6d189">&#34;4.2&#34;</span>) <span style="color:#737994;font-style:italic"># 得到 4.2</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 转换为字符串</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">str</span>(<span style="color:#a6d189">&#34;s1&#34;</span>)    <span style="color:#737994;font-style:italic"># 得到 &#34;s1&#34;</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">str</span>(<span style="color:#ef9f76">2</span>)       <span style="color:#737994;font-style:italic"># 得到 &#34;2&#34;</span>
+</span></span><span style="display:flex;"><span>z <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">str</span>(<span style="color:#ef9f76">3.0</span>)     <span style="color:#737994;font-style:italic"># 得到 &#34;3.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 转换为布尔值</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">bool</span>(<span style="color:#ef9f76">23</span>) <span style="color:#737994;font-style:italic"># True</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">bool</span>(<span style="color:#a6d189">&#39;a&#39;</span>) <span style="color:#737994;font-style:italic"># True</span>
+</span></span><span style="display:flex;"><span>z <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">bool</span>(<span style="color:#a6d189">&#34;hello&#34;</span>) <span style="color:#737994;font-style:italic"># True</span>
+</span></span><span style="display:flex;"><span>o <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">bool</span>(<span style="color:#a6d189">&#34;&#34;</span>) <span style="color:#737994;font-style:italic"># False</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">bool</span>(<span style="color:#a6d189">&#39;&#39;</span>) <span style="color:#737994;font-style:italic"># False</span>
+</span></span><span style="display:flex;"><span>q <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">bool</span>(<span style="color:#ef9f76">0</span>) <span style="color:#737994;font-style:italic"># False</span>
+</span></span></code></pre></div><h2 id="control-flow">Control Flow<a hidden class="anchor" aria-hidden="true" href="#control-flow">#</a></h2>
+<h3 id="if-statement">if statement<a hidden class="anchor" aria-hidden="true" href="#if-statement">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>num <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">if</span> num <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">10</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(<span style="color:#a6d189">&#34;num is totally bigger than 10.&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">elif</span> num <span style="color:#99d1db;font-weight:bold">&lt;</span> <span style="color:#ef9f76">10</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(<span style="color:#a6d189">&#34;num is smaller than 10.&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(<span style="color:#a6d189">&#34;num is indeed 10.&#34;</span>)
+</span></span></code></pre></div><h3 id="if-expression">if expression<a hidden class="anchor" aria-hidden="true" href="#if-expression">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">330</span>
+</span></span><span style="display:flex;"><span>b <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">200</span>
+</span></span><span style="display:flex;"><span>r <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#34;a&#34;</span> <span style="color:#ca9ee6">if</span> a <span style="color:#99d1db;font-weight:bold">&gt;</span> b <span style="color:#ca9ee6">else</span> <span style="color:#a6d189">&#34;b&#34;</span> <span style="color:#737994;font-style:italic"># 条件放在中间</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># r is &#34;a&#34;</span>
+</span></span></code></pre></div><h3 id="for-statement">for statement<a hidden class="anchor" aria-hidden="true" href="#for-statement">#</a></h3>
+<p>Python 的 for 循环可迭代列表或字符串等任意序列。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>animals <span style="color:#99d1db;font-weight:bold">=</span> [<span style="color:#a6d189">&#39;cat&#39;</span>, <span style="color:#a6d189">&#39;dog&#39;</span>, <span style="color:#a6d189">&#39;mouse&#39;</span>, <span style="color:#a6d189">&#39;duck&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> animal <span style="color:#99d1db;font-weight:bold">in</span> animals:
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(animal)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 带索引</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> index, animal <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">enumerate</span>(animals):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(index, animal)
+</span></span></code></pre></div><h4 id="range">range()<a hidden class="anchor" aria-hidden="true" href="#range">#</a></h4>
+<p>若想遍历数字序列可以使用 <code>range()</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> i <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">range</span>(<span style="color:#ef9f76">5</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(i)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 0 1 2 3 4</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 不包括 5</span>
+</span></span></code></pre></div><p><code>range()</code> 可以不从 0 开始。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> i <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">range</span>(<span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">10</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(i)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 5 6 7 8 9</span>
+</span></span></code></pre></div><p><code>range()</code> 支持步进。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 第三个参数为步进值</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> i <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">range</span>(<span style="color:#ef9f76">0</span>, <span style="color:#ef9f76">10</span>, <span style="color:#ef9f76">2</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(i)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 0 2 4 6 8</span>
+</span></span></code></pre></div><h4 id="break-statement">break statement<a hidden class="anchor" aria-hidden="true" href="#break-statement">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> i <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">range</span>(<span style="color:#ef9f76">0</span>, <span style="color:#ef9f76">10</span>, <span style="color:#ef9f76">2</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(i)
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">if</span> i <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">6</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">break</span>
+</span></span></code></pre></div><h4 id="else-statement-in-for-loop">else statement in for loop<a hidden class="anchor" aria-hidden="true" href="#else-statement-in-for-loop">#</a></h4>
+<p>for 循环的 else 语句会在 break 语句未执行的情况下执行，即使没有 break 语句。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> i <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">range</span>(<span style="color:#ef9f76">0</span>, <span style="color:#ef9f76">10</span>, <span style="color:#ef9f76">2</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">if</span> i <span style="color:#99d1db;font-weight:bold">&gt;</span> <span style="color:#ef9f76">8</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">break</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(i)
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">else</span>: <span style="color:#99d1db">print</span>(<span style="color:#a6d189">&#34;else here&#34;</span>)
+</span></span></code></pre></div><h4 id="continue-statement">continue statement<a hidden class="anchor" aria-hidden="true" href="#continue-statement">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">for</span> i <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">range</span>(<span style="color:#ef9f76">10</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">if</span> i <span style="color:#99d1db;font-weight:bold">%</span> <span style="color:#ef9f76">2</span> <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ef9f76">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#ca9ee6">continue</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(i)
+</span></span></code></pre></div><h3 id="pass-statement">pass statement<a hidden class="anchor" aria-hidden="true" href="#pass-statement">#</a></h3>
+<p>pass 语句不执行任何操作。语法上需要一个语句，但程序不实际执行任何动作时，可以使用该语句。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">while</span> <span style="color:#ef9f76">True</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">class</span> <span style="color:#e5c890">example</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">foo</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">pass</span>
+</span></span></code></pre></div><h3 id="match-statement">match statement<a hidden class="anchor" aria-hidden="true" href="#match-statement">#</a></h3>
+<p>match 语句类似 C 的 switch 语句。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>animal <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#39;cat&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">match</span> animal:
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">case</span> <span style="color:#a6d189">&#39;cat&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">print</span>(animal)
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">case</span> <span style="color:#a6d189">&#39;dog&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">print</span>(animal)
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">case</span> <span style="color:#a6d189">&#39;mouse&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">print</span>(animal)
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">case</span> _: <span style="color:#737994;font-style:italic"># like default in C</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#99d1db">print</span>(<span style="color:#a6d189">&#34;No Animal&#34;</span>)
+</span></span></code></pre></div><h3 id="while-statement">while statement<a hidden class="anchor" aria-hidden="true" href="#while-statement">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">while</span> x <span style="color:#99d1db;font-weight:bold">&lt;</span> <span style="color:#ef9f76">4</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(i)
+</span></span><span style="display:flex;"><span>    x <span style="color:#99d1db;font-weight:bold">+=</span> <span style="color:#ef9f76">1</span>
+</span></span></code></pre></div><h3 id="list-generation-expression">List Generation Expression<a hidden class="anchor" aria-hidden="true" href="#list-generation-expression">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>result <span style="color:#99d1db;font-weight:bold">=</span> [x<span style="color:#99d1db;font-weight:bold">**</span><span style="color:#ef9f76">2</span> <span style="color:#ca9ee6">for</span> x <span style="color:#99d1db;font-weight:bold">in</span> <span style="color:#99d1db">range</span>(<span style="color:#ef9f76">10</span>) <span style="color:#ca9ee6">if</span> x <span style="color:#99d1db;font-weight:bold">%</span> <span style="color:#ef9f76">2</span> <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#ef9f76">0</span>]
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># result is [0, 4, 16, 36, 64]</span>
+</span></span></code></pre></div><h2 id="function">Function<a hidden class="anchor" aria-hidden="true" href="#function">#</a></h2>
+<h3 id="basic-definition">Basic Definition<a hidden class="anchor" aria-hidden="true" href="#basic-definition">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">foo</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(<span style="color:#a6d189">&#34;foo&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">bar</span>(x, y):
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">return</span> x <span style="color:#99d1db;font-weight:bold">+</span> y
+</span></span></code></pre></div><h3 id="return-multiple-values">Return Multiple Values<a hidden class="anchor" aria-hidden="true" href="#return-multiple-values">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">swap</span>(x, y):
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">return</span> y, x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">10</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">20</span>
+</span></span><span style="display:flex;"><span>x, y <span style="color:#99d1db;font-weight:bold">=</span> swap(x, y)
+</span></span></code></pre></div><h3 id="default-arguments">Default Arguments<a hidden class="anchor" aria-hidden="true" href="#default-arguments">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">foo</span>(x <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#ef9f76">10</span>, y)
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(x <span style="color:#99d1db;font-weight:bold">+</span> y)
+</span></span></code></pre></div><h3 id="special-arguments">Special Arguments<a hidden class="anchor" aria-hidden="true" href="#special-arguments">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">foo</span>(pos1, pos2, <span style="color:#99d1db;font-weight:bold">/</span>, pos_or_kwd, <span style="color:#99d1db;font-weight:bold">*</span>, kwd1, kwd2):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(pos1)
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(pos2)
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(pos_or_kwd)
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(kwd1)
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(kwd2)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 两种传参方式是等价的</span>
+</span></span><span style="display:flex;"><span>foo(<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>, kwd1<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">4</span>, kwd2<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">5</span>)
+</span></span><span style="display:flex;"><span>foo(<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, pos_or_kwd<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">3</span>, kwd1<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">4</span>, kwd2<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">5</span>)
+</span></span></code></pre></div><h4 id="positional-only-arguments">Positional-Only Arguments<a hidden class="anchor" aria-hidden="true" href="#positional-only-arguments">#</a></h4>
+<p>仅位置参数，位于 <code>/</code> 前，传参时必须严格按照顺序。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">foo</span>(<span style="color:#99d1db;font-weight:bold">*</span>varargs):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(varargs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>foo(<span style="color:#a6d189">&#34;hello&#34;</span>, <span style="color:#a6d189">&#34; &#34;</span>, <span style="color:#a6d189">&#34;world&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># (&#39;hello&#39;, &#39; &#39;, &#39;world&#39;)</span>
+</span></span></code></pre></div><h4 id="positional-or-keyword-arguments">Positional-Or-Keyword Arguments<a hidden class="anchor" aria-hidden="true" href="#positional-or-keyword-arguments">#</a></h4>
+<p>位于 <code>/</code> 前，<code>*</code> 后，这是默认的传参方式。</p>
+<h4 id="keyword-only-arguments">Keyword-Only Arguments<a hidden class="anchor" aria-hidden="true" href="#keyword-only-arguments">#</a></h4>
+<p>仅关键字参数，位于 <code>*</code> 后，传参时必须指定参数名称。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">foo</span>(<span style="color:#99d1db;font-weight:bold">**</span>varargs):
+</span></span><span style="display:flex;"><span>    <span style="color:#99d1db">print</span>(varargs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>foo(kwd1<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;hello&#34;</span>, kwd2<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34; &#34;</span>, kwd3<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;world&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># {&#39;kwd1&#39;: &#39;hello&#39;, &#39;kwd2&#39;: &#39; &#39;, &#39;kwd3&#39;: &#39;world&#39;,}</span>
+</span></span></code></pre></div><h3 id="lambda-expression">Lambda Expression<a hidden class="anchor" aria-hidden="true" href="#lambda-expression">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ca9ee6">def</span> <span style="color:#8caaee">foo</span>(n):
+</span></span><span style="display:flex;"><span>    <span style="color:#ca9ee6">return</span> <span style="color:#ca9ee6">lambda</span> x: x <span style="color:#99d1db;font-weight:bold">+</span> n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>f <span style="color:#99d1db;font-weight:bold">=</span> foo(<span style="color:#ef9f76">42</span>) <span style="color:#737994;font-style:italic"># 返回一个函数</span>
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">print</span>(f(<span style="color:#ef9f76">2</span>)) <span style="color:#737994;font-style:italic"># 44</span>
+</span></span></code></pre></div><h2 id="list">List<a hidden class="anchor" aria-hidden="true" href="#list">#</a></h2>
+<p>列表是 Python 中最常用的数据类型，它与数组十分类似。列表用 <code>[]</code> 声明。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>empty_list <span style="color:#99d1db;font-weight:bold">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#99d1db">type</span>(empty_list) <span style="color:#737994;font-style:italic"># &lt;class &#39;list&#39;&gt;</span>
+</span></span></code></pre></div><h3 id="definition">Definition<a hidden class="anchor" aria-hidden="true" href="#definition">#</a></h3>
+<p>常见的定义一个列表的方式：</p>
+<ul>
+<li>[]</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>list1 <span style="color:#99d1db;font-weight:bold">=</span> [<span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">5</span>]
+</span></span><span style="display:flex;"><span>list2 <span style="color:#99d1db;font-weight:bold">=</span> [<span style="color:#a6d189">&#34;mek&#34;</span>, <span style="color:#a6d189">&#34;ic2&#34;</span>, <span style="color:#a6d189">&#34;ie&#34;</span>]
+</span></span></code></pre></div><ul>
+<li>from tuple</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>list3 <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">list</span>((<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">4</span>))
+</span></span></code></pre></div><ul>
+<li>from range</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>list4 <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#99d1db">list</span>(<span style="color:#99d1db">range</span>(<span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">10</span>))
+</span></span></code></pre></div><h3 id="index">Index<a hidden class="anchor" aria-hidden="true" href="#index">#</a></h3>
+<p>Python 支持负数索引。-1 是最后一个元素，依次类推。正负索引可以混用。</p>
+<h3 id="slice">Slice<a hidden class="anchor" aria-hidden="true" href="#slice">#</a></h3>
+<p>切片会返回一个新的列表，原列表不会受影响。
+基本语法：</p>
+<ul>
+<li>a_list[start:end]</li>
+<li>a_list[start:end:step]</li>
+</ul>
+<p>均为左闭右开区间。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li <span style="color:#99d1db;font-weight:bold">=</span> [<span style="color:#ef9f76">0</span>, <span style="color:#ef9f76">1</span>, <span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">4</span>, <span style="color:#ef9f76">5</span>, <span style="color:#ef9f76">6</span>, <span style="color:#ef9f76">7</span>]
+</span></span><span style="display:flex;"><span>li[<span style="color:#ef9f76">2</span>:<span style="color:#ef9f76">5</span>] <span style="color:#737994;font-style:italic"># [2, 3, 4]</span>
+</span></span><span style="display:flex;"><span>li[<span style="color:#99d1db;font-weight:bold">-</span><span style="color:#ef9f76">5</span>:<span style="color:#99d1db;font-weight:bold">-</span><span style="color:#ef9f76">2</span>] <span style="color:#737994;font-style:italic"># [3, 4, 5]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 注意顺序只能是从左到右，li[-2:-5] 是无效的</span>
+</span></span><span style="display:flex;"><span>li[<span style="color:#ef9f76">2</span>:<span style="color:#99d1db;font-weight:bold">-</span><span style="color:#ef9f76">2</span>] <span style="color:#737994;font-style:italic"># [2, 3, 4, 5]</span>
+</span></span></code></pre></div><p>索引可以省略。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 起始索引省略表示从索引 0 开始</span>
+</span></span><span style="display:flex;"><span>li[:<span style="color:#ef9f76">4</span>] <span style="color:#737994;font-style:italic"># [0, 1, 2, 3]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 结束索引省略表示在索引 -1 结束</span>
+</span></span><span style="display:flex;"><span>li[<span style="color:#ef9f76">3</span>:] <span style="color:#737994;font-style:italic"># [3, 4, 5, 6, 7]</span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 起始、结束索引都省略可以得到整个列表</span>
+</span></span><span style="display:flex;"><span>li[:] <span style="color:#737994;font-style:italic"># [0, 1, 2, 3, 4, 5, 6, 7]</span>
+</span></span></code></pre></div><p>可以指定步进值，步进值可以为负。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li[<span style="color:#ef9f76">2</span>:<span style="color:#ef9f76">6</span>:<span style="color:#ef9f76">2</span>] <span style="color:#737994;font-style:italic"># [2, 4]</span>
+</span></span><span style="display:flex;"><span>li[::<span style="color:#99d1db;font-weight:bold">-</span><span style="color:#ef9f76">1</span>] <span style="color:#737994;font-style:italic"># [7, 6, 5, 4, 3, 2, 1, 0]</span>
+</span></span></code></pre></div><h3 id="common-operations">Common Operations<a hidden class="anchor" aria-hidden="true" href="#common-operations">#</a></h3>
+<h4 id="append-element">Append Element<a hidden class="anchor" aria-hidden="true" href="#append-element">#</a></h4>
+<p>在末尾添加一个元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>append(<span style="color:#ef9f76">8</span>)
+</span></span></code></pre></div><h4 id="extend-list">Extend List<a hidden class="anchor" aria-hidden="true" href="#extend-list">#</a></h4>
+<p>用可迭代对象扩展列表。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>extend([<span style="color:#ef9f76">9</span>, <span style="color:#ef9f76">10</span>])
+</span></span><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>extend((<span style="color:#ef9f76">11</span>, <span style="color:#ef9f76">12</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 这个操作会返回一个新的列表，原列表不受影响。</span>
+</span></span><span style="display:flex;"><span>li1 <span style="color:#99d1db;font-weight:bold">=</span> li <span style="color:#99d1db;font-weight:bold">+</span> [<span style="color:#ef9f76">13</span>]
+</span></span></code></pre></div><h4 id="insert-element">Insert Element<a hidden class="anchor" aria-hidden="true" href="#insert-element">#</a></h4>
+<p>在指定索引插入一个元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>insert(<span style="color:#ef9f76">2</span>, <span style="color:#ef9f76">78</span>) <span style="color:#737994;font-style:italic"># [0, 1, 78, 2, 3, ...]</span>
+</span></span></code></pre></div><h4 id="remove-element">Remove Element<a hidden class="anchor" aria-hidden="true" href="#remove-element">#</a></h4>
+<p>删除列表中第一个值为 x 的元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>remove(<span style="color:#ef9f76">78</span>)
+</span></span></code></pre></div><p>删除指定索引的元素，并返回该元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>pop(<span style="color:#ef9f76">10</span>)
+</span></span><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>pop() <span style="color:#737994;font-style:italic"># 若不指定索引则删除并返回最后一个元素</span>
+</span></span></code></pre></div><h4 id="delete-list">Delete List<a hidden class="anchor" aria-hidden="true" href="#delete-list">#</a></h4>
+<p>删除列表所有元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>clear() <span style="color:#737994;font-style:italic"># []</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">del</span> li[:]
+</span></span><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 这样会把 li 这个变量也删除</span>
+</span></span><span style="display:flex;"><span><span style="color:#ca9ee6">del</span> li
+</span></span></code></pre></div><h4 id="get-index-of-element">Get Index of Element<a hidden class="anchor" aria-hidden="true" href="#get-index-of-element">#</a></h4>
+<p>获取指定元素在列表中的索引。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>index(<span style="color:#ef9f76">3</span>)
+</span></span></code></pre></div><p>可以在特定子序列中搜索。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#737994;font-style:italic"># 在 [0:2] 区间搜索</span>
+</span></span><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>index(<span style="color:#ef9f76">3</span>, <span style="color:#ef9f76">0</span>, <span style="color:#ef9f76">2</span>)
+</span></span></code></pre></div><h4 id="count-element">Count Element<a hidden class="anchor" aria-hidden="true" href="#count-element">#</a></h4>
+<p>计算列表中指定元素出现的次数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>count(<span style="color:#ef9f76">3</span>)
+</span></span></code></pre></div><h4 id="sort-list">Sort List<a hidden class="anchor" aria-hidden="true" href="#sort-list">#</a></h4>
+<p>就地排序列表。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>sort()
+</span></span><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>sort(reverse<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ef9f76">True</span>) <span style="color:#737994;font-style:italic"># 倒序</span>
+</span></span></code></pre></div><h4 id="reverse-list">Reverse List<a hidden class="anchor" aria-hidden="true" href="#reverse-list">#</a></h4>
+<p>翻转列表。</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>li<span style="color:#99d1db;font-weight:bold">.</span>reverse()
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://tpcad.github.io/tpcad-blog/tags/python/">Python</a></li>
+    </ul>
+  </footer>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://tpcad.github.io/tpcad-blog/">Eulamber</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
