@@ -6,43 +6,8 @@
     <description>Recent content on Eulamber</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 26 Dec 2025 21:17:29 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 Oct 2025 10:06:35 +0800</lastBuildDate>
     <atom:link href="https://tpcad.github.io/tpcad-blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Shell 引用</title>
-      <link>https://tpcad.github.io/tpcad-blog/posts/shell_quoting/</link>
-      <pubDate>Fri, 26 Dec 2025 21:17:29 +0800</pubDate>
-      <guid>https://tpcad.github.io/tpcad-blog/posts/shell_quoting/</guid>
-      <description>&lt;p&gt;这里的「引用」是「Quoting」而非 C++ 等语言中的「Reference」，Shell 中的引用更像是一种「转义」。&lt;/p&gt;
-&lt;h2 id=&#34;shell-引用&#34;&gt;Shell 引用&lt;/h2&gt;
-&lt;p&gt;引用（Quoting）是 Shell 中一种用于消除字符或词的特殊意义的机制。Shell 有四种引用机制：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;转义字符&lt;/li&gt;
-&lt;li&gt;单引号&lt;/li&gt;
-&lt;li&gt;双引号&lt;/li&gt;
-&lt;li&gt;美元单引号&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;转义字符&#34;&gt;转义字符&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;\&lt;/code&gt; 是一个转义字符（escape character），它会保留其后一个字符的字面意义，除非是 &lt;code&gt;&amp;lt;newline&amp;gt;&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;转义字符常用于输出「元字符（metacharacter）」。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;\$&lt;/span&gt;n &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# $n&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;\;&lt;/span&gt; &lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# ; echo&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; ; &lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# tow blank lines&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当 &lt;code&gt;\&lt;/code&gt; 和 &lt;code&gt;&amp;lt;newline&amp;gt;&lt;/code&gt; 成对出现，且 &lt;code&gt;\&lt;/code&gt; 没有被引用，即 &lt;code&gt;\&amp;lt;newline&amp;gt;&lt;/code&gt;，则表示续行，常用于多行命令。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; hello &lt;span style=&#34;color:#8caaee&#34;&gt;\
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;world
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# hello world&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;若要输出 &lt;code&gt;\&lt;/code&gt; 自身，引用自身即可。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;\\&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# \&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;单引号&#34;&gt;单引号&lt;/h3&gt;
-&lt;p&gt;「单引号引用」将保留其中所有字符的字面意义。单引号不能包含单引号，哪怕前面加上了转义字符。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;\$;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# \$;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#39;$PATH&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# $PATH&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;&amp;#39;&amp;#39;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# &amp;#39;&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;双引号&#34;&gt;双引号&lt;/h3&gt;
-&lt;p&gt;「双引号引用」会保留其中所有字符的字面意义，除了 &lt;code&gt;$&lt;/code&gt;，&lt;code&gt;`&lt;/code&gt;, &lt;code&gt;\&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;$&lt;/code&gt; 表示「参数扩展」。&lt;code&gt;$*&lt;/code&gt; 和 &lt;code&gt;$@&lt;/code&gt; 在双引号中有特殊含义。&lt;code&gt;$*&lt;/code&gt; 会被扩展为「一个」词，值为各个参数，以 IFS 的第一个字符分隔；&lt;code&gt;$@&lt;/code&gt; 则是每个参数扩展为一个词。&lt;/p&gt;</description>
-    </item>
     <item>
       <title>Neovim Options</title>
       <link>https://tpcad.github.io/tpcad-blog/posts/nvim_options/</link>
@@ -173,72 +138,6 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;case-2&#34;&gt;case 2&lt;/h4&gt;
 &lt;p&gt;不带初始化器使用 new 表达式创建一个对象。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>红黑树</title>
-      <link>https://tpcad.github.io/tpcad-blog/posts/algorithm_rbtree/</link>
-      <pubDate>Tue, 26 Nov 2024 10:43:39 +0800</pubDate>
-      <guid>https://tpcad.github.io/tpcad-blog/posts/algorithm_rbtree/</guid>
-      <description>&lt;p&gt;红黑树是一种平衡的二叉搜索树，满足如下性质：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;节点要么是 &lt;strong&gt;黑色&lt;/strong&gt;，要么是 &lt;strong&gt;红色&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;根节点必须是黑色&lt;/li&gt;
-&lt;li&gt;所有叶子节点都是黑色&lt;/li&gt;
-&lt;li&gt;红色节点的子节点必须是黑色&lt;/li&gt;
-&lt;li&gt;从任一节点到叶子节点的所有简单路径都包含相同数量的黑色节点&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;其中叶子节点指的是为空的节点。如下图所示，&lt;code&gt;null&lt;/code&gt; 是叶子节点，而节点 9 和节点 20 不是叶子节点（它们的子结点也是叶子节点，图中没有画出）。&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-language&#34; data-lang=&#34;language&#34;&gt;        10
-      /    \
-     8      14
-    / \    /  \
- null  9  null 20
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;节点定义&#34;&gt;节点定义&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;typename&lt;/span&gt; T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;requires&lt;/span&gt; std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;equality_comparable&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;totally_ordered&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;rb_tree&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;rb_color&lt;/span&gt; { red, black }; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 节点颜色
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ca9ee6&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#e5c890&#34;&gt;rb_node&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        T key;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_color color; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 颜色字段
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; size;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;unsigned&lt;/span&gt; count;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;left;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;right;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;parent; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;// 父节点
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rb_node(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; key(value), color(rb_color&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;red), size(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;), count(&lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;              left(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;), right(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;), parent(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e78284&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#8caaee&#34;&gt;print_key&lt;/span&gt;() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; key;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ca9ee6&#34;&gt;if&lt;/span&gt; (color &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;==&lt;/span&gt; rb_color&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;black) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            } &lt;span style=&#34;color:#ca9ee6&#34;&gt;else&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6d189&#34;&gt;&amp;#34;r&amp;#34;&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    };
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_node &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;root;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ca9ee6&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_tree() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {}
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_tree(&lt;span style=&#34;color:#ca9ee6&#34;&gt;const&lt;/span&gt; T &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&lt;/span&gt;value) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) { root &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ca9ee6&#34;&gt;new&lt;/span&gt; rb_node(value); }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    rb_tree(std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;initializer_list&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;gt;&lt;/span&gt; list) &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;:&lt;/span&gt; root(&lt;span style=&#34;color:#ca9ee6&#34;&gt;nullptr&lt;/span&gt;) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;insert_aux(&lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;root, &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;*&lt;/span&gt;list.begin());
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        std&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;::&lt;/span&gt;for_each(list.begin() &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt;, list.end(),
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                      [&lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;](&lt;span style=&#34;color:#ca9ee6&#34;&gt;auto&lt;/span&gt; &lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;x) { &lt;span style=&#34;color:#ca9ee6&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color:#99d1db;font-weight:bold&#34;&gt;-&amp;gt;&lt;/span&gt;insert(x); });
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;旋转&#34;&gt;旋转&lt;/h2&gt;
-&lt;p&gt;因为增加了 &lt;code&gt;parent&lt;/code&gt; 字段用于指向当前节点的父节点，因此旋转操作也需要更新 &lt;code&gt;parent&lt;/code&gt; 字段。&lt;/p&gt;</description>
     </item>
     <item>
       <title>二叉平衡树</title>
