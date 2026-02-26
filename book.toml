@@ -1,0 +1,9 @@
+[book]
+title = "TPCAD's Blog"
+authors = ["TPCAD"]
+language = "zh-CN"
+
+[output.html]
+mathjax-support = true
+no-section-label = true
+git-repository-url = "https://github.com/TPCAD/tpcad-blog"
