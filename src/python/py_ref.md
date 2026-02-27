@@ -461,13 +461,13 @@ class range(stop, /)
 class range(start, stop, step = 1, /)
 ```
 
-若`step`是正数，Range 所表示的序列满足公式：
+若`step`是正数，Range 所表示的序列满足条件：
 
-\\[ r[i] = start + step*i \\\\ i \ge 0 \\\\ r[i] \lt stop \\]
+$$ r[i] = start + step*i \\ i \ge 0 \\ r[i] \lt stop $$
 
-若`step`是负数，Range 所表示的序列满足公式：
+若`step`是负数，Range 所表示的序列满足条件：
 
-\\[ r[i] = start + step*i \\\\ i \ge 0 \\\\ r[i] \gt stop \\]
+$$ r[i] = start + step*i \\ i \ge 0 \\ r[i] \gt stop $$
 
 ```python
 assert(list(range(2, 10, 2)) == [2, 4, 6, 8])
