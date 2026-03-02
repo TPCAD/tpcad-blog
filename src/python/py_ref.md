@@ -351,6 +351,7 @@ sequence.reverse()
 
 ```python
 l = [0, 1, 2]
+l.reverse()
 assert(l == [2, 1, 0])
 ```
 
