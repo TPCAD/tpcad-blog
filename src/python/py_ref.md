@@ -1134,10 +1134,25 @@ foo()
 assert(var == 20)
 ```
 
-### Default Arguments
+### Parameters
+
+Python 有两种参数，位置参数和关键字参数。使用关键字传参可以不按定义顺序传入参数。关键字参数必须位于位置参数之后。
 
 ```python
-def foo(x = 10, y)
+def foo(a, b, c):
+    print(a, b, c)
+
+foo(1, 2, 4)
+foo(c = 3, a = 1, b = 10)
+foo(3, c = 1, b = 10)
+```
+
+### Default Arguments
+
+默认参数不能位于必选参数之前。
+
+```python
+def foo(x, y = 10)
     print(x + y)
 ```
 
@@ -1177,14 +1192,47 @@ foo("hello", " ", "world")
 仅关键字参数，位于 `*` 后，传参时必须指定参数名称。
 
 ```python
-def foo(**varargs):
-    print(varargs)
+def foo(**kwargs):
+    print(kwargs)
 
 foo(kwd1="hello", kwd2=" ", kwd3="world")
 # {'kwd1': 'hello', 'kwd2': ' ', 'kwd3': 'world',}
 ```
 
+### Arbitrary Arguments List
+
+不定长位置参数会将任意数量的位置参数打包成元组。不定长参数必须位于所有位置参数之后。不定长位置参数之后的所有参数只能是关键字参数。使用`*`定义不定长位置参数。
+
+```python
+def foo(a, b, *args):
+    print(args)
+
+foo(1, 3, 4, 5)
+# (4, 5)
+```
+
+不定长关键字参数会将任意数量的关键字参数打包成字典。不定长关键字参数必须位于所有参数之后。使用`**`定义不定长关键字参数。
+
+```python
+def foo(a, b, **kwargs):
+    print(args)
+
+foo(1, 3, f='a', b='d')
+# {"f": "a", "b": "d"}
+```
+
+在传参时使用`*`或`**`可以解包列表、元组或字典。
+
+```python
+def foo(a, b, c, d):
+    print(a, b, c, d)
+
+foo(*[1, 3], **{"c": 2, "d": 4})
+```
+
 ### Lambda Expression
+
+函数体只能有一行。
 
 ```python
 def foo(n):
