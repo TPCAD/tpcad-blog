@@ -1109,6 +1109,31 @@ y = 20
 x, y = swap(x, y)
 ```
 
+### Variable Scope
+
+定义在函数外部的变量都是全局变量（文件内部），函数内部定义的变量是局部变量。函数内部无法访问全局变量。
+
+```python
+var = 10
+def foo():
+    var = 20
+
+foo()
+assert(var == 10)
+```
+
+保留字`global`用于在函数内部声明全局变量。
+
+```python
+var = 10
+def foo():
+    global var
+    var = 20
+
+foo()
+assert(var == 20)
+```
+
 ### Default Arguments
 
 ```python
