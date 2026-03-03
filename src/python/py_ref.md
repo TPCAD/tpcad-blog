@@ -627,6 +627,271 @@ s = "www.example.com"
 assert(s.strip('w.com') == 'example')
 ```
 
+### Dictionary
+
+```python
+class dict(**kwargs)
+class dict(mapping, /, **kwargs)
+class dict(iterable, /, **kwargs)
+```
+
+字典是一种**映射**类型。与序列类型以连续整数为索引不同，字典以**键**为索引。键可以是任意不可变类型，最常见的是字符串和数字。元组只在其仅包含不可变类型时可作为键。字典的**键**是唯一的，因此可以把字典看作一种**键值对**的集合。
+
+```python
+d1 = dict(foo=100, bar=200)
+d2 = {"foo": 100, "bar": 200}
+assert(d1 == d2)
+
+assert(dict() == {})
+```
+
+使用可迭代对象创建字典时，可迭代对象的每一项必须是一个恰好包含两个元素的可迭代对象。第一个元素将作为字典的键，第二个元素将作为字典的值。如果一个键出现多次，那么最后一个值将作为字典的值。
+
+```python
+d3 = dict([('foo', 100), ('bar', 200)])
+d4 = dict([['foo', 100], ['bar', 200]])
+assert(d3 == d4)
+
+d5 = dict([('foo', 100), ('bar', 200), ('foo', 300)])
+assert(d5 == {"foo": 300, "bar": 200})
+```
+
+#### Index
+
+字典支持通过`[]`或`get()`方法进行索引操作。`get()`方法在键不存在时返回`None`，而`[]`则会报错。
+
+```python
+d = {"foo": 100, "bar": 200}
+assert(d["foo"] == 100)
+
+d = {1: 100, (1, 2): 200}
+assert(d[1] == 100)
+assert(d[(1, 2)] == 200)
+
+assert(d.get("ivk") == None)
+```
+
+字典是一种可变类型，支持通过索引修改，删除元素。
+
+```python
+d = {"foo": 100, "bar": 200}
+d["foo"] = 300
+assert(d["foo"] == 300)
+
+del d["foo"]
+assert("foo" not in d)
+```
+
+对一个不存在的键赋值会在尾部插入新的键值对。
+
+```python
+d = {"foo": 100, "bar": 200}
+d["new"] = 300
+assert({"foo": 100, "bar": 200, "new": 300})
+```
+
+#### Builtin Functions
+
+##### list()
+
+返回字典所有**键**组成的列表。
+
+```python
+d = {"foo": 100, "bar": 200}
+assert(list(d) == ["foo", "bar"])
+```
+
+##### len()
+
+返回字典项数。
+
+```python
+d = {"foo": 100, "bar": 200}
+assert(len(d) == 2)
+```
+
+##### iter()
+
+返回以字典的键为元素的迭代器。
+
+```python
+d = {"foo": 100, "bar": 200}
+for i in iter(d):
+    print(d[i])
+```
+
+##### reversed()
+
+返回一个**逆序**获取字典键的迭代器，相当于`reversed(dict.keys())`。
+
+```python
+d = {"foo": 100, "bar": 200}
+for i in reversed(d):
+    print(d[i])
+```
+
+#### Builtin Methods
+
+##### clear()
+
+移除字典所有元素。
+
+```python
+d = {"foo": 100, "bar": 200}
+d.clear()
+assert(d == None)
+```
+
+##### copy()
+
+返回字典的浅拷贝。
+
+```python
+d = {"foo": [1, 3, 4]}
+d1 = d.copy()
+d1['foo'][1] = 2
+
+assert(d == {"foo": [1, 2, 4]})
+```
+
+##### items()
+
+返回键值对组成的视图。
+
+```python
+d = {"foo": [1, 3, 4]}
+for i in d.items():
+    assert(i == ("foo", [1, 3, 4]))
+```
+
+##### keys()
+
+返回由键组成的视图。
+
+```python
+d = {"foo": [1, 3, 4]}
+for i in d.keys():
+    assert(i == "foo")
+```
+
+##### values()
+
+返回由值组成的视图。
+
+```python
+d = {"foo": [1, 3, 4]}
+for i in d.values():
+    assert(i == [1, 3, 4])
+```
+
+##### update()
+
+```python
+dict.update(**kwargs)
+dict.update(mapping, /, **kwargs)
+dict.update(iterable, /, **kwargs)
+```
+
+更新或添加键值对，覆盖原有键。返回 None。
+
+```python
+d = {"foo": 100, "bar": 200}
+d.update(new=300, bar=400)
+assert(d == {"foo": 100, "bar": 400, "new": 300})
+
+d.update([("foo", 100), ("bar", 200)])
+assert(d == {"foo": 100, "bar": 200, "new": 300})
+```
+
+##### pop()
+
+```python
+pop(key, /)
+pop(key, default, /)
+```
+
+如果`key`存在则将其移除并返回其值，否则返回`default`。若`default`未指定且`key`不存在，则引发`KeyError`。
+
+```python
+d = {"foo": 100, "bar": 200}
+assert(d.pop("bar") == 200)
+assert(d.pop("new", 400) == 400)
+
+assert(d == {"foo": 100})
+```
+
+##### popitem()
+
+按 LIFO 顺序移除并返回一个键值对。字典为空则引发`KeyError`。
+
+```python
+d = {"foo": 100, "bar": 200}
+assert(d.popitem() == ("bar", 200))
+```
+
+### Set
+
+```python
+class set(iterable=(), /)
+```
+
+**集合**是一种由不同**元素**组成的**无序**多项集。
+
+```python
+s = {1, 3, 8, 3}
+assert(s == {1, 3, 8})
+```
+
+#### Builtin Methods
+
+##### add()
+
+```python
+set.add(elem, /)
+```
+
+添加一个元素到集合。
+
+```python
+s = set([1, 5, 8])
+s.add(4)
+assert(s == {1, 4, 5, 8})
+```
+
+##### remove()
+
+```python
+set.remove(elem, /)
+```
+
+从集合中移除元素，如果不存在则引发`KeyError`。
+
+```python
+s = set([1, 5, 8])
+s.remove(1)
+assert(s == {5, 8})
+```
+
+##### discard()
+
+```python
+set.discard(elem, /)
+```
+
+如果元素`elem`存在于集合中则将其移除。
+
+```python
+s = set([1, 5, 8])
+s.discard(1)
+assert(s == {5, 8})
+s.discard(1)
+assert(s == {5, 8})
+```
+
+##### pop()
+
+从集合中移除并返回任意一个元素。如果集合为空则会引发`KeyError`。
+
 ### Type Conversion
 
 ```python
@@ -775,6 +1040,52 @@ match animal:
         print("No Animal")
 ```
 
+### loop tips
+
+遍历字典时可以使用`items()`方法提取键值对。
+
+```python
+knights = {'gallahad': 'the pure', 'robin': 'the brave'}
+for k, v in knights.items():
+    print(k, v)
+```
+
+遍历序列时可以使用`enumerate()`函数提取位置索引和对应的值。
+
+```python
+for i, v in enumerate(['tic', 'tac', 'toe']):
+    print(i, v)
+```
+
+遍历多个序列时可以使用`zip()`函数将序列的元素一一匹配。元素个数取决于长度最短的序列。
+
+```python
+l = [1, 3, 4]
+s = "abcd"
+d = {"foo": 100, "bar": 200}
+for i in zip(l, s, d):
+    print(i)
+
+# (1, 'a', 'foo')
+# (3, 'b', 'bar')
+```
+
+逆序遍历序列但不改变序列顺序可以使用`reversed()`函数。
+
+```python
+l = [1, 3, 4]
+for i in reversed(l):
+    print(i)
+```
+
+不改变序列的前提下重新排序可以使用`sorted()`函数。
+
+```python
+l = [10, 3, 1, 4]
+for i in sorted(l):
+    print(i)
+```
+
 ## Function
 
 ### Definition
@@ -860,9 +1171,65 @@ print(f(2)) # 44
 
 ## Comprehension
 
+**推导式**可以方便地从一个序列创建新的序列。
+
+### List Comprehension
+
 ```python
-result = [x**2 for x in range(10) if x % 2 == 0]
-# result is [0, 4, 16, 36, 64]
+list = [expression for var in sequence]
+list = [expression for var in sequence if condition]
+```
+
+列表推导式将`sequence`的每个元素`var`作为参数传入`expression`得到新列表的元素。`if`可以对`var`进行过滤。
+
+```python
+assert([x**2 for x in range(10) if x % 2 == 0] == [0, 4, 16, 36, 64])
+```
+
+推导式可以包含多个`for`子句。
+
+```python
+result = [(x, y) for x in [1,2,3] for y in [3,1,4] if x != y]
+
+# 等价于
+combs = []
+for x in [1,2,3]:
+    for y in [3,1,4]:
+        if x != y:
+            combs.append((x, y))
+```
+
+### Dictionary Comprehension
+
+```python
+dict = {key_expression : value_expression for var in sequence}
+dict = {key_expression : value_expression for var in sequence if condition}
+```
+
+字典推导式比列表推导式多了`key_expression`，用于生成字典的键。
+
+```python
+d = {i : i**2 for i in range(3)}
+assert({i : i**2 for i in range(3)} == {0: 0, 1: 1, 2: 4})
+
+l = ['foo', 'bar']
+assert({l : i for i in range(1, 3)} == {"foo": 1, "bar": 2})
+```
+
+### Set Comprehension
+
+集合推导式使用`{}`包裹，语法与列表推导式相同。
+
+```python
+assert({i**2 for i in (1,2,3)} == {1, 4, 9})
+```
+
+### Tuple Comprehension
+
+元组没有推导式，但可以使用生成器表达式代替。生成器表达式使用`()`包裹，语法与列表推导式相似，但其返回值是一个生成器类型，需要使用`tuple()`生成元组。
+
+```python
+assert(tuple((x for x in range(1,3))) == (1, 2))
 ```
 
 ## Keywords
