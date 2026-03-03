@@ -1305,6 +1305,97 @@ assert({i**2 for i in (1,2,3)} == {1, 4, 9})
 assert(tuple((x for x in range(1,3))) == (1, 2))
 ```
 
+## File Operation
+
+```python
+open(filename, mode, encoding=None)
+```
+
+`open()`方法用于打开一个文件，其返回一个文件对象。文件对象使用完后必须使用`close()`方法正确关闭。
+
+参数`mode`指明打开文件的方式。在任意模式后加上`b`可以用二进制模式打开文件，以该模式打开文件应该使用`bytes`处理数据。
+
+- `r`：只读
+- `w`：只写（覆写）
+- `a`：追加
+- `r+`：读写
+
+默认编码与平台有关，但最常用的是`encoding='utf-8'`。
+
+在处理文件对象时，最好使用`with`语句。在子句体结束后，文件会被正确关闭。
+
+```python
+file = open('file.md', 'w')
+file.write("Hello World\n")
+file.close()
+
+wiht open('file.md', 'a', encoding='utf-8') as file:
+    file.write("Hello World\n")
+```
+
+### Builtin Methods
+
+#### read()
+
+```python
+fileObject.read(size)
+```
+
+`size`指定读取的字符数（文本模式）或字节数（二进制模式）。若省略`size`或`size`为负数则读取整个文件。
+
+```python
+wiht open('file.md', 'a', encoding='utf-8') as file:
+    while True:
+        s = file.read(1024)
+        if not s:
+            break
+        print(s)
+```
+
+#### readline()
+
+读取一行数据，返回的字符串保留换行符。
+
+```python
+wiht open('file.md', 'a', encoding='utf-8') as file:
+    while True:
+        l = file.readline()
+        if not l:
+            break
+        print(l, end="")
+```
+
+#### readlines()
+
+读取整个文件，返回按行划分的字符串列表。
+
+```python
+wiht open('file.md', 'a', encoding='utf-8') as file:
+    for l in file.readlines():
+        print(l, end="")
+```
+
+读取整个文件可以直接遍历文件对象。
+
+```python
+wiht open('file.md', 'a', encoding='utf-8') as file:
+    for l in file:
+        print(l, end="")
+```
+
+#### write()
+
+```python
+fileObject.write(str)
+```
+
+向文件写入字符串。
+
+```python
+wiht open('file.md', 'a', encoding='utf-8') as file:
+    file.write("Hello World\n")
+```
+
 ## Keywords
 
 - 逻辑值
