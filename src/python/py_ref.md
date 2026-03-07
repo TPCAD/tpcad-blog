@@ -1396,6 +1396,58 @@ wiht open('file.md', 'a', encoding='utf-8') as file:
     file.write("Hello World\n")
 ```
 
+## Exception
+
+```python
+try:
+    statements
+except ErrorType as var:
+    statements
+except ErrorType:
+    statements
+else:
+    statements
+finally:
+```
+
+`try`语句执行过程如下：
+
+- 执行`try`子句
+- 若没发生异常则跳过`except`子句，跳转执行`else`子句
+- 若发生异常，跳过`try`子句的剩余内容，跳转至匹配的`except`子句执行
+- 若没有匹配的`except`子句，则向上抛出异常
+- 无论发生异常与否都会执行`finally`子句
+
+只有最先匹配的`except`子句会被执行，若想一次匹配多个异常，可以使用元组包裹异常类型。类型`Exception`是所有异常类型的父类，可以用作通配符。一些异常会带有参数，在`except`后使用`as`可以将异常绑定到变量上。
+
+```python
+except (NameError, ValueError, TypeError):
+    pass
+```
+
+## Module
+
+使用`import`导入模块时会执行对应的 Python 文件。利用`__name__`可以避免执行测试代码。
+
+```python
+if __name__ == '__main__':
+    pass
+```
+
+```python
+import math
+print(math.abs(-42))
+
+from math import abs
+print(abs(-42))
+print(math.sqrt(9))
+
+from math import *
+print(abs(-42))
+print(sqrt(9))
+```
+
+
 ## Keywords
 
 - 逻辑值
