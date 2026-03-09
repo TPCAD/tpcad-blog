@@ -1224,15 +1224,13 @@ foo(1, c=3, b=2)
 # foo(a=1, b=2, 3)  # 关键字参数之后不能有位置参数
 ```
 
-### Special Arguments
+### Special Parameters
+
+默认情况下，参数可以按顺序或关键字传递给函数。使用`/`和`*`可以限制传参方式。
 
 ```python
 def foo(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2):
-    print(pos1)
-    print(pos2)
-    print(pos_or_kwd)
-    print(kwd1)
-    print(kwd2)
+    pass
 
 # 两种传参方式是等价的
 foo(1, 2, 3, kwd1=4, kwd2=5)
@@ -1241,61 +1239,69 @@ foo(1, 2, pos_or_kwd=3, kwd1=4, kwd2=5)
 
 #### Positional-Only Arguments
 
-仅位置参数，位于 `/` 前，传参时必须严格按照顺序。
+仅位置参数，位于`/`前，传参时必须严格按照顺序。
 
 ```python
-def foo(*varargs):
-    print(varargs)
+def foo(arg, /):
+    pass
 
-foo("hello", " ", "world")
-# ('hello', ' ', 'world')
+foo(42)
+# foo(arg=42)  # 只接受位置参数
 ```
 
 #### Positional-Or-Keyword Arguments
 
-位于 `/` 前，`*` 后，这是默认的传参方式。
+位于`/`后，`*`前，`/`和`*`可以省略。这是默认的传参方式。
+
+```python
+def foo(arg):
+    pass
+
+foo(42)
+foo(arg=42)
+```
 
 #### Keyword-Only Arguments
 
-仅关键字参数，位于 `*` 后，传参时必须指定参数名称。
+仅关键字参数，位于`*`后，传参时必须指定参数名称。
 
 ```python
-def foo(**kwargs):
-    print(kwargs)
+def foo(*, arg):
+    pass
 
-foo(kwd1="hello", kwd2=" ", kwd3="world")
-# {'kwd1': 'hello', 'kwd2': ' ', 'kwd3': 'world',}
+foo(arg=42)
+# foo(42)  # 只接受关键字参数
 ```
 
 ### Arbitrary Arguments List
 
-不定长位置参数会将任意数量的位置参数打包成元组。不定长参数必须位于所有位置参数之后。不定长位置参数之后的所有参数只能是关键字参数。使用`*`定义不定长位置参数。
+有时候函数会需要接受任意多个实参。形参的`*`或`**`前缀使得函数可以接受任意多个位置参数或关键字参数。
+
+使用`*`定义不定长位置参数。不定长位置参数必须位于所有普通参数之后，其后的所有参数只能是关键字参数。不定长位置参数会将任意数量的位置参数打包成元组。
 
 ```python
 def foo(a, b, *args):
-    print(args)
+    return args
 
-foo(1, 3, 4, 5)
-# (4, 5)
+assert(foo(1, 3, 4, 5) == (4, 5))
 ```
 
-不定长关键字参数会将任意数量的关键字参数打包成字典。不定长关键字参数必须位于所有参数之后。使用`**`定义不定长关键字参数。
+使用`**`定义不定长关键字参数。不定长关键字参数必须位于所有参数之后。不定长关键字参数会将任意数量的关键字参数打包成字典。
 
 ```python
 def foo(a, b, **kwargs):
-    print(args)
+    return kwargs
 
-foo(1, 3, f='a', b='d')
-# {"f": "a", "b": "d"}
+assert(foo(1, 3, f='a', b='d') == {"f": "a", "b": "d"})
 ```
 
 在传参时使用`*`或`**`可以解包列表、元组或字典。
 
 ```python
-def foo(a, b, c, d):
-    print(a, b, c, d)
+def foo(a, b, c, d, e, f):
+    print(a, b, c, d, e, f)
 
-foo(*[1, 3], **{"c": 2, "d": 4})
+foo(*[1, 3], *(2, 4), **{"e": 42, "f": 24})
 ```
 
 ### Lambda Expression
