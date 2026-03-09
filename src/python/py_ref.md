@@ -1156,19 +1156,6 @@ foo()
 assert(var == 20)
 ```
 
-### Parameters
-
-Python 有两种参数，位置参数和关键字参数。使用关键字传参可以不按定义顺序传入参数。关键字参数必须位于位置参数之后。
-
-```python
-def foo(a, b, c):
-    print(a, b, c)
-
-foo(1, 2, 4)
-foo(c = 3, a = 1, b = 10)
-foo(3, c = 1, b = 10)
-```
-
 ### Default Argument Values
 
 为参数指定默认值可以以更少的参数调用函数。默认值参数不能位于必选参数之前。
@@ -1220,6 +1207,21 @@ def foo(a, l=None):
 assert(foo(1) == [1])
 assert(foo(2) == [2])
 assert(foo(3) == [3])
+```
+
+### Keyword Arguments
+
+除了按顺序传入参数外，Python 还支持键值对形式的关键字参数。
+
+```python
+def foo(a, b, c):
+    return a + b + c
+
+foo(1, 2, 3)
+foo(a=1, b=2, c=3)
+foo(b=2, c=3, a=1)  # 乱序
+foo(1, c=3, b=2)
+# foo(a=1, b=2, 3)  # 关键字参数之后不能有位置参数
 ```
 
 ### Special Arguments
