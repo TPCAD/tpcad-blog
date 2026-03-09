@@ -1169,13 +1169,57 @@ foo(c = 3, a = 1, b = 10)
 foo(3, c = 1, b = 10)
 ```
 
-### Default Arguments
+### Default Argument Values
 
-默认参数不能位于必选参数之前。
+为参数指定默认值可以以更少的参数调用函数。默认值参数不能位于必选参数之前。
 
 ```python
-def foo(x, y = 10)
-    print(x + y)
+def foo(x, y = 10):
+    return x + y
+
+assert(foo(10) == 20)
+```
+
+默认值只在函数定义时进行一次求值并存储在函数对象的内部属性`__defaults__`中，后续调用函数时使用的默认值都是这个值。
+
+```python
+i = 5
+def foo(a=i):
+    return i
+
+i += 1
+assert(foo() == 5)
+
+def bar(a = 1, b = 2):
+    return a + b
+
+assert(bar.__defaults__ == (1, 2))
+```
+
+因为默认值只求值一次，所以当默认值是列表、字典等可变对象时，调用函数会共享默认值。
+
+```python
+def foo(a, l=[]):
+    l.append(a)
+    return l
+
+assert(foo(1) == [1])
+assert(foo(2) == [1, 2])
+assert(foo(3) == [1, 2, 3])
+```
+
+若不想在后续调用时共享默认值，可以将默认值设为`None`。
+
+```python
+def foo(a, l=None):
+    if l is None:
+        l = []
+    l.append(a)
+    return l
+
+assert(foo(1) == [1])
+assert(foo(2) == [2])
+assert(foo(3) == [3])
 ```
 
 ### Special Arguments
