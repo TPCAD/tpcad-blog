@@ -1563,6 +1563,82 @@ c = ClassName()
 
 `__init__`方法类似与 C++ 中的构造函数，在实例化一个类时会自动调用该函数。
 
+### Instance Objects
+
+```python
+class ClassName:
+    pass
+
+c = ClassName()
+```
+
+在 Python 中，实例的数据成员并不需要显式声明，其在首次赋值时就会出现。数据成员必须以`object.member`的形式访问。实例对象的数据属性只属于对应实例，其他实例无法访问。
+
+```python
+class Foo:
+    pass
+
+foo = Foo()
+foo.bar = 42
+
+foo_secd = Foo()
+# assert(foo_secd.bar == 42) # 实例 foo_secd 没有 bar 属性
+```
+
+除了数据属性外，函数也可以作为实例的成员。作为实例属性的函数成为方法，其第一个参数必须是实例本身。通常这个参数会被命名为`self`，但这并非强制。通过`object.func()`形式调用方法时会自动传入实例本身作为第一个参数。方法的声明除了和数据成员一样在类外部声明，更常见的是在类内部声明。
+
+```python
+class Foo:
+    def bar(self):
+        pass
+
+foo = Foo()
+foo.bar()
+```
+
+### Class Objects
+
+在 Python 中，万物皆对象。类本身也是一个对象，在类定义结束时会创建一个「类对象」。
+
+任何定义在类中的名称都是类对象的属性。类的数据属性将作为所有实例的共享数据，任何实例访问到的都是同一份数据。因此在共享列表、字典等可变类型时，修改可以被所有实例观测到。而类的函数属性将作为实例的方法。类对象的属性以`ClassName.member`形式访问。
+
+```python
+class Foo:
+    i = 42
+
+    def bar(self):
+        pass
+
+assert(Foo.i == 42)
+Foo.i = 24
+assert(Foo.i == 24)
+
+Foo.a = 100 # 为类对象声明一个新的数据属性
+```
+
+实例方法与函数并不是同一种类型。
+
+```python
+import inspect
+
+class Foo:
+    def bar(self):
+        pass
+
+foo = Foo()
+
+assert(inspect.ismethod(foo.bar))
+assert(inspect.isfunction(Foo.bar))
+```
+
+### Magic Methods
+
+「魔术方法」是实例在特定场景下自动执行的方法，方法名以`__`开始和结束。
+
+#### \_\_init\_\_
+
+`__init__`方法会在创建实例时执行，类似 C++ 的构造函数。通常实例的数据属性会在此时声明。
+
 ```python
 class Complex:
     def __init__(self, real, image):
@@ -1574,81 +1650,28 @@ assert(c.r == 3)
 assert(c.i == 4)
 ```
 
-### Class Objects
+#### \_\_del\_\_
 
-类本身也是一个对象，在类定义结束时会创建一个「类对象」。类对象支持「属性引用」和「实例化」两种操作。
+`__del__`方法会在实例被销毁时执行，类似 C++ 的析构函数，用于回收对象所占用的资源等。
 
-任何定义在类中的名称都是类对象的属性。
+#### \_\_str\_\_
 
-```python
-class Foo:
-    i = 42
-
-    def bar(self):
-        pass
-```
-
-`Foo.i`和`Foo.bar`都是类对象`Foo`的有效属性引用，一个返回整数，一个返回函数对象。属性可以被赋值或删除，且不是必须定义在类内部。
+`__str__`方法会在实例需要转换成字符串时执行，如`print()`。
 
 ```python
-assert(Foo.i == 42)
-Foo.i = 24
-assert(Foo.i == 24)
+class Complex:
+    def __init__(self, real, image):
+        self.r = real
+        self.i = image
 
-Foo.a = 100
-```
+    def __str__(self):
+        if image < 0:
+            return f"{self.real} - {-self.image}j"
 
-类的实例化使用函数表示法。
+        return f"{self.real} + {self.image}j"
 
-```python
-foo = Foo()
-```
-
-类对象的数据属性是所有实例共享的。因此在共享列表、字典等可变类型时，修改可以被所有实例观测到。
-
-```python
-class Foo:
-    l = []
-
-f1 = Foo()
-f2 = Foo()
-f1.l.append(42)
-f2.l.append(24)
-
-assert(Foo.l == [42, 24])
-```
-
-### Instance Objects
-
-实例对象只支持属性引用操作。实例对象的属性分为两种：数据属性和方法。
-
-数据属性类似于 C++ 中的数据成员，但与 C++ 不同，数据属性无需显式声明，在首次赋值时就会出现。实例对象的数据属性只属于对应实例，其他实例无法访问。
-
-```python
-class Foo:
-    i = 42
-
-    def bar(self):
-        pass
-
-foo = Foo()
-foo.a = 10
-assert(foo.a == 10)
-```
-
-实例对象的方法来自于类对象的函数属性。在定义时，方法的第一个参数通常被命名为`self`，但这只是一个约定，而非语法规定。在使用实例对象调用方法时会自动传入实例本身到这个参数中。而如果使用类对象调用则会要求显式传入一个实例。
-
-```python
-class Foo:
-    i = 42
-
-    def bar(self):
-        pass
-
-foo = Foo()
-
-foo.bar()
-Foo.bar(foo)
+c = Complex(3, 4)
+assert(str(c) == "3 + 4j")
 ```
 
 ## Keywords
