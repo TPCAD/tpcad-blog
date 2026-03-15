@@ -1552,6 +1552,104 @@ print(abs(-42))
 print(sqrt(9))
 ```
 
+## Class
+
+```python
+class ClassName:
+    pass
+
+c = ClassName()
+```
+
+`__init__`方法类似与 C++ 中的构造函数，在实例化一个类时会自动调用该函数。
+
+```python
+class Complex:
+    def __init__(self, real, image):
+        self.r = real
+        self.i = image
+
+c = Complex(3, 4)
+assert(c.r == 3)
+assert(c.i == 4)
+```
+
+### Class Objects
+
+类本身也是一个对象，在类定义结束时会创建一个「类对象」。类对象支持「属性引用」和「实例化」两种操作。
+
+任何定义在类中的名称都是类对象的属性。
+
+```python
+class Foo:
+    i = 42
+
+    def bar(self):
+        pass
+```
+
+`Foo.i`和`Foo.bar`都是类对象`Foo`的有效属性引用，一个返回整数，一个返回函数对象。属性可以被赋值或删除，且不是必须定义在类内部。
+
+```python
+assert(Foo.i == 42)
+Foo.i = 24
+assert(Foo.i == 24)
+
+Foo.a = 100
+```
+
+类的实例化使用函数表示法。
+
+```python
+foo = Foo()
+```
+
+类对象的数据属性是所有实例共享的。因此在共享列表、字典等可变类型时，修改可以被所有实例观测到。
+
+```python
+class Foo:
+    l = []
+
+f1 = Foo()
+f2 = Foo()
+f1.l.append(42)
+f2.l.append(24)
+
+assert(Foo.l == [42, 24])
+```
+
+### Instance Objects
+
+实例对象只支持属性引用操作。实例对象的属性分为两种：数据属性和方法。
+
+数据属性类似于 C++ 中的数据成员，但与 C++ 不同，数据属性无需显式声明，在首次赋值时就会出现。实例对象的数据属性只属于对应实例，其他实例无法访问。
+
+```python
+class Foo:
+    i = 42
+
+    def bar(self):
+        pass
+
+foo = Foo()
+foo.a = 10
+assert(foo.a == 10)
+```
+
+实例对象的方法来自于类对象的函数属性。在定义时，方法的第一个参数通常被命名为`self`，但这只是一个约定，而非语法规定。在使用实例对象调用方法时会自动传入实例本身到这个参数中。而如果使用类对象调用则会要求显式传入一个实例。
+
+```python
+class Foo:
+    i = 42
+
+    def bar(self):
+        pass
+
+foo = Foo()
+
+foo.bar()
+Foo.bar(foo)
+```
 
 ## Keywords
 
