@@ -779,6 +779,59 @@ assert(timer_two.limit == 10)
 assert(timer_one.limit == timer_two.limit)
 ```
 
+## Iterators
+
+为类实现`__iter__`和`__next__`方法即可实现迭代器类。
+
+```python
+class CustomRange:
+    def __init__(self, start, stop, step):
+        self.current = start
+        self.end= stop
+        self.step = step
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current < self.end:
+            x = self.current
+            self.current = self.current + self.step
+            return x
+        else:
+            raise StopIteration
+
+for i in CustomRange(1, 10, 1):
+    print(i)
+```
+
+## Generators
+
+生成器是一种快速产生迭代器的方式。使用`yield`关键字定义一个生成器函数。每次迭代到`yield`语句时，函数会返回指定的值并在此阻塞，直到下一次迭代。
+
+```python
+def fibonacci(n):
+    a, b, counter = 0, 1, 0
+    while True:
+        if (counter > n): 
+            return
+        yield a
+        a, b = b, a + b
+        counter += 1
+
+for i in fibonacci(10):
+    print(i)
+```
+
+除了`yield`关键字，还可以使用推导式产生生成器。
+
+```python
+gen = (x * 2 for x in range(5))
+
+for i in gen:
+    print(i)
+```
+
 ## Keywords
 
 - 逻辑值
