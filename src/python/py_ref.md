@@ -1726,7 +1726,7 @@ assert(str(c) == "3 + 4j")
 
 ### Private Attributes
 
-Python 中并不存在所谓的「私有属性」，但按照约定，以`__`开头的属性应当被认为是 API 的非公有部分。
+Python 中并不存在所谓的「私有属性」，但按照**约定**，以`_`开头的属性应当被认为是 API 的非公有部分。
 
 ```python
 class Person:
