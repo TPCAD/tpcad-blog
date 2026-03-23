@@ -1,14 +1,10 @@
-+++
-title = 'Rust_process_module'
-date = 2025-11-10T15:11:39+08:00
-draft = true
-+++
+# std::process
 
-`std::process` 是 Rust 标准库中用于处理进程的模块，可以生成子进程并与之交互，同时也提供了 `abort` 和 `exit` 来中止当前进程。
+`std::process`是 Rust 标准库中用于处理进程的模块，可以生成子进程并与之交互，同时还提供了`abort`和`exit`方法来中止当前进程。
 
-## 生成子进程
+## 创建子进程
 
-`Command` 结构体是 `std::process` 最重要的结构体，用于配置和生成子进程。
+`Command`结构体是`std::process`最重要的结构体，用于配置和生成子进程。
 
 `new` 方法只创建 `Command` 对象，并没有生成子进程。
 
