@@ -1629,6 +1629,58 @@ assert(inspect.ismethod(foo.bar))
 assert(inspect.isfunction(Foo.bar))
 ```
 
+#### Class Methods
+
+使用装饰器`@classmethod`可以定义类方法。类方法与实例方法类似，其第一个参数必须是类本身，常命名为`cls`。类方法常被用作工厂方法。
+
+```python
+from datetime import date
+
+class Person:
+    species = "Homo sapiens"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    @classmethod
+    def from_birth_year(cls, name, birth_year):
+        """Alternative constructor to create a Person instance from a birth year."""
+        current_year = date.today().year
+        age = current_year - birth_year
+        return cls(name, age) # This calls the __init__ method of the class
+
+    @classmethod
+    def display_species(cls):
+        """Class method to access and display a class attribute."""
+        print(f"This is a {cls.species}")
+
+    def display_info(self):
+        """Instance method to display instance-specific info."""
+        print(f"{self.name} is {self.age} years old.")
+
+person = Person.from_birth_year('John', 1985)
+
+assert(person.name == "John")
+assert(person.age == 1985)
+```
+
+#### Static Methods
+
+使用装饰器`@staticmethod`可以定义静态方法。静态方法不需要类或实例本身作为第一个参数，且类和实例都可以调用。
+
+```python
+class Base:
+    @staticmethod
+    def the_answer() -> int:
+        return 42
+
+base = Base()
+
+asssert(Base.the_answer = 42)
+asssert(base.the_answer = 42)
+```
+
 ### Magic Methods
 
 「魔术方法」是实例在特定场景下自动执行的方法，方法名以`__`开始和结束。
@@ -1670,6 +1722,22 @@ class Complex:
 
 c = Complex(3, 4)
 assert(str(c) == "3 + 4j")
+```
+
+### Private Attributes
+
+Python 中并不存在所谓的「私有属性」，但按照约定，以`__`开头的属性应当被认为是 API 的非公有部分。
+
+```python
+class Person:
+    def __init__(self, name: str, age: int): -> None
+        self.name:str = name
+        self.__age:int = age
+
+person = Person("John", 42)
+
+assert(person.name == "John")
+assert(person.__age == 42) # it's only a convention
 ```
 
 ### Inheritance
