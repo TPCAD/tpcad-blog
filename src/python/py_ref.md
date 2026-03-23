@@ -435,11 +435,11 @@ assert([x**2 for x in range(10) if x % 2 == 0] == [0, 4, 16, 36, 64])
 result = [(x, y) for x in [1,2,3] for y in [3,1,4] if x != y]
 
 # 等价于
-combs = []
+result = []
 for x in [1,2,3]:
     for y in [3,1,4]:
         if x != y:
-            combs.append((x, y))
+            result.append((x, y))
 ```
 
 ### Dictionary Comprehension
