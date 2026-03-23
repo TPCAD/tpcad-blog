@@ -617,6 +617,168 @@ print(abs(-42))
 print(sqrt(9))
 ```
 
+## Decorators
+
+装饰器（Decorators）是一种动态修改函数或类行为的方式。装饰器的本质是将原函数或类包装，返回并使用经过包装的函数或类。
+
+```python
+def language(func):
+    def wrapped():
+        func()
+        print("Python")
+
+    return wrapped
+
+@language
+def hello():
+    print("Hello")
+
+hello()
+```
+
+原函数带参数时，可以通过不定长参数传入。
+
+```python
+def language(func):
+    def wrapped(*vargs, **kwargs):
+        func(*vargs, **kwargs)
+        print("Python")
+
+    return wrapped
+
+@language
+def hello(word: str):
+    print(word)
+
+hello("hi")
+```
+
+原函数带返回值时，直接返回即可。
+
+```python
+def logger(func):
+    def wrapper(*args, **kwargs):
+        print("=== log ===")
+        return func(*args, **kwargs)
+    return wrapper
+
+@logger
+def inc(num):
+    print(num+1)
+
+def dec(num):
+    return num - 1
+
+inc(10)
+print(dec(10))
+```
+
+装饰器函数也可以带参数，只需要对装饰器函数包装即可。
+
+```python
+def language(lang):
+    def language_wrapped(func):
+        def wrapped(*vargs, **kwargs):
+            func(*vargs, **kwargs)
+            print(lang)
+        return wrapped
+    return language_wrapped
+
+@language("Java")
+def hello(word: str):
+    print(word)
+
+hello("hi")
+```
+
+多个装饰器按照从下往上的顺序执行。
+
+```python
+def decorator_one(func):
+    def wrapped():
+        func()
+        print("decorator_one")
+    return wrapped
+
+def decorator_two(func):
+    def wrapped():
+        func()
+        print("decorator_two")
+    return wrapped
+
+@decorator_two
+@decorator_one
+def func():
+    print("func")
+
+func()
+# func
+# decorator_one
+# decorator_two
+```
+
+类装饰器用函数和类两种方式实现。
+
+```python
+# 使用函数实现
+def logger(cls):
+    class Wrapper:
+        def __init__(self, *args, **kwargs) -> None:
+            self.wrapped = cls(*args, **kwargs)
+
+        # 访问包装类型不存在的属性时将其转发给原类型
+        def __getattr__(self, name):
+            return getattr(self.wrapped, name)
+
+        def count_down(self):
+            print("=== log ===")
+            self.wrapped.count_down()
+
+    return Wrapper
+
+@logger
+class Timer:
+    def __init__(self, limit):
+        self.limit = limit
+
+    def count_down(self):
+        for i in range(self.limit):
+            print(i)
+
+timer = Timer(10)
+timer.count_down()
+print(timer.limit)
+```
+
+类形式的装饰器一般借助`__call__`方法实现。`__call__`方法会在对象以函数形式使用时执行。
+
+```python
+# 类形式的单例装饰器
+class Singleton:
+    def __init__(self, cls) -> None:
+        self.cls = cls
+        self. instance = None
+
+    def __call__(self, *args, **kwargs):
+        if self.instance is None:
+            self.instance = self.cls(*args, **kwargs)
+        return self.instance
+
+@Singleton
+class Timer:
+    def __init__(self, limit):
+        self.limit = limit
+
+    def count_down(self):
+        for i in range(self.limit):
+            print(i)
+
+timer_one = Timer(10)
+timer_two= Timer(20)
+assert(timer_two.limit == 10)
+assert(timer_one.limit == timer_two.limit)
+```
+
 ## Keywords
 
 - 逻辑值
