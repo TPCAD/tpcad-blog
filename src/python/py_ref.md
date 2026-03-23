@@ -1674,6 +1674,73 @@ c = Complex(3, 4)
 assert(str(c) == "3 + 4j")
 ```
 
+### Inheritance
+
+```python
+class BaseClass:
+    pass
+
+class DerivedClass(BaseClass):
+    pass
+```
+
+Python 同样支持「继承」。使用`super()`可以调用父类的方法。
+
+```python
+class Animal:
+    def __init__(self, name: str) -> None:
+        self.name:str = name
+
+class Cat(Animal):
+    def __init__(self, name: str, age: int) -> None:
+        super().__init__(name)
+        self.age:int = age
+
+cat = Cat("neko", 2)
+assert(cat.name == "neko")
+assert(cat.age == 2)
+```
+
+### Polymorphism
+
+```python
+from typing import override
+
+class Animal:
+    def __init__(self, name: str) -> None:
+        self.name:str = name
+
+    def call(self) -> str:
+        return "animal calls"
+
+class Cat(Animal):
+    def __init__(self, name: str, age: int) -> None:
+        super().__init__(name)
+        self.age:int = age
+
+    @override
+    def call(self) -> str:
+        return "meow"
+
+class Dog(Animal):
+    def __init__(self, name: str, age: int) -> None:
+        super().__init__(name)
+        self.age:int = age
+
+    @override
+    def call(self) -> str:
+        return "bark"
+
+def animal_call(animal: Animal) -> str:
+    return animal.call()
+
+cat = Cat("kitty", 2)
+dog = Dog("Bruce", 1)
+
+assert(animal_call(cat) == "meow")
+assert(animal_call(dog) == "bark")
+```
+
 ## Keywords
 
 - 逻辑值
