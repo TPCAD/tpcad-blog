@@ -51,7 +51,9 @@
 # Python
 
 - [Python Reference](./python/py_ref.md)
-- [Numpy Reference]()
+- [Python Class](./python/py_class.md)
+- [Python Data Type](./python/py_data_type.md)
+- [Numpy Reference](./python/py_numpy.md)
 - [Python 包管理](./python/py_package_manager.md)
 
 ---

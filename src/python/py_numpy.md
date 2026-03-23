@@ -1,9 +1,3 @@
-+++
-title = 'NumPy Reference'
-date = 2024-11-22T08:24:44+08:00
-tags = ['Python', 'NumPy']
-+++
-
 # NumPy CheatSheet
 
 ## Ndarray
