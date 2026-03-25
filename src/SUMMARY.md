@@ -51,8 +51,9 @@
 # Python
 
 - [Python Reference](./python/py_ref.md)
-- [Python Class](./python/py_class.md)
-- [Python Data Type](./python/py_data_type.md)
+- [Python 内置数据类型](./python/py_data_type.md)
+- [Python 类](./python/py_class.md)
+- [Python 命名空间与作用域](./python/py_namespace_scope.md)
 - [Numpy Reference](./python/py_numpy.md)
 - [Python 包管理](./python/py_package_manager.md)
 
