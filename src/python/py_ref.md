@@ -26,11 +26,12 @@ assert(j == 43)
 assert(id(i) != id(j))
 ```
 
-但对于可变类型，赋值只是拷贝了指针的值，而非指针指向的内存。因此，当对象被修改时，所有的绑定到该对象的名称都可以观测到。
+但对于可变类型，通常都是容器类型，即在栈区存储胖指针，在堆区存储实际数据，赋值只是为栈区内存添加新的标签。因此，当对象被修改时，所有的绑定到该对象的名称都可以观测到。
 
 ```python
 la = [1, 2, 3]
 lb = la
+assert(id(la) == id(lb))
 assert(la == lb)
 lb.append(4)
 assert(la == lb)
@@ -45,6 +46,70 @@ assert(id(la) != id(lb))
 ```
 
 这种特性同样适用于函数传参等场景。
+
+### Shallow Copy and Deep Copy
+
+深浅拷贝对于不可变类型的效果是一样的。
+
+对于可变类型（容器类型，如列表，字典），赋值拷贝只是将一个新的标签绑定到容器的栈内存。
+
+```python
+l = [[1,2,3], 4]
+la = l
+assert(la == l)
+assert(id(la) == id(l))
+
+l.append(5)
+
+assert(la == l)
+assert(id(la) == id(l))
+```
+
+可变类型的浅拷贝会同时拷贝容器的栈内存和堆内存。
+
+```python
+l = [[1,2,[3,4]], 5]
+lb = l.copy()
+assert(lb == l)
+assert(id(lb) != id(l))
+
+# 只拷贝元素的栈内存，不拷贝元素的堆内存
+l[0].append(6)
+assert(lb == l)
+assert(id(lb[0]) == id(l[0]))
+
+l[0][2].append(5)
+assert(lb == l)
+assert(id(lb[0]) == id(l[0]))
+
+l.append(6)
+assert(lb != l)
+```
+
+可变类型的深拷贝不仅会拷贝栈内存，还会递归拷贝堆内存的元素。
+
+```python
+from copy import deepcopy
+l = [[1,2,[3,4]], 5]
+
+lc = deepcopy(l)
+assert(lc == l)
+# 拷贝栈内存
+assert(id(lc) != id(l))
+
+# 递归拷贝堆内存元素
+assert(id(l[0]) != id(lc[0]))
+assert(id(l[0][2]) != id(lc[0][2]))
+
+l[0].append(6)
+assert(lc != l)
+
+l[0][2].append(5)
+assert(lc != l)
+
+l.append(6)
+assert(lc != l)
+```
 
 ## Control Flow
 
