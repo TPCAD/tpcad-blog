@@ -500,14 +500,14 @@ dict = {key_expression : value_expression for var in sequence}
 dict = {key_expression : value_expression for var in sequence if condition}
 ```
 
-字典推导式比列表推导式多了`key_expression`，用于生成字典的键。
+字典推导式使用`{}`包裹。
 
 ```python
 d = {i : i**2 for i in range(3)}
 assert({i : i**2 for i in range(3)} == {0: 0, 1: 1, 2: 4})
 
 l = ['foo', 'bar']
-assert({l : i for i in range(1, 3)} == {"foo": 1, "bar": 2})
+assert({l[i] : i for i in range(2)} == {"foo": 0, "bar": 1})
 ```
 
 ### Set Comprehension
