@@ -26,6 +26,8 @@
 
 # Cli
 
+- [Sed Reference](./cli/sed.md)
+
 ---
 
 # C++
