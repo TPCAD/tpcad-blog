@@ -901,13 +901,13 @@ for i in CustomRange(1, 10, 1):
 
 ## Generators
 
-生成器是一种快速产生迭代器的方式。使用`yield`关键字定义一个生成器函数。每次迭代到`yield`语句时，函数会返回指定的值并在此阻塞，直到下一次迭代。
+生成器是迭代器的一种简单实现。使用`yield`关键字定义一个生成器函数。每次迭代到`yield`语句时，函数会返回指定的值并在此阻塞，直到下一次迭代。
 
 ```python
 def fibonacci(n):
     a, b, counter = 0, 1, 0
     while True:
-        if (counter > n): 
+        if (counter > n):
             return
         yield a
         a, b = b, a + b
@@ -917,7 +917,7 @@ for i in fibonacci(10):
     print(i)
 ```
 
-除了`yield`关键字，还可以使用推导式产生生成器。
+除了`yield`关键字，还可以使用生成器表达式。
 
 ```python
 gen = (x * 2 for x in range(5))
