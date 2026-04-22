@@ -639,11 +639,54 @@ finally:
 - 若没有匹配的`except`子句，则向上抛出异常
 - 无论发生异常与否都会执行`finally`子句
 
-只有最先匹配的`except`子句会被执行，若想一次匹配多个异常，可以使用元组包裹异常类型。类型`Exception`是所有异常类型的父类，可以用作通配符。一些异常会带有参数，在`except`后使用`as`可以将异常绑定到变量上。
+`try`语句执行逻辑与`if`语句类似，只有最先匹配的`except`子句会被执行，若多个异常的处理逻辑相同，可以使用元组包裹这些异常类型。
 
 ```python
+try:
+    statements
 except (NameError, ValueError, TypeError):
     pass
+```
+
+类型`Exception`是所有异常类型的父类，可以用作通配符。
+
+```python
+try:
+    statements
+except Other_Exceptions:
+    statements
+except Exception:
+    pass
+```
+
+一些异常会带有参数，在`except`后使用`as`可以将异常实例绑定到变量上。
+
+```python
+try:
+    statements
+except ErrorType as e:
+    statements
+```
+
+`raise`关键字可以主动抛出异常。
+
+```python
+raise VallueError("Value Error")
+```
+
+### 自定义异常类
+
+所有异常类都继承自`Exception`。
+
+```python
+class InvalidEmailError(Exception):
+    def __init__(self, message = "Invalid email"):
+        self.message = message
+        super().__init__(message)
+
+address = "a.com"
+if "@" not in address:
+    raise InvalidEmailError()
 ```
 
 ## Module
