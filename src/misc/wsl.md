@@ -95,7 +95,7 @@ kernel=path_to_custom_kernel
 diskpart
 
 # 选择磁盘镜像
-select vdisk file=C:\\Ubuntu\\ext4.vhdx
+select vdisk file=C:\Ubuntu\ext4.vhdx
 # 进入磁盘镜像
 attach vdisk readonly
 # 压缩磁盘镜像
