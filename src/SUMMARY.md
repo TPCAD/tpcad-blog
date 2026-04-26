@@ -61,6 +61,12 @@
 
 ---
 
+# SQL
+
+- [MySQL](./sql/mysql.md)
+
+---
+
 # Misc
 
 - [Regular Expression Reference](./misc/regex.md)
