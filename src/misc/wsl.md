@@ -48,6 +48,9 @@ wsl --shutdown
 
 ## 使用自定义内核
 
+> [!WARNING]
+> 使用较高版本的内核可能会导致 Docker Desktop 启动时一直处于「Starting Engine」状态。
+
 ### 编译内核
 
 WSL 使用的内核是 Microsoft 的 [WSL2-Linux-Kernel](https://github.com/microsoft/WSL2-Linux-Kernel)，编译内核需要一个 Linux 环境。
