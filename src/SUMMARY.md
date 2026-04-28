@@ -58,6 +58,8 @@
 - [Python 命名空间与作用域](./python/py_namespace_scope.md)
 - [Numpy Reference](./python/py_numpy.md)
 - [Python 包管理](./python/py_package_manager.md)
+- [Python 标准库]()
+  - [asyncio](./python/py_module_asyncio.md)
 
 ---
 
