@@ -1,10 +1,6 @@
-+++
-title = 'How Perfect Forwarding Works'
-date = 2024-08-12T17:46:57+08:00
-tags = ['cpp']
-+++
+# 什么是完美转发
 
-**转发** 指的是函数之间的参数传递。比如下面的代码，函数 `foo` 向函数 `bar` 传递了参数 `a`。
+**转发**指的是函数之间的参数传递。比如下面的代码，函数`foo`向函数`bar`传递了参数`a`。
 
 ```c
 foo(int a) {
@@ -18,7 +14,7 @@ bar(int b) {}
 
 ## 普通转发的问题
 
-在下面的代码中，函数 `pass` 接受一个右值引用，并将该参数传递给函数 `reference`。当向 `pass` 传入字面量 `1` 时，最终的输出结果是 `lvalue`。这是因为虽然向 `pass` 传入了右值，但在函数体内，变量 `x` 的值类别变成了**左值**，即 `x` 的类型是右值引用，值类别是左值，所以最终会调用 `reference(int &y)`。
+在下面的代码中，函数`pass`接受一个右值引用，并将该参数传递给函数`reference`。当向`pass`传入字面量`1`时，最终的输出结果是`lvalue`。这是因为虽然向`pass`传入了右值，但在函数体内，变量`x`的值类别变成了**左值**，即`x`的类型是右值引用，值类别是左值，所以最终会调用`reference(int&y)`。
 
 这就是普通转发存在的问题，在转发过程中可能会改变参数某些属性。
 
@@ -42,7 +38,7 @@ int main(int argc, char *argv[]) {
 
 ### 万能引用
 
-在普通函数中，若参数类型为 `&&`，则函数只能接受右值。
+在普通函数中，若参数类型为`&&`，则函数只能接受右值。
 
 ```c
 void foo(int &&x) {}
@@ -54,10 +50,10 @@ int main() {
 }
 ```
 
-但在模板函数中，若 `&&` 与模板参数结合，即 `T&&`，那么它将不再代表右值引用，而是**万能引用**。它既能接受左值，又能接受右值。
+但在模板函数中，若`&&`与模板参数结合，即`T&&`，那么它将不再代表右值引用，而是**万能引用**。它既能接受左值，又能接受右值。
 
 ```c
-template <typename T> void foo(T &&x) {
+template<typename T> void foo(T &&x) {
 }
 
 int main(int argc, char *argv[]) {
@@ -83,7 +79,7 @@ int main(int argc, char *argv[]) {
 
 ### std::forward
 
-C++ 使用 `std::forward` 进行完美转发。`std::forward` 的实现如下：
+C++ 使用`std::forward` 进行完美转发。`std::forward`的实现如下：
 
 ```c
 /**
@@ -113,7 +109,7 @@ template<typename _Tp>
   }
 ```
 
-其中 `std::remove_reference` 是一个模板类，它的实现如下：
+其中`std::remove_reference`是一个模板类，它的实现如下：
 
 ```c
 template<class T> struct remove_reference { typedef T type; };
@@ -121,7 +117,7 @@ template<class T> struct remove_reference<T&> { typedef T type; };
 template<class T> struct remove_reference<T&&> { typedef T type; };
 ```
 
-通过 `std::remove_reference` 将类型的引用去除，得到值类型。`std::forward` 有两个重载，分别匹配左值引用和右值引用，当匹配左值引用时，根据引用折叠规则，`static_cast<_Tp&&>(__t)` 返回左值引用，当匹配右值引用时，根据引用折叠规则，`static_cast<_Tp&&>(__t)` 返回右值引用。
+通过`std::remove_reference`将类型的引用去除，得到值类型。`std::forward`有两个重载，分别匹配左值引用和右值引用，当匹配左值引用时，根据引用折叠规则，`static_cast<_Tp&&>(__t)`返回左值引用，当匹配右值引用时，根据引用折叠规则，`static_cast<_Tp&&>(__t)`返回右值引用。
 
 ## 使用 std::forward
 
