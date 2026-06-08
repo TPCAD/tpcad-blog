@@ -52,6 +52,28 @@ or
 23 == True # 所有非 0 数值皆为真
 ```
 
+#### Logic Operator
+
+- `and` 逻辑与
+- `or` 逻辑或
+- `not` 逻辑非
+
+`and`和`or`的返回值是决定逻辑结果的操作数。
+
+```python
+a = "" and 42
+assert a == ""
+
+b = 42 and 24
+assert b == 24
+
+c = 42 or 24
+assert c == 42
+
+d = "" or 42
+assert d == 42
+```
+
 ### Sequence Types
 
 Python 中的「序列类型」类似 C 中的数组，由一系列连续的内存存储，可通过索引访问。List、Tuple 和 Range 是三种基本的序列类型。另外还有为处理二进制数据和文本字符串而特别定制的序列类型 Bytes 和 String。
