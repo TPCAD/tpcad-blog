@@ -66,6 +66,32 @@ pip show package_name
 
 uv 是使用 Rust 编写的 Python 包管理器，旨在替代 pip、pip-tools、poetry、pyenv 等工具。
 
+### Manage Python Version
+
+#### List Available Python Version
+
+```bash
+uv python list
+```
+
+#### Install Specified Python Version
+
+```bash
+uv python install 3.12
+```
+
+#### Set Global Default Python Version
+
+```bash
+uv python default 3.12
+```
+
+#### Pin Python Version for Current Project
+
+```bash
+uv python pin 3.12
+```
+
 ### Create Python Project
 
 ```bash
@@ -85,20 +111,54 @@ project
 └── uv.lock
 ```
 
+```bash
+uv init <projectj_name>
+```
+
+uv 会以指定名称创建项目目录。
+
+### Manage Virtual Environment
+
+#### Create Virtual Environment
+
+使用默认 Python 或项目指定 Python 版本创建虚拟环境。
+
+```bash
+uv venv
+# uv venv myvenv # 指定虚拟环境名称
+```
+
+#### Specify Python Version
+
+```bash
+uv venv --python 3.12
+```
+
+### pip Compatible
+
+```bash
+uv pip install numpy
+uv pip uninstall numpy
+uv pip freeze > requirements.txt
+uv pip install -r requirements.txt
+```
+
+### Manage Packages
+
+```bash
+uv add numpy       # 添加依赖
+uv add --dev ruff  # 添加开发环境依赖
+uv remove numpy    # 删除依赖
+uv tree            # 输出依赖树
+uv sync            # 根据 project.toml 安装依赖
+```
+
 ### Run Python File
 
 ```bash
-uv run <file_name>
-uv run -p <python_version> <file_name> # 以指定 Python 版本运行
+uv run main.py
+uv run -p 3.12 main.py # 以指定 Python 版本运行
 ```
 
 首次运行会生成`.venv`目录，其内容与 venv 生成的内容相似。
-
-### Add/Remove Packages
-
-```bash
-uv add <package_name>       # 添加依赖
-uv remove <package_name>    # 删除依赖
-uv tree                     # 输出依赖树
-```
 
