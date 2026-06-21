@@ -73,3 +73,4 @@
 
 - [Regular Expression Reference](./misc/regex.md)
 - [WSL](./misc/wsl.md)
+- [Math Reference](./misc/math.md)
