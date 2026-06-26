@@ -69,6 +69,14 @@
 
 ---
 
+# Math
+
+- [概率论与数理统计](./math/prob_and_stat/README.md)
+  - [随机事件](./math/prob_and_stat/random_event.md)
+  - [概率的定义及其性质](./math/prob_and_stat/prob_def.md)
+
+---
+
 # Misc
 
 - [Regular Expression Reference](./misc/regex.md)
