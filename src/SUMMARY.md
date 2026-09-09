@@ -2,6 +2,10 @@
 
 [TPCAD's Blog](./README.md)
 
+# AI
+
+- [DeepSeek 架构理解](./AI/deepseek.md)
+
 # Algorithm
 
 - [二叉搜索树]()
