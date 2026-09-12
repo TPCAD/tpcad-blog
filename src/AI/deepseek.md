@@ -98,11 +98,11 @@ $ \mathcal{H}^{res}_l \in \R^{n \times n} $ 将 $ n $ 条残差流的信息混�
 $$
 \tilde{x_l} = RMSNorm(x_l)
 \\
-\mathcal{H}^{pre}_l = \alpha_l^{pre} \cdot tanh(\theta_l^{pre} (\tilde{x_l})^T) + \bm{b}_l^{pre}
+\mathcal{H}^{pre}_l = \alpha_l^{pre} \cdot tanh(\theta_l^{pre} \cdot \widetilde{x_l}^T) + \bm{b}_l^{pre}
 \\
-\mathcal{H}^{post}_l = \alpha_l^{post} \cdot tanh(\theta_l^{post} (\tilde{x_l})^T) + \bm{b}_l^{post}
+\mathcal{H}^{post}_l = \alpha_l^{post} \cdot tanh(\theta_l^{post} \cdot \widetilde{x_l}^T) + \bm{b}_l^{post}
 \\
-\mathcal{H}^{res}_l = \alpha_l^{res} \cdot tanh(\theta_l^{res} (\tilde{x_l})^T) + \bm{b}_l^{res}
+\mathcal{H}^{res}_l = \alpha_l^{res} \cdot tanh(\theta_l^{res} \cdot \widetilde{x_l}^T) + \bm{b}_l^{res}
 \\
 x_{l+1} = \mathcal{H}^{res}_l \cdot x_l + (\mathcal{H}^{post}_l)^{T} \cdot \mathcal{F}(\mathcal{H}^{pre}_l \cdot x_l, W_l)
 $$
@@ -137,11 +137,11 @@ x_l \in \R^{n \times C}
 \\
 \overrightarrow{x_l^\prime} = RMSNorm(\overrightarrow{x_l})
 \\
-\tilde{\mathcal{H}}^{pre}_l = \alpha_l^{pre} \cdot (\overrightarrow{x_l^\prime} \varphi^{pre}_l) + \bm{b}_l^{pre}
+\widetilde{\mathcal{H}}^{pre}_l = \alpha_l^{pre} \cdot (\overrightarrow{x_l^\prime} \varphi^{pre}_l) + \bm{b}_l^{pre}
 \\
-\tilde{\mathcal{H}}^{post}_l = \alpha_l^{post} \cdot (\overrightarrow{x_l^\prime} \varphi^{post}_l) + \bm{b}_l^{post}
+\widetilde{\mathcal{H}}^{post}_l = \alpha_l^{post} \cdot (\overrightarrow{x_l^\prime} \varphi^{post}_l) + \bm{b}_l^{post}
 \\
-\tilde{\mathcal{H}}^{res}_l = \alpha_l^{res} \cdot mat(\overrightarrow{x_l^\prime} \varphi^{res}_l) + \bm{b}_l^{res}
+\widetilde{\mathcal{H}}^{res}_l = \alpha_l^{res} \cdot mat(\overrightarrow{x_l^\prime} \varphi^{res}_l) + \bm{b}_l^{res}
 $$
 
 其中 $ \varphi^{pre}_l $、$ \varphi^{post}_l \in \R^{nC \times n} $ 和 $ \varphi^{res}_l \in \R^{nC \times n^2} $ 用于动态映射，$ mat(\cdot) $ 是一个从 $ \R^{1 \times n^2} $ 到 $ \R^{n \times n} $ 的重塑函数。
@@ -149,11 +149,11 @@ $$
 随后通过以下方式获得最终的约束映射：
 
 $$
-\mathcal{H}^{pre}_l = \sigma(\tilde{\mathcal{H}}^{pre}_l)
+\mathcal{H}^{pre}_l = \sigma(\widetilde{\mathcal{H}}^{pre}_l)
 \\
-\mathcal{H}^{post}_l = 2\sigma(\tilde{\mathcal{H}}^{post}_l)
+\mathcal{H}^{post}_l = 2\sigma(\widetilde{\mathcal{H}}^{post}_l)
 \\
-\mathcal{H}^{res}_l = \text{Sinkhorn-Knopp}(\tilde{\mathcal{H}}^{res}_l)
+\mathcal{H}^{res}_l = \text{Sinkhorn-Knopp}(\widetilde{\mathcal{H}}^{res}_l)
 $$
 
 Sinkhorn-Knopp 算法是对 $ H^{res}_l $ 进行约束的核心。它首先对矩阵所有元素取指数，保证所有元素为正数，随后交替执行列归一化和行归一化，直到矩阵收敛到一个双随机矩阵。
