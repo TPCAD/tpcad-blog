@@ -5,6 +5,7 @@
 # AI
 
 - [DeepSeek 架构理解](./AI/deepseek.md)
+- [BM 25](./AI/bm_25.md)
 
 # Algorithm
 
