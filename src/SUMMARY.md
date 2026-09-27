@@ -6,6 +6,7 @@
 
 - [DeepSeek 架构理解](./AI/deepseek.md)
 - [BM 25](./AI/bm_25.md)
+- [反向传播](./AI/back_propagation.md)
 
 # Algorithm
 
@@ -89,4 +90,3 @@
 - [Regular Expression Reference](./misc/regex.md)
 - [WSL](./misc/wsl.md)
 - [Math Reference](./misc/math.md)
-- [反向传播](./misc/back_propagation.md)
